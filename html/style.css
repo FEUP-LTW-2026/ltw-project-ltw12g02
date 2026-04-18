@@ -1,3 +1,20 @@
 .inputtext{
     background-color: red;
 }
+
+html {
+  scroll-behavior: smooth;
+}
+
+.scrollbutton {
+    background-color: gray;
+    padding: 0.5rem;
+    text-decoration: none;
+    color: white;
+    text-transform: uppercase;
+    border-radius: 0.3rem;
+}
+
+.scrollbutton:hover {
+    background-color: black;
+}
