@@ -1,20 +1,70 @@
-.inputtext{
-    background-color: red;
+:root {
+  --lime: #b7ff00;
+  --lime-soft: #d8ff66;
+  --green-bg: #A8D5A2;
+  --black: #050505;
+  --black-2: #101010;
+  --white: #ffffff;
+  --gray-bg: #f4f4f4;
+  --gray-card: #f8f8f8;
+  --gray-text: #666666;
+  --border: #eaeaea;
+  --shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+  --radius: 20px;
 }
 
 html {
   scroll-behavior: smooth;
 }
 
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+#class-header {
+  background-color: var(--green-bg);
+  padding: 3rem 1rem 4rem;
+  text-align: center;
+}
+
+#class-header h1 {
+  margin: 0 0 2.5rem;
+  text-transform: uppercase;
+  text-align: center;
+  font-size: 3rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--black);
+}
+
+#class-header img {
+  width: min(100%, 900px);
+  margin: 0 auto 2rem;
+  border-radius: 0.8rem;
+  box-shadow: var(--shadow);
+}
+
 .scrollbutton {
-    background-color: gray;
-    padding: 0.5rem;
-    text-decoration: none;
-    color: white;
-    text-transform: uppercase;
-    border-radius: 0.3rem;
+  display: inline-block;
+  background-color: var(--lime);
+  padding: 0.9rem 2rem;
+  text-decoration: none;
+  color: var(--black);
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  border-radius: 0.6rem;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+  transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 .scrollbutton:hover {
-    background-color: black;
+  background-color: var(--lime-soft);
+  transform: translateY(-2px);
 }
