@@ -13,6 +13,10 @@
   --radius: 20px;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -20,6 +24,9 @@ html {
 body {
   margin: 0;
   font-family: Arial, sans-serif;
+  color: var(--black);
+  background-color: var(--white);
+  line-height: 1.5;
 }
 
 img {
@@ -29,37 +36,36 @@ img {
 
 #class-header {
   background-color: var(--green-bg);
-  padding: 3rem 1rem 4rem;
+  padding: 4rem 1.5rem 5rem;
   text-align: center;
 }
 
 #class-header h1 {
   margin: 0 0 2.5rem;
   text-transform: uppercase;
-  text-align: center;
-  font-size: 3rem;
+  font-size: clamp(2.5rem, 5vw, 4rem);
   font-weight: 800;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
   color: var(--black);
 }
 
 #class-header img {
   width: min(100%, 900px);
-  margin: 0 auto 2rem;
-  border-radius: 0.8rem;
+  margin: 0 auto 2.5rem;
+  border-radius: 1rem;
   box-shadow: var(--shadow);
 }
 
 .scrollbutton {
   display: inline-block;
   background-color: var(--lime);
-  padding: 0.9rem 2rem;
+  padding: 1rem 2.25rem;
   text-decoration: none;
   color: var(--black);
   text-transform: uppercase;
   font-weight: 700;
   letter-spacing: 0.03em;
-  border-radius: 0.6rem;
+  border-radius: 0.75rem;
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
   transition: background-color 0.2s ease, transform 0.2s ease;
 }
@@ -67,4 +73,87 @@ img {
 .scrollbutton:hover {
   background-color: var(--lime-soft);
   transform: translateY(-2px);
+}
+
+.class-details {
+  background-color: var(--gray-bg);
+  width: 100%;
+  margin: 0;
+  padding: 4rem clamp(1.5rem, 5vw, 6rem);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 3.5rem;
+  align-items: start;
+}
+
+.class-text {
+  max-width: 700px;
+}
+
+.class-text h2 {
+  margin: 0 0 1.25rem;
+  font-size: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.class-text p {
+  margin: 0 0 2.5rem;
+  max-width: 60ch;
+  font-size: 1.1rem;
+  line-height: 1.8;
+}
+
+.class-text ul {
+  margin: 0;
+  padding-left: 1.3rem;
+  list-style: disc;
+}
+
+.class-text li {
+  margin-bottom: 0.6rem;
+  font-size: 1.05rem;
+}
+
+.info-card {
+  background-color: var(--white);
+  padding: 1.75rem;
+  border-radius: 1rem;
+  box-shadow: var(--shadow);
+  align-self: start;
+}
+
+.info-card dl {
+  margin: 0;
+}
+
+.info-card dt {
+  margin-top: 1.25rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  color: var(--black);
+}
+
+.info-card dt:first-child {
+  margin-top: 0;
+}
+
+.info-card dd {
+  margin: 0.45rem 0 0;
+  color: var(--gray-text);
+  font-size: 1.05rem;
+  line-height: 1.5;
+}
+
+.schedule-header {
+    display: flex;
+}
+
+.arrow {
+  border: none;
+  outline: none;
+  border-radius: 1rem;
+  background-color: var(--lime);
 }
