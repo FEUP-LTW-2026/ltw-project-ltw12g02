@@ -7,38 +7,89 @@
     <title>Gym</title>
 </head>
 <body>
-    <header>
+    <header class="site-header">
         <a href="index.html"><img src="https://fastly.picsum.photos/id/180/50/50.jpg?hmac=XMW9Xfp3fH-OoI44sBBOzJib8r8soPYbeUHO0d-OT20" alt="logo" width="50" height="50"></a>
-        <nav>
+        <nav id="tabs">
             <ul>
-                <li><a href="index.html">About us</a></li>
-                <li><a href="index.html">Classes</a></li>
-                <li><a href="index.html">Trainers</a></li>
-                <li><a href="index.html">Equipment</a></li>
+                <li><a href="index.html" class="tab">About us</a></li>
+                <li><a href="index.html" class="tab">Classes</a></li>
+                <li><a href="index.html" class="tab">Trainers</a></li>
+                <li><a href="index.html" class="tab">Equipment</a></li>
             </ul>
         </nav>
-        <div id="signup">
-        <a href="register.html">Register</a>
-        <a href="login.html">Login</a>
+        <div class="signup">
+        <a href="register.html" class="small-button">Register</a>
+        <a href="login.html" class="small-button-light">Login</a>
       </div>
     </header>
     <main>
-        <section>
-            <h2>Power. Discipline. Results.</h2>
-            <h1>Train with <span class="highlight">real energy</span></h1>
+        <section class="main">
+            <h6 class="highlight-text">Power. Discipline. Results.</h2>
+            <h1>Train with <span class="highlight-text">real energy</span></h1>
             <p>In PowerPIT you find training, focus and the right environment to evolve. Group classes, bodybuilding zones, professional trainers and modern equipment.</p>
-            <a href="index.html">Register</a>
-            <a href="index.html">Explore classes</a>
-            <img src="https://picsum.photos/600/300" alt="background" width="600" height="300"> 
+            <div>
+                <a href="index.html" class="small-button-light">Sign up</a>
+                <a href="index.html" class="small-button">Explore classes</a>  
+            </div>
         </section>
-        <section id="aboutus">
-            <header>
-                <h1>About us</h1>
-            </header>
-            <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.</p>
+        <section class="section-light" id="aboutus">
+            <div class="section-half">
+                <div class="left">
+                    <header>
+                        <h1>About us</h1>
+                    </header>
+                    <p>We are PowerPIT and bla bla bla. Template text. Aaaaaaaaa aaaaaaaaaaa aaaaaaaaaa aaaaaaaaaa aaaaaaaaaaaaaaa aaaaaaaaaaaaa aaaaaaaaa. Bbbbbbbbb bbbbbb bbbb bbbbbbbbb b bbb b bbbbbbbb bb bbbbbbbb. Cc ccc ccccccc c ccccccc ccc cc cccc.</p>
+                    <a href="index.html" class="small-button-light">Learn more</a>
+                </div>
+                <div class="right">
+                    <img src="https://picsum.photos/400/400" alt="GymGoers" height="400" width="400">
+                </div> 
+            </div>
+        </section>
+        <section class="section-dark" id="classes">
+            <div class="section-half">
+                <div class="left">
+                    <img src="https://picsum.photos/400/400" alt="GymGoers" height="400" width="400">
+                </div>
+                <div class="right">
+                    <header>
+                        <h1>Classes</h1>
+                    </header>
+                    <p>We have multiple classes and bla bla bla. Template text. Aaaaaaaaa aaaaaaaaaaa aaaaaaaaaa aaaaaaaaaa aaaaaaaaaaaaaaa aaaaaaaaaaaaa aaaaaaaaa. Bbbbbbbbb bbbbbb bbbb bbbbbbbbb b bbb b bbbbbbbb bb bbbbbbbb. Cc ccc ccccccc c ccccccc ccc cc cccc.</p>
+                    <a href="index.html" class="small-button-light">Learn more</a>
+                </div> 
+            </div>
+        </section>
+        <section class="section-light" id="trainers">
+            <div class="section-half">
+                <div class="left">
+                    <header>
+                        <h1>Trainers</h1>
+                    </header>
+                    <p>We have multiple trainers and bla bla bla. Template text. Aaaaaaaaa aaaaaaaaaaa aaaaaaaaaa aaaaaaaaaa aaaaaaaaaaaaaaa aaaaaaaaaaaaa aaaaaaaaa. Bbbbbbbbb bbbbbb bbbb bbbbbbbbb b bbb b bbbbbbbb bb bbbbbbbb. Cc ccc ccccccc c ccccccc ccc cc cccc.</p>
+                    <a href="index.html" class="small-button-light">Learn more</a>
+                </div>
+                <div class="right">
+                    <img src="https://picsum.photos/400/400" alt="GymGoers" height="400" width="400">
+                </div> 
+            </div>
+        </section>
+        <section class="section-dark" id="equipment">
+            <div class="section-half">
+                <div class="left">
+                    <img src="https://picsum.photos/400/400" alt="GymGoers" height="400" width="400">
+                </div>
+                <div class="right">
+                    <header>
+                        <h1>Equipment</h1>
+                    </header>
+                    <p>We have multiple equipment and bla bla bla. Template text. Aaaaaaaaa aaaaaaaaaaa aaaaaaaaaa aaaaaaaaaa aaaaaaaaaaaaaaa aaaaaaaaaaaaa aaaaaaaaa. Bbbbbbbbb bbbbbb bbbb bbbbbbbbb b bbb b bbbbbbbb bb bbbbbbbb. Cc ccc ccccccc c ccccccc ccc cc cccc.</p>
+                    <a href="index.html" class="small-button-light">Learn more</a>
+                </div> 
+            </div>
         </section>
     </main>
-    <footer>
+    <footer class="main-footer">
         <p>Copyright &copy; All right reserved</p>
         <p>Rua njdfbajlfhak 00, 4000-000 Cidade | email@powerpit.com | +555 900 000 000</p>
         <p>Our transactions are made in euros (&euro;).</p>

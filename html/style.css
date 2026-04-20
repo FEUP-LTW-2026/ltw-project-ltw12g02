@@ -157,3 +157,154 @@ img {
   border-radius: 1rem;
   background-color: var(--lime);
 }
+
+.highlight-text {
+  color: var(--lime);
+}
+
+.small-button {
+  text-decoration: none;
+  text-transform: capitalize;
+  padding: 8px 14px;
+  border-radius: 20px;
+  color: white;
+  border: 1px solid white;
+  transition: background-color 0.2s ease,  color 0.2s ease;
+}
+
+.small-button-light {
+  text-decoration: none;
+  text-transform: capitalize;
+  padding: 8px 14px;
+  border-radius: 20px;
+  color: var(--black);
+  background-color: var(--lime);
+  border: 1px solid transparent;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.small-button:hover, .small-button-light:hover {
+  color: white;
+  background-color: var(--lime-soft);
+  border: 1px solid transparent;
+}
+
+
+
+
+.site-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  background-color: var(--black-2);
+}
+
+#tabs ul {
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 5em;
+}
+
+.tab {
+  color: white;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 1rem;
+  padding-bottom: 1em;
+  transition: color 0.2s ease;
+}
+
+.tab:hover {
+  color: var(--lime-soft);
+  border-bottom: 3px solid var(--lime-soft);
+}
+
+.signup {
+  padding-top: 1em;
+}
+
+.main {
+  position: relative;
+  background-image: url("https://picsum.photos/1500/750");
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  padding-top: 15em;
+}
+
+.main::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+}
+
+.main > * {
+  position: relative;
+  margin-left: 5rem;
+}
+
+.main h6 {
+  text-transform: uppercase;
+  margin-bottom: 0%;
+}
+
+.main h1 {
+  color: white;
+  text-transform: uppercase;
+  font-size: 4rem;
+  line-height: 3.5rem;
+  max-width: 40%;
+  margin-top: 0%;
+  margin-bottom: 0%;
+}
+
+.main p {
+  color: gray;
+  max-width: 40%;
+}
+
+.section-half {
+  display: flex;
+  padding: 1em;
+}
+
+.left, .right {
+  flex: 1;
+
+  header, p, a {
+    margin-left: 5em;
+  }
+
+  p {
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+    max-width: 80%;
+  }
+
+  img {
+    width: 100%;
+  }
+}
+
+.section-light {
+  background-color: white;
+  color: var(--black-2);
+}
+
+.section-dark {
+  background-color: var(--black-2);
+  color: white;
+}
+
+
+.main-footer {
+  background-color: var(--black);
+  color: gray;
+  text-align: center;
+  padding: 1em;
+  margin-bottom: 0%;
+}
