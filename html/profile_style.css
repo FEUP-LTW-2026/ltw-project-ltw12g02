@@ -199,22 +199,6 @@ main > section > header h3 {
   margin: 0;
 }
 
-.member ul {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.8rem;
-}
-
-.member ul li {
-  background: rgba(183, 255, 0, 0.14);
-  color: var(--lime);
-  border: 1px solid rgba(183, 255, 0, 0.22);
-  padding: 0.5rem 0.95rem;
-  border-radius: 999px;
-  font-size: 0.9rem;
-  font-weight: 700;
-}
-
 /* PERSONAL INFORMATION */
 .personal_information ul {
   display: grid;
@@ -273,68 +257,6 @@ main > section > header h3 {
   padding: 0 1rem 1rem;
   margin-left: 0;
   color: var(--gray-text);
-}
-
-/* OBJECTIVES */
-.objectives dl {
-  display: grid;
-  gap: 0.9rem;
-}
-
-.objectives dt {
-  background: var(--gray-card);
-  border: 1px solid var(--border);
-  border-bottom: none;
-  border-radius: 16px 16px 0 0;
-  padding: 1rem 1rem 0.25rem;
-  color: var(--black);
-}
-
-.objectives dd {
-  background: var(--gray-card);
-  border: 1px solid var(--border);
-  border-top: none;
-  border-radius: 0 0 16px 16px;
-  padding: 0 1rem 1rem;
-  margin-left: 0;
-  color: var(--gray-text);
-}
-
-/* ACTIVITY */
-.activity {
-  grid-column: 1 / -1;
-}
-
-.activity ul {
-  display: grid;
-  gap: 0.9rem;
-}
-
-.activity li {
-  position: relative;
-  background: var(--gray-card);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 1rem 1rem 1rem 2.1rem;
-  color: #444;
-}
-
-.activity li::before {
-  content: "";
-  position: absolute;
-  left: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: var(--lime);
-}
-
-.activity strong,
-.next_classes strong,
-.objectives strong {
-  color: var(--black);
 }
 
 /* RESPONSIVE */
