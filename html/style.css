@@ -233,10 +233,16 @@ main {
 }
 
 
+#class-below-image {
+  background-color: var(--black-2);
+  padding: 3rem  0;
+}
+
 
 .info-card dt {
   color: var(--lime);
   text-transform: uppercase;
+  font-weight: bold;
 
 }
 
@@ -250,6 +256,55 @@ main > section:nth-of-type(3) img {
   background-color: var(--white);
   box-shadow: var(--shadow);
   border-radius: var(--radius);
+}
+
+.class-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+}
+
+.class-list-header > h2 {
+  text-align: center;
+  margin-top: 1rem;
+  text-transform: uppercase;
+}
+
+
+.class-list-header > p {
+
+  text-align: center;
+
+}
+
+
+.class-session {
+  background-color: white;
+  border-radius: var(--radius);
+  padding: 1rem;
+  margin-top: 3rem;
+  margin: 1rem;
+
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 2rem;
+  row-gap: 0.8rem;
+  align-items: flex-start;
+}
+
+.class-session h3 {
+  width: 100%;
+  margin: 0 0 0.5rem 0;
+}
+
+.class-session p {
+  margin: 0;
+  flex: 1 1 220px;
+}
+
+.class-session .small-button-light {
+  margin-top: 0.5rem;
+  align-self: flex-start;
 }
 
 
