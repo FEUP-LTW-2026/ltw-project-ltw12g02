@@ -132,7 +132,7 @@ body > header nav a:hover {
   background: var(--lime-soft);
   transform: translateY(-2px);
 }
-  box-sizing: border-box;
+
 /* MAIN */
 main {
   width: 100%;
@@ -189,9 +189,7 @@ main {
 }
 
 /* GENERAL CONTENT WIDTH */
-.class-details,
-main > section:nth-of-type(3),
-.schedule {
+.class-details {
   width: min(1120px, 92%);
   margin: 0 auto 2rem;
 }
@@ -308,6 +306,10 @@ main > section:nth-of-type(3) img {
     align-items: flex-start;
     gap: 1rem;
   }
+} 
+
+.index-buttons {
+  margin: 1rem 0.5rem ;
 }
 
 .highlight-text {
@@ -464,6 +466,7 @@ main > section:nth-of-type(3) img {
 .highlight-text {
   color: var(--lime);
 }
+
 
 .small-button {
   text-decoration: none;
