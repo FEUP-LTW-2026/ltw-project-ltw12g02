@@ -9,7 +9,25 @@
 </head>
 <body>
     <header>
-        <!--To do-->
+        <label for="menu-check" id="menu-icon">
+        &#9776;
+        </label>
+        <a href="index.html"><img src="https://fastly.picsum.photos/id/180/50/50.jpg?hmac=XMW9Xfp3fH-OoI44sBBOzJib8r8soPYbeUHO0d-OT20" alt="logo" width="50" height="50"></a>
+         <input type="checkbox" id="menu-check">
+
+    
+        <nav>
+            <ul>
+                <li><a href="index.html">About us</a></li>
+                <li><a href="index.html">Classes</a></li>
+                <li><a href="index.html">Trainers</a></li>
+                <li><a href="index.html">Equipment</a></li>
+            </ul>
+        </nav>
+        <div id="signup">
+        <a href="register.html">Register</a>
+        <a href="login.html">Login</a>
+      </div>
     </header>
     <main>
         
@@ -18,7 +36,7 @@
 
             <img src="https://picsum.photos/600/300" alt="illustrative" height="300" width="600">
 
-            <a href="#schedule" class="scrollbutton">Schedule class</a>
+            <a href="#available-classes" class="scrollbutton">Schedule class</a>
 
         </section>
         
@@ -55,81 +73,59 @@
         <section>
              <img src="https://picsum.photos/600/300" alt="ExerciseExample" height="300" width="600">
         </section>
-        
-        <section id="schedule" class="schedule">
+        <section id="available-classes" class="class-list-section">
+  <header class="class-list-header">
+    <h2>Available Body Pump Classes</h2>
+    <p>Choose one of the upcoming Body Pump sessions.</p>
+  </header>
 
-            <header class="schedule-header">
-                <button type="button" class="arrow">&lt;</button>
-                <h2>April 2026</h2>
-                <button type="button" class="arrow">&gt;</button>
-            </header>
-            <table class="calendar">
-            <thead>
-                <tr>
-                <th>Mon</th>
-                <th>Tue</th>
-                <th>Wed</th>
-                <th>Thu</th>
-                <th>Fri</th>
-                <th>Sat</th>
-                <th>Sun</th>
-                </tr>
-            </thead>
+  <section class="class-row">
+    <article class="class-session">
+      <h3>Monday</h3>
+      <p><strong>Time:</strong> 09:00</p>
+      <p><strong>Trainer:</strong> Ana Costa</p>
+      <p><strong>Room:</strong> Studio A</p>
+      <p><strong>Available spots:</strong> 12</p>
+      <a href="booking.html">Book class</a>
+    </article>
 
-            <tbody>
-            <tr>
-                <td></td>
-                <td></td>
-                <td data-date="2026-04-01">1</td>
-                <td data-date="2026-04-02">2</td>
-                <td data-date="2026-04-03">3</td>
-                <td data-date="2026-04-04">4</td>
-                <td data-date="2026-04-05">5</td>
-            </tr>
+    <article class="class-session">
+      <h3>Tuesday</h3>
+      <p><strong>Time:</strong> 18:00</p>
+      <p><strong>Trainer:</strong> Miguel Silva</p>
+      <p><strong>Room:</strong> Studio B</p>
+      <p><strong>Available spots:</strong> 8</p>
+      <a href="booking.html">Book class</a>
+    </article>
 
-            <tr>
-                <td data-date="2026-04-06">6</td>
-                <td data-date="2026-04-07">7</td>
-                <td data-date="2026-04-08">8</td>
-                <td data-date="2026-04-09">9</td>
-                <td data-date="2026-04-10">10</td>
-                <td data-date="2026-04-11">11</td>
-                <td data-date="2026-04-12" class="has-class">12</td>
-            </tr>
+    <article class="class-session">
+      <h3>Wednesday</h3>
+      <p><strong>Time:</strong> 13:00</p>
+      <p><strong>Trainer:</strong> Sofia Martins</p>
+      <p><strong>Room:</strong> Studio A</p>
+      <p><strong>Available spots:</strong> 5</p>
+      <a href="booking.html">Book class</a>
+    </article>
 
-            <tr>
-                <td data-date="2026-04-13">13</td>
-                <td data-date="2026-04-14">14</td>
-                <td data-date="2026-04-15">15</td>
-                <td data-date="2026-04-16">16</td>
-                <td data-date="2026-04-17">17</td>
-                <td data-date="2026-04-18">18</td>
-                <td data-date="2026-04-19">19</td>
-            </tr>
+    <article class="class-session">
+      <h3>Thursday</h3>
+      <p><strong>Time:</strong> 19:30</p>
+      <p><strong>Trainer:</strong> Ricardo Lopes</p>
+      <p><strong>Room:</strong> Studio C</p>
+      <p><strong>Available spots:</strong> 10</p>
+      <a href="booking.html">Book class</a>
+    </article>
 
-            <tr>
-                <td data-date="2026-04-20">20</td>
-                <td data-date="2026-04-21">21</td>
-                <td data-date="2026-04-22">22</td>
-                <td data-date="2026-04-23">23</td>
-                <td data-date="2026-04-24">24</td>
-                <td data-date="2026-04-25">25</td>
-                <td data-date="2026-04-26">26</td>
-            </tr>
-
-            <tr>
-                <td data-date="2026-04-27">27</td>
-                <td data-date="2026-04-28">28</td>
-                <td data-date="2026-04-29">29</td>
-                <td data-date="2026-04-30">30</td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-        </tbody>
-            </table>
-
-        </section>
+    <article class="class-session">
+      <h3>Saturday</h3>
+      <p><strong>Time:</strong> 10:00</p>
+      <p><strong>Trainer:</strong> Ana Costa</p>
+      <p><strong>Room:</strong> Studio B</p>
+      <p><strong>Available spots:</strong> 7</p>
+      <a href="booking.html">Book class</a>
+    </article>
+  </section>
+</section>
 
     </main>
 
