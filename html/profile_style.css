@@ -202,11 +202,11 @@ main > section > header h3 {
 
 /* PERSONAL INFORMATION */
 .personal_information {
-  padding: 1.6rem;
+  padding: 1.5rem;
 }
 
 .personal_information > header {
-  margin-bottom: 1.2rem;
+  margin-bottom: 1.25rem;
 }
 
 .personal_information ul {
@@ -217,7 +217,6 @@ main > section > header h3 {
 .personal_information li {
   display: flex;
   justify-content: space-between;
-  align-items: center;
   gap: 1rem;
   padding: 1rem 0;
   border-bottom: 1px solid var(--border);
@@ -237,73 +236,22 @@ main > section > header h3 {
 /* NEXT CLASSES */
 .next_classes dl {
   display: grid;
-  gap: 0.9rem;
+  gap: 1rem;
 }
 
 .next_classes dt {
   padding: 1rem 1rem 0.25rem;
   color: var(--black);
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border);
+  color: var(--gray-dark, #444);
 }
 
 .next_classes dd {
   padding: 0 1rem 1rem;
   margin-left: 0;
   color: var(--gray-text);
-}
-
-/* RESPONSIVE */
-@media (max-width: 980px) {
-  main {
-    grid-template-columns: 1fr;
-  }
-
-  .summary ul {
-    grid-template-columns: 1fr;
-  }
-
-  .activity {
-    grid-column: auto;
-  }
-}
-
-@media (max-width: 760px) {
-  .member > header {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto;
-    text-align: center;
-    justify-items: center;
-  }
-
-  .member > header img {
-    grid-row: auto;
-    width: 140px;
-    height: 140px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin: 0 auto 0.8rem;
-  }
-
-  .member ul {
-    justify-content: center;
-  }
-}
-
-@media (max-width: 560px) {
-  main {
-    width: 94%;
-    padding-top: 1.3rem;
-  }
-
-  main > section {
-    padding: 1.25rem;
-  }
-
-  .member > header h3:last-of-type {
-    font-size: 1.65rem;
-  }
-
-  .small-button,
-  .small-button-light {
-    padding: 0.75rem 1.1rem;
-  }
 }
