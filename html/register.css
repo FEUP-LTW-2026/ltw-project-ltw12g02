@@ -140,18 +140,18 @@ main {
 }
 
 /* LEFT SIDE */
-.register-header {
+.register_page > header{
   color: var(--black);
   padding-top: 1rem;
 }
 
-.register-header h1 {
+.register_page > header h1 {
   font-size: 3rem;
   line-height: 1;
   margin-bottom: 1rem;
 }
 
-.register-header p {
+.register_page > header p {
   color: var(--gray-text);
   font-size: 1rem;
   max-width: 320px;
