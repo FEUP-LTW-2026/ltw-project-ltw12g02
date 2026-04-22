@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>PowerPIT - LogIn</title>
+
+        <link rel="stylesheet" href="login.css">
+
+    </head>
+    
+    <body>
+        <header class="site-header">
+        <label for="menu-check" id="menu-icon">
+        &#9776;
+        </label>
+        <a href="index.html"><img src="https://fastly.picsum.photos/id/180/50/50.jpg?hmac=XMW9Xfp3fH-OoI44sBBOzJib8r8soPYbeUHO0d-OT20" alt="logo" width="50" height="50"></a>
+        <input type="checkbox" id="menu-check">
+        <nav id="pages">
+            <ul>
+                <li><a href="index.html">About us</a></li>
+                <li><a href="index.html">Classes</a></li>
+                <li><a href="index.html">Trainers</a></li>
+                <li><a href="index.html">Equipment</a></li>
+            </ul>
+        </nav>
+        <div id="signup">
+            <a href="register.html" class="small-button">Register</a>
+            <a href="login.html" class="small-button-light">Login</a>
+        </div>
+    </header>
+
+        <main>
+
+            <section class="login_page">
+                <header>
+                    <h1>Log In</h1>
+                    <p>Welcome Back!</p>
+                </header>
+
+                <form class="login_form" action="login.php" method="post">
+                    <label>
+                        Email:
+                        <input type="email" name="email" required>
+                    </label>
+
+                    <label>
+                        Password:
+                        <input type="password" name="password" required>
+                    </label>
+
+                    <button type="submit">Log in</button>
+                </form>
+
+                <p class="register_link">
+                    Don’t have an account? <a href="register.html">Register</a>
+                </p>
+            </section>
+        </main>
+    </body>
+</html>
