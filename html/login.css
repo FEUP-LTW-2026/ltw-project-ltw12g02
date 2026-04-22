@@ -208,7 +208,3 @@ main {
   color: var(--black);
   font-weight: bold;
 }
-
-.register_link a:hover {
-  color: var(--lime);
-}
