@@ -278,13 +278,12 @@ main > section:nth-of-type(3) img {
 }
 
 
-.class-session {
+.class-session, .class-session-full {
   background-color: white;
   border-radius: var(--radius);
   padding: 1rem;
   margin-top: 3rem;
   margin: 1rem;
-
   display: flex;
   flex-wrap: wrap;
   column-gap: 2rem;
@@ -292,12 +291,16 @@ main > section:nth-of-type(3) img {
   align-items: flex-start;
 }
 
-.class-session h3 {
+.class-session-full {
+  background-color: var(--gray-card);
+}
+
+.class-session h3, .class-session-full h3 {
   width: 100%;
   margin: 0 0 0.5rem 0;
 }
 
-.class-session p {
+.class-session p, .class-session-full p {
   margin: 0;
   flex: 1 1 220px;
 }
@@ -305,6 +308,14 @@ main > section:nth-of-type(3) img {
 .class-session .small-button-light {
   margin-top: 0.5rem;
   align-self: flex-start;
+}
+
+.class-session-full .small-button-light {
+  margin-top: 0.5rem;
+  align-self: flex-start;
+  background-color: var(--gray-text);
+  pointer-events: none;
+  cursor: not-allowed;
 }
 
 
