@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS Users;
 DROP TABLE IF EXISTS Trainers;
+DROP TABLE IF EXISTS Classes;
 
 /*******************************************************************************
    Create Tables
@@ -31,8 +32,24 @@ CREATE TABLE Trainers{
    FOREIGN KEY (UserId) REFERENCES Users (UserId) ON DELETE NO ACTION ON UPDATE NO ACTION
 };
 
+CREATE TABLE Classes{
+   ClassId INTEGER NOT NULL,
+   TrainerId INTEGER NOT NULL,
+   Name NVARCHAR(100) NOT NULL,
+   Type NVARCHAR(50) NOT NULL,
+   Description NVARCHAR(500),
+   Day NVARCHAR(20) NOT NULL,
+   StartTime NVARCHAR(10) NOT NULL,
+   EndTime NVARCHAR(10) NOT NULL,
+   Capacity INTEGER NOT NULL,
+
+   PRIMARY KEY (ClassId),
+   FOREIGN KEY (TrainerId) REFERENCES Trainers (TrainerId) ON DELETE NO ACTION ON UPDATE NO ACTION
+}
+
 /*******************************************************************************
    Create Foreign Keys
 ********************************************************************************/
 
 CREATE INDEX IF NOT EXISTS IFK_TrainersUserId ON Trainers (UserId);
+CREATE INDEX IF NOT EXISTS IFK_ClassesTrainerId ON Classes (TrainerId);
