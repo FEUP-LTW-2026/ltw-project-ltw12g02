@@ -1,6 +1,8 @@
 DROP TABLE IF EXISTS Users;
 DROP TABLE IF EXISTS Trainers;
 DROP TABLE IF EXISTS Classes;
+DROP TABLE IF EXISTS Enrollments;
+DROP TABLE IF EXISTS Equipment;
 
 /*******************************************************************************
    Create Tables
@@ -45,7 +47,32 @@ CREATE TABLE Classes{
 
    PRIMARY KEY (ClassId),
    FOREIGN KEY (TrainerId) REFERENCES Trainers (TrainerId) ON DELETE NO ACTION ON UPDATE NO ACTION
-}
+};
+
+CREATE TABLE Enrollments{
+   EnrollmentId INTEGER NOT NULL,
+   UserId INTEGER NOT NULL,
+   ClassId INTEGER NOT NULL,
+   EnrollmentDate NVARCHAR(30) NOT NULL,
+   Status NVARCHAR(20) NOT NULL,
+
+   PRIMARY KEY (EnrollmentId),
+   UNIQUE (UserId, ClassId),
+   FOREIGN KEY (UserId) REFERENCES Users (UserId) ON DELETE NO ACTION ON UPDATE NO ACTION,
+   FOREIGN KEY (ClassId) REFERENCES Classes (ClassId) ON DELETE NO ACTION ON UPDATE NO ACTION
+};
+
+
+CREATE TABLE Equipment
+(
+   EquipmentId INTEGER NOT NULL,
+   Name NVARCHAR(100) NOT NULL,
+   Type NVARCHAR(50) NOT NULL,
+   Quantity INTEGER NOT NULL,
+   AvailabilityStatus NVARCHAR(20) NOT NULL,
+
+   PRIMARY KEY (EquipmentId)
+)
 
 /*******************************************************************************
    Create Foreign Keys
@@ -53,3 +80,5 @@ CREATE TABLE Classes{
 
 CREATE INDEX IF NOT EXISTS IFK_TrainersUserId ON Trainers (UserId);
 CREATE INDEX IF NOT EXISTS IFK_ClassesTrainerId ON Classes (TrainerId);
+CREATE INDEX IF NOT EXISTS IFK_EnrollmentsUserId ON Enrollments (UserId);
+CREATE INDEX IF NOT EXISTS IFK_EnrollmentsClassId ON Enrollments (ClassId);
