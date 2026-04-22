@@ -11,15 +11,13 @@
     }
     function generateHeader() { 
 
-    return  '<header>
+    return  '<header class="site-header">
         <label for="menu-check" id="menu-icon">
         &#9776;
         </label>
         <a href="index.html"><img src="https://fastly.picsum.photos/id/180/50/50.jpg?hmac=XMW9Xfp3fH-OoI44sBBOzJib8r8soPYbeUHO0d-OT20" alt="logo" width="50" height="50"></a>
-         <input type="checkbox" id="menu-check">
-
-    
-        <nav>
+        <input type="checkbox" id="menu-check">
+        <nav id="pages">
             <ul>
                 <li><a href="index.html">About us</a></li>
                 <li><a href="index.html">Classes</a></li>
@@ -28,9 +26,9 @@
             </ul>
         </nav>
         <div id="signup">
-        <a href="register.html">Register</a>
-        <a href="login.html">Login</a>
-      </div>
+            <a href="register.html" class="small-button">Register</a>
+            <a href="login.html" class="small-button-light">Login</a>
+        </div>
     </header>';
 
 
