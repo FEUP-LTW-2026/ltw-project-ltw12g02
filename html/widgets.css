@@ -6,6 +6,9 @@
   --shadow: 0 14px 32px rgba(0, 0, 0, 0.08);
   --radius: 24px;
   --lime: #b7ff00;
+
+  --hero-bg: url("https://images.unsplash.com/photo-1574680178050-55c6a6a96e0a?auto=format&fit=crop&w=1600&q=80");
+
 }
 
 /* CARD */
@@ -134,5 +137,20 @@
 
 .card.full {
   opacity: 0.6;
+}
+
+.image-bg {
+  width: 100%;
+  min-height: 88vh;
+  padding: 70px 20px 60px;
+  position: relative;
+  overflow: hidden;
+  background-image:
+    linear-gradient(135deg, rgba(0, 0, 0, 0.88), rgba(0, 0, 0, 0.60)),
+    var(--hero-bg);
+  background-size: cover;
+  background-position: center;
+  color: var(--white);
+  
 }
 
