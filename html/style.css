@@ -59,53 +59,19 @@ button {
   font: inherit;
 }
 
-
-
-/* BUTTONS */
-
-.btn {
-  display: inline-block;
-  color: white;
-  border: 1px solid white;
-  padding: 1rem 1.8rem;
-  border-radius: 999px;
-  font-weight: 800;
-  transition: 0.25s ease;
-}
-
-.btn.small {
-  padding: 0.2rem 1rem;
-  font-weight: normal;
-  align-self: flex-start;
-}
-
-.btn:hover {
-  color: var(--lime-soft);
-  border: 1px solid var(--lime-soft);
-  transform: translateY(-2px);
-}
-
-.btn.light {
-  color: var(--black);
-  background-color: var(--lime);
-  border: 1px solid transparent;
-}
-
-.btn.light:hover {
-  background-color: var(--lime-soft);
-  transform: translateY(-2px);
-}
-
-.btn.light.disabled {
-  background-color: var(--gray-text);
-  color: white;
-  pointer-events: none;
-  cursor: not-allowed;
-  grid-template-rows: 1fr;
-}
-
-.index-buttons {
-  margin-top: 1rem;
+.image-bg {
+  width: 100%;
+  min-height: 88vh;
+  padding: 70px 20px 60px;
+  position: relative;
+  overflow: hidden;
+  background-image:
+    linear-gradient(135deg, rgba(0, 0, 0, 0.88), rgba(0, 0, 0, 0.60)),
+    var(--hero-bg);
+  background-size: cover;
+  background-position: center;
+  color: var(--white);
+  
 }
 
 .highlight-text {
@@ -242,6 +208,10 @@ button {
   border-radius: var(--radius);
 }
 
+.flex-item header {
+  text-align: center;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(28rem, 1fr));
@@ -276,8 +246,6 @@ button {
   color: var(--white);
   margin-bottom: 1.5rem;
 }
-
-
 
 /* FOOTER */
 
