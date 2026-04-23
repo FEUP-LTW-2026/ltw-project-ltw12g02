@@ -1,38 +1,75 @@
-
 <?php
-class Workoutclass {
-    private $time;
-    private $trainer;
-    private $room;
-    private $spots;
 
-    public function __construct($time, $trainer, $room, $spots) {
-        $this->time = $time;
-        $this->trainer = $trainer;
-        $this->room = $room;
-        $this->spots = $spots;
+class WorkoutClass {
+    private int $id;
+    private int $trainerId;
+    private int $classTypeId;
+    private string $day;
+    private string $startTime;
+    private int $capacity;
+
+    public function __construct(
+        int $id,
+        int $trainerId,
+        int $classTypeId,
+        string $day,
+        string $startTime,
+        int $capacity
+    ) {
+        $this->id = $id;
+        $this->trainerId = $trainerId;
+        $this->classTypeId = $classTypeId;
+        $this->day = $day;
+        $this->startTime = $startTime;
+        $this->capacity = $capacity;
     }
 
-    public function getTime() {
-        return $this->time;
+    public function getId(): int {
+        return $this->id;
     }
 
-    public function getTrainer() {
-        return $this->trainer;
+    public function getTrainerId(): int {
+        return $this->trainerId;
     }
 
-    public function getRoom() {
-        return $this->room;
+    public function getClassTypeId(): int {
+        return $this->classTypeId;
     }
 
-    public function getSpots() {
-        return $this->spots;
+    public function getDay(): string {
+        return $this->day;
     }
 
+    public function getStartTime(): string {
+        return $this->startTime;
+    }
 
-    public function isAvailable() {
-        return $this->spots > 0;
+    public function getCapacity(): int {
+        return $this->capacity;
+    }
+
+    public static function getWorkoutClass(PDO $db, int $id): ?WorkoutClass {
+        $stmt = $db->prepare('
+            SELECT ClassId, TrainerId, ClassTypeId, Day, StartTime, Capacity
+            FROM Classes
+            WHERE ClassId = ?
+        ');
+
+        $stmt->execute([$id]);
+        $row = $stmt->fetch();
+
+        if ($row === false) {
+            return null;
+        }
+
+        return new WorkoutClass(
+            (int)$row['ClassId'],
+            (int)$row['TrainerId'],
+            (int)$row['ClassTypeId'],
+            $row['Day'],
+            $row['StartTime'],
+            (int)$row['Capacity']
+        );
     }
     
-
 }
