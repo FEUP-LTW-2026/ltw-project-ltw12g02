@@ -50,7 +50,7 @@ class WorkoutClass {
 
     public static function getWorkoutClass(PDO $db, int $id): ?WorkoutClass {
         $stmt = $db->prepare('
-            SELECT ClassId, TrainerId, ClassTypeId, Day, StartTime, Capacity
+            SELECT *
             FROM Classes
             WHERE ClassId = ?
         ');
@@ -63,13 +63,13 @@ class WorkoutClass {
         }
 
         return new WorkoutClass(
-            (int)$row['ClassId'],
-            (int)$row['TrainerId'],
-            (int)$row['ClassTypeId'],
+            $row['ClassId'],
+            $row['TrainerId'],
+            $row['ClassTypeId'],
             $row['Day'],
             $row['StartTime'],
-            (int)$row['Capacity']
+            $row['Capacity']
         );
     }
-    
+
 }
