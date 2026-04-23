@@ -65,7 +65,6 @@ button {
 
 .btn {
   display: inline-block;
-  border-radius: 999px;
   color: white;
   border: 1px solid white;
   padding: 1rem 1.8rem;
@@ -85,10 +84,23 @@ button {
   transform: translateY(-2px);
 }
 
-.small-button-light:hover,
-.scrollbutton:hover {
+.btn.light {
+  color: var(--black);
+  background-color: var(--lime);
+  border: 1px solid transparent;
+}
+
+.btn.light:hover {
   background-color: var(--lime-soft);
   transform: translateY(-2px);
+}
+
+.btn.light.disabled {
+  background-color: var(--gray-text);
+  color: white;
+  pointer-events: none;
+  cursor: not-allowed;
+  grid-template-rows: 1fr;
 }
 
 .index-buttons {
