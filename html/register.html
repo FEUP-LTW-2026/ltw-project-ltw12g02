@@ -1,37 +1,48 @@
 <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PowerPIT - Register</title>
 
-<html>
-    <head>
-        <title>PowerPIT - Register</title>
+    <link rel="stylesheet" href="forms.css">
+</head>
 
-        <link rel="stylesheet" href="style.css">
-    </head>
-    <body>
-        <header class="site-header">
-            <input type="checkbox" id="menu-check">
-            <label for="menu-check" id="menu-icon">&#9776;</label>
-            <a href="index.html"><img src="PowerPIT.png" alt="logo" width="50" height="50"></a>
-            <nav class="site-nav">
-                <ul>
-                    <li><a href="index.html">About us</a></li>
-                    <li><a href="index.html">Classes</a></li>
-                    <li><a href="index.html">Trainers</a></li>
-                    <li><a href="index.html">Equipment</a></li>
-                </ul>
-            </nav>
-            <div id="signup">
-                <a href="register.html" class="btn small">Register</a>
-                <a href="login.html" class="btn small light">Login</a>
-            </div>
-        </header>
-        <main>
-            <section class="form_page">
+<body>
+    <header class="site-header">
+        <label for="menu-check" id="menu-icon">
+            &#9776;
+        </label>
 
-                <header>
-                    <h1>Create Account</h1>
-                    <p>Join PowerPIT Today!</p>
-                </header>
+        <a href="index.html">
+            <img src="PowerPIT.png" alt="PowerPIT logo" width="50" height="50">
+        </a>
 
+        <input type="checkbox" id="menu-check">
+
+        <nav id="pages">
+            <ul>
+                <li><a href="index.html">About us</a></li>
+                <li><a href="index.html">Classes</a></li>
+                <li><a href="index.html">Trainers</a></li>
+                <li><a href="index.html">Equipment</a></li>
+            </ul>
+        </nav>
+
+        <div id="signup">
+            <a href="register.html" class="btn small">Register</a>
+            <a href="login.html" class="btn small light">Login</a>
+        </div>
+    </header>
+
+    <main>
+        <section class="form_page">
+            <header class="form_intro">
+                <h1>Create Account</h1>
+                <p>Join PowerPIT and start training with real energy.</p>
+            </header>
+
+            <div class="form_box">
                 <form class="powerpit_form" action="register.php" method="post">
                     <label>
                         Full Name:
@@ -61,14 +72,18 @@
                     <button type="submit">Create account</button>
                 </form>
 
-                <a class="login_link" href="login.html">Log In</a>
+                <p class="form_switch">
+                    Already have an account?
+                    <a class="form_link" href="login.html">Log In</a>
+                </p>
+            </div>
+        </section>
+    </main>
 
-            </section>
-        </main>
-        s<footer class="main-footer">
-            <p>Copyright &copy; All rights reserved</p>
-            <p>Rua njdfbajlfhak 00, 4000-000 Cidade | email@powerpit.com | +555 900 000 000</p>
-            <p>Our transactions are made in euros (&euro;).</p>
-        </footer>
-    </body>
+    <footer class="main-footer">
+        <p>Copyright &copy; All rights reserved</p>
+        <p>Rua njdfbajlfhak 00, 4000-000 Cidade | email@powerpit.com | +555 900 000 000</p>
+        <p>Our transactions are made in euros (&euro;).</p>
+    </footer>
+</body>
 </html>
