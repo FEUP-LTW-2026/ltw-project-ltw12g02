@@ -61,42 +61,44 @@ button {
 
 /* BUTTONS */
 
-.btn {
+.small-button,
+.small-button-light,
+.scrollbutton {
   display: inline-block;
   border-radius: 999px;
-  color: white;
-  border: 1px solid white;
-  padding: 1rem 1.8rem;
-  font-weight: 800;
   transition: 0.25s ease;
 }
 
-.btn.small {
+.small-button {
   padding: 0.2rem 1rem;
-  font-weight: normal;
+  color: white;
+  border: 1px solid white;
 }
 
-.btn:hover {
-  color: var(--lime-soft);
-  border: 1px solid var(--lime-soft);
-  transform: translateY(-2px);
-}
-
-.btn.light {
+.small-button-light {
+  padding: 0.2rem 1rem;
   color: var(--black);
   background-color: var(--lime);
   border: 1px solid transparent;
 }
 
-.btn.light:hover {
-  background-color: var(--lime-soft);
+.scrollbutton {
+  background: var(--lime);
+  color: var(--black);
+  padding: 1rem 1.8rem;
+  font-weight: 800;
+}
+
+.small-button:hover {
+  color: var(--lime-soft);
+  border: 1px solid var(--lime-soft);
   transform: translateY(-2px);
 }
 
-.btn.disabled {
-  background-color: var(--gray-text);
-  pointer-events: none;
-  cursor: not-allowed;
+.small-button-light:hover,
+.scrollbutton:hover {
+  background-color: var(--lime-soft);
+  transform: translateY(-2px);
 }
 
 .index-buttons {
@@ -347,7 +349,7 @@ button {
   grid-template-rows: 1fr;
 }
 
-.class-session {
+.class-session, .class-session-full {
   border-radius: var(--radius);
   padding: 1rem;
   margin: 1rem;
@@ -363,23 +365,29 @@ button {
   margin-top: 3rem;
 }
 
-.class-session.full {
+.class-session-full {
   background-color: var(--gray-card);
 }
 
-.class-session h3 {
+.class-session h3, .class-session-full h3 {
   width: 100%;
   margin: 0 0 0.5rem 0;
 }
 
-.class-session p {
+.class-session p, .class-session-full p {
   margin: 0;
   flex: 1 1 220px;
 }
 
-.class-session .btn {
+.class-session .small-button-light, .class-session-full .small-button-light {
   margin-top: 0.5rem;
   align-self: flex-start;
+}
+
+.class-session-full .small-button-light {
+  background-color: var(--gray-text);
+  pointer-events: none;
+  cursor: not-allowed;
 }
 
 /* PROFILE PAGE */
@@ -645,5 +653,12 @@ button {
 
   .left:has(img), .right:has(img) {
     display: none;
+  }
+
+  .profile-page main {
+    width: 100%;
+    padding: 1.5rem;
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
 } 
