@@ -6,19 +6,13 @@
         <link rel="stylesheet" href="style.css">
     </head>
 
-    <body class="profile-page">
+    <body>
         <header class="site-header">
-            <label for="menu-check" id="menu-icon">
-                &#9776;
-            </label>
-
-            <a href="index.html">
-                <img src="PowerPIT.png" alt="logo" width="50" height="50">
-            </a>
-
             <input type="checkbox" id="menu-check">
+            <label for="menu-check" id="menu-icon">&#9776;</label>
+            <a href="index.html"><img src="PowerPIT.png" alt="logo" width="50" height="50"></a>
 
-            <nav id="pages">
+            <nav class="site-nav">
                 <ul>
                     <li><a href="index.html">About us</a></li>
                     <li><a href="index.html">Classes</a></li>
@@ -34,64 +28,74 @@
         </header>
 
         <main>
-            <section class="profile-member card card--dark">
-                <div class="profile-member-card-content">
-                    <img src="https://picsum.photos/600/300" alt="ExerciseExample" width="200" height="100">
+            <section class="flex-row light">
+                <div class="flex-item">
+                    <div class="card card--dark">
+                        <div class="profile-member-card-content">
+                            <img src="https://picsum.photos/600/300" alt="ExerciseExample" width="200" height="100">
 
-                    <div>
-                        <p class="profile-member-card-label">PowerPIT Member</p>
-                        <h1>Gabriela Felgueiras</h1>
-                        <p class="profile-member-card-meta">Premium Plan · Member Since 2025</p>
+                            <div>
+                                <p class="profile-member-card-label">PowerPIT Member</p>
+                                <h1>Gabriela Felgueiras</h1>
+                                <p class="profile-member-card-meta">Premium Plan · Member Since 2025</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
+            <section class="grid">
+                <article class="card">
+                    <h2 class="card-title center">Personal Information</h2>
 
-            <section class="profile-information card">
-                <h2 class="card-title center">Personal Information</h2>
+                    <dl>
+                        <div class="card-dl-row">
+                            <dt>Username</dt>
+                            <dd>gabriiela.af</dd>
+                        </div>
 
-                <dl>
-                    <div class="card-dl-row">
-                        <dt>Username</dt>
-                        <dd>gabriiela.af</dd>
-                    </div>
+                        <div class="card-dl-row">
+                            <dt>Email</dt>
+                            <dd>gabriela@gmail.com</dd>
+                        </div>
 
-                    <div class="card-dl-row">
-                        <dt>Email</dt>
-                        <dd>gabriela@gmail.com</dd>
-                    </div>
+                        <div class="card-dl-row">
+                            <dt>Phone Number</dt>
+                            <dd>910 473 000</dd>
+                        </div>
 
-                    <div class="card-dl-row">
-                        <dt>Phone Number</dt>
-                        <dd>910 473 000</dd>
-                    </div>
+                        <div class="card-dl-row">
+                            <dt>Plan</dt>
+                            <dd>Premium</dd>
+                        </div>
+                    </dl>
+                </article>
+                <aside class="card">
+                    <h2 class="card-title center">Next Classes</h2>
 
-                    <div class="card-dl-row">
-                        <dt>Plan</dt>
-                        <dd>Premium</dd>
-                    </div>
-                </dl>
+                    <dl>
+                        <div class="card-dl-row">
+                            <dt>HIIT Power</dt>
+                            <dd>17 Apr · 18:30</dd>
+                        </div>
+
+                        <div class="card-dl-row">
+                            <dt>Yoga Flow</dt>
+                            <dd>18 Apr · 09:00</dd>
+                        </div>
+
+                        <div class="card-dl-row">
+                            <dt>Spinning</dt>
+                            <dd>18 Apr · 15:30</dd>
+                        </div>
+                    </dl>
+                </aside>
             </section>
 
-            <section class="card">
-                <h2 class="card-title center">Next Classes</h2>
+                
 
-                <dl>
-                    <div class="card-dl-row">
-                        <dt>HIIT Power</dt>
-                        <dd>17 Apr · 18:30</dd>
-                    </div>
-
-                    <div class="card-dl-row">
-                        <dt>Yoga Flow</dt>
-                        <dd>18 Apr · 09:00</dd>
-                    </div>
-
-                    <div class="card-dl-row">
-                        <dt>Spinning</dt>
-                        <dd>18 Apr · 15:30</dd>
-                    </div>
-                </dl>
-            </section>
+                
+            
+            
         </main>
 
         <footer class="main-footer">

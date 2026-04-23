@@ -12,12 +12,10 @@
     function generateHeader() { 
 
     return  '<header class="site-header">
-        <label for="menu-check" id="menu-icon">
-        &#9776;
-        </label>
-        <a href="index.html"><img src="https://fastly.picsum.photos/id/180/50/50.jpg?hmac=XMW9Xfp3fH-OoI44sBBOzJib8r8soPYbeUHO0d-OT20" alt="logo" width="50" height="50"></a>
         <input type="checkbox" id="menu-check">
-        <nav id="pages">
+        <label for="menu-check" id="menu-icon">&#9776;</label>
+        <a href="index.html"><img src="PowerPIT.png" alt="logo" width="50" height="50"></a>
+        <nav class="site-nav">
             <ul>
                 <li><a href="index.html">About us</a></li>
                 <li><a href="index.html">Classes</a></li>
