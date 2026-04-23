@@ -570,11 +570,13 @@ button {
 .register_link::before {
   content: "Don't have an account?  ";
   color: var(--gray-text);
+  pointer-events: none;
 }
 
 .login_link::before {
   content: "Already have an account?  ";
   color: var(--gray-text);
+  pointer-events: none;
 }
 
 .register_link, .login_link {

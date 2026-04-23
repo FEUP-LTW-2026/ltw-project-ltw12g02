@@ -1,0 +1,84 @@
+:root {
+  --white: #ffffff;
+  --black: #050505;
+  --gray-text: #666666;
+  --border: #e9e9e9;
+  --shadow: 0 14px 32px rgba(0, 0, 0, 0.08);
+  --radius: 24px;
+  --lime: #b7ff00;
+}
+
+/* CARD */
+
+.card {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+}
+
+.card--dark {
+  color: var(--white);
+  background:
+    linear-gradient(135deg, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.80)),
+    url("https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=1600&q=80") center/cover no-repeat;
+}
+
+/* TITLES */
+
+.card-title {
+  margin: 0 0 1.5rem 0;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--black);
+}
+
+.card-title.center {
+  text-align: center;
+}
+
+.card h1 {
+  margin: 0 0 0.75rem 0;
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--black);
+  line-height: 1.1;
+}
+
+.card--dark h1,
+.card--dark .card-title {
+  color: var(--white);
+}
+
+.card--dark p {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* DL */
+
+.card dl {
+  margin: 0;
+}
+
+.card-dl-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--gray-text);
+}
+
+.card-dl-row:last-child {
+  border-bottom: none;
+}
+
+.card dt {
+  font-weight: 700;
+  color: var(--black);
+}
+
+.card dd {
+  margin: 0;
+  color: var(--gray-text);
+  text-align: right;
+}
