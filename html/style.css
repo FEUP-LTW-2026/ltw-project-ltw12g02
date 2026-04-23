@@ -68,8 +68,6 @@ main {
   margin-bottom: 2.5rem;
 }
 
-
-
 #class-header img {
   width: min(760px, 100%);
   height: auto;
@@ -117,20 +115,16 @@ main {
   align-items: start;
 }
 
-
 .class-text h2 {
   font-size: 1.8rem;
   margin-bottom: 0.85rem;
   color: var(--black);
 }
 
-
-
 .class-text p {
   color: #444;
   max-width: 60ch;
 }
-
 
 .class-details {
   margin-top: 6rem;
@@ -409,13 +403,127 @@ main {
   border-radius: var(--radius);
 }
 
-
 .main-footer {
   background-color: var(--black);
   color: gray;
   text-align: center;
   padding: 1em;
   margin-bottom: 0%;
+}
+
+/* PROFILE PAGE */
+.profile-page main {
+  width: 1150px;
+  margin: 0 auto;
+  padding: 2rem 0 4rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.profile-page main > section {
+  background: var(--white);
+  border-radius: 15px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+}
+
+.profile-page main > section > header {
+  margin-bottom: 1rem;
+}
+
+.profile-page main > section > header h3 {
+  font-size: 1.5rem;
+  color: var(--black);
+}
+
+/* PROFILE MEMBER */
+.profile-page .profile-member {
+  grid-column: 1 / -1;
+  background:
+    linear-gradient(135deg, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.80)),
+    url("https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=1600&q=80") center/cover no-repeat;
+  color: var(--white);
+  padding: 2rem;
+  overflow: hidden;
+}
+
+.profile-page .profile-member > header {
+  display: grid;
+  grid-template-columns: 170px 1fr;
+  grid-template-rows: auto auto auto;
+  column-gap: 1.5rem;
+  row-gap: 0.2rem;
+  align-items: center;
+  margin-bottom: 0;
+}
+
+.profile-page .profile-member > header img {
+  grid-row: 1 / 4;
+  width: 170px;
+  height: 170px;
+  object-fit: cover;
+  border-radius: 22px;
+}
+
+.profile-page .profile-member > header h3:first-of-type {
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--lime);
+  margin: 0;
+}
+
+.profile-page .profile-member > header h3:last-of-type {
+  font-size: 2rem;
+  color: var(--white);
+  line-height: 1.1;
+  margin: 0;
+}
+
+.profile-page .profile-member > header p {
+  color: rgba(255, 255, 255, 0.78);
+  margin: 0;
+}
+
+/* PROFILE INFORMATION */
+.profile-page .profile-information ul {
+  display: grid;
+  gap: 0;
+}
+
+.profile-page .profile-information li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border);
+  color: #444;
+}
+
+.profile-page .profile-information li:last-child {
+  border-bottom: none;
+}
+
+/* NEXT CLASSES */
+.profile-page .next-classes dl {
+  display: grid;
+  gap: 0;
+}
+
+.profile-page .next-classes dt {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border);
+  color: var(--black);
+}
+
+.profile-page .next-classes dd {
+  padding: 0.5rem 0 1rem;
+  margin-left: 0;
+  color: var(--gray-text);
 }
 
 /* FORM SECTION */
@@ -486,6 +594,8 @@ main {
   font-size: 1rem;
   font-weight: bold;
 }
+
+/* LINKS REGISTER and LOGIN */ 
 
 .register_link::before {
   content: "Don't have an account?  ";
