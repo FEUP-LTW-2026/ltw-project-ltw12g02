@@ -56,7 +56,6 @@ button {
 /* MAIN */
 main {
   width: 100%;
-  padding-bottom: 4rem;
 }
 
 /* HERO */
@@ -371,9 +370,13 @@ main {
 
 .left, .right {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-start;
 
-  h2, p, a, ul {
-    margin-left: 5em;
+  h1, p, a, ul {
+    margin-left: 5rem;
   }
 
   p {
@@ -462,5 +465,9 @@ main {
     flex-direction: column;
     align-items: flex-start;
     gap: 1rem;
+  }
+
+  .left:has(img), .right:has(img) {
+    display: none;
   }
 } 
