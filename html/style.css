@@ -59,6 +59,8 @@ button {
   font: inherit;
 }
 
+/*
+
 /* BUTTONS */
 
 .btn {
@@ -83,27 +85,10 @@ button {
   transform: translateY(-2px);
 }
 
-.btn.small {
-  padding: 0.2rem 1rem;
-  font-weight: normal;
-}
-
-.btn.light {
-  color: var(--black);
-  background-color: var(--lime);
-  border: 1px solid transparent;
-}
-
-.btn.light:hover {
+.small-button-light:hover,
+.scrollbutton:hover {
   background-color: var(--lime-soft);
   transform: translateY(-2px);
-}
-
-.btn.light.disabled {
-  background-color: var(--gray-text);
-  pointer-events: none;
-  cursor: not-allowed;
-  grid-template-rows: 1fr;
 }
 
 .index-buttons {
@@ -304,21 +289,6 @@ button {
   max-width: 60ch;
 }
 
-.info-card dl {
-  display: grid;
-  gap: 0.5rem;
-  background-color: white;
-  box-shadow: var(--shadow);
-  padding: 2rem;
-  border-radius: var(--radius);
-}
-
-.info-card dt {
-  color: var(--lime);
-  text-transform: uppercase;
-  font-weight: bold;
-
-}
 
 /* CLASS PAGE - IMAGE BELOW*/
 
@@ -384,9 +354,15 @@ button {
   flex: 1 1 220px;
 }
 
-.class-session btn {
+.class-session .small-button-light, .class-session-full .small-button-light {
   margin-top: 0.5rem;
   align-self: flex-start;
+}
+
+.class-session-full .small-button-light {
+  background-color: var(--gray-text);
+  pointer-events: none;
+  cursor: not-allowed;
 }
 
 /* PROFILE PAGE */
@@ -613,9 +589,6 @@ button {
     grid-template-columns: 1fr;
   }
 
-  .info-card {
-    margin-top: 1rem;
-  }
 
   
   .site-header {
@@ -654,12 +627,5 @@ button {
 
   .left:has(img), .right:has(img) {
     display: none;
-  }
-
-  .profile-page main {
-    width: 100%;
-    padding: 1.5rem;
-    grid-template-columns: 1fr;
-    gap: 1rem;
   }
 } 

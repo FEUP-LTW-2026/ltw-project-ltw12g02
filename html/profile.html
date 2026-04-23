@@ -1,20 +1,23 @@
 <!DOCTYPE html>
-
 <html>
     <head>
         <title>PowerPIT - Profile</title>
-
-    <link rel="stylesheet" href="style.css">
-    
+        <link rel="stylesheet" href="widgets.css">
+        <link rel="stylesheet" href="style.css">
     </head>
 
     <body class="profile-page">
         <header class="site-header">
             <label for="menu-check" id="menu-icon">
-            &#9776;
+                &#9776;
             </label>
-            <a href="index.html"><img src="PowerPIT.png" alt="logo" width="50" height="50"></a>
+
+            <a href="index.html">
+                <img src="PowerPIT.png" alt="logo" width="50" height="50">
+            </a>
+
             <input type="checkbox" id="menu-check">
+
             <nav id="pages">
                 <ul>
                     <li><a href="index.html">About us</a></li>
@@ -23,47 +26,74 @@
                     <li><a href="index.html">Equipment</a></li>
                 </ul>
             </nav>
+
             <div id="signup">
                 <a href="register.html" class="btn small">Register</a>
                 <a href="login.html" class="btn small light">Login</a>
             </div>
         </header>
+
         <main>
-            <section class="profile-member">
-                    <header>
-                        <img src="https://picsum.photos/600/300" alt="ExerciseExample" height="100" width="200">
+            <section class="profile-member card card--dark">
+                <div class="profile-member-card-content">
+                    <img src="https://picsum.photos/600/300" alt="ExerciseExample" width="200" height="100">
 
-                        <h3>PowerPIT Member</h3>
-                        <h3>Gabriela Felgueiras</h3>
-                        <p>Premium Plan · Member Since 2025</p>
-                    </header>
+                    <div>
+                        <p class="profile-member-card-label">PowerPIT Member</p>
+                        <h1>Gabriela Felgueiras</h1>
+                        <p class="profile-member-card-meta">Premium Plan · Member Since 2025</p>
+                    </div>
+                </div>
             </section>
 
-            <section class="profile-information">
-                <header>
-                    <h3>Personal Information</h3>
-                </header>
-                <ul>
-                    <li><strong>Username: </strong>gabriiela.af</li>
-                    <li><strong>Email: </strong>gabriela@gmail.com</li>
-                    <li><strong>Phone Number: </strong>910 473 000</li>
-                    <li><strong>Plan: </strong>Premium</li>
-                </ul>
-            </section>
+            <section class="profile-information card">
+                <h2 class="card-title center">Personal Information</h2>
 
-
-            <section class="next-classes">
-                <header>
-                    <h3>Next Classes</h3>
-                </header>
                 <dl>
-                    <dt><strong>HIIT Power</strong> 17 Apr . 18:30</dt><dd>With Ricardo Silva</dd>
-                    <dt><strong>Yoga Flow</strong> 18 Apr . 09:00</dt><dd>With Joana Costa</dd>
-                    <dt><strong>Spinning</strong> 18 Apr . 15:30</dt><dd>With André Martins</dd>
+                    <div class="card-dl-row">
+                        <dt>Username</dt>
+                        <dd>gabriiela.af</dd>
+                    </div>
+
+                    <div class="card-dl-row">
+                        <dt>Email</dt>
+                        <dd>gabriela@gmail.com</dd>
+                    </div>
+
+                    <div class="card-dl-row">
+                        <dt>Phone Number</dt>
+                        <dd>910 473 000</dd>
+                    </div>
+
+                    <div class="card-dl-row">
+                        <dt>Plan</dt>
+                        <dd>Premium</dd>
+                    </div>
                 </dl>
             </section>
-            
+
+            <section class="card">
+                <h2 class="card-title center">Next Classes</h2>
+
+                <dl>
+                    <div class="card-dl-row">
+                        <dt>HIIT Power</dt>
+                        <dd>17 Apr · 18:30</dd>
+                    </div>
+
+                    <div class="card-dl-row">
+                        <dt>Yoga Flow</dt>
+                        <dd>18 Apr · 09:00</dd>
+                    </div>
+
+                    <div class="card-dl-row">
+                        <dt>Spinning</dt>
+                        <dd>18 Apr · 15:30</dd>
+                    </div>
+                </dl>
+            </section>
         </main>
+
         <footer class="main-footer">
             <p>Copyright &copy; All rights reserved</p>
             <p>Rua njdfbajlfhak 00, 4000-000 Cidade | email@powerpit.com | +555 900 000 000</p>
