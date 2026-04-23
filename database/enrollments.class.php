@@ -64,5 +64,10 @@ class Enrollments {
     }
 
 
+    public function is_active(): bool {
+        return $this->enrollment_status === 'active';
+    }
+
+
 
 }

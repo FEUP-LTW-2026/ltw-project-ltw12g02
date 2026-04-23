@@ -72,5 +72,22 @@ class Users {
             $row['Role']
         );
     }
+
+    public function getEnrollments(PDO $db): array {
+        $stmt = $db->prepare('
+            SELECT *
+            FROM Enrollments
+            WHERE UserId = ?
+        ');
+
+        $stmt->execute([$this->user_id]);
+        
+        $rows = $stmt->fetchAll();
+
+        if ($rows === false) {
+            return [];
+        }
+
+        return $rows;
+    }
 }
-?>
