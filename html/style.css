@@ -206,7 +206,7 @@ button {
 
 .flex-row {
   display: flex;
-  padding: 1em;
+  padding: 1rem;
 }
 
 .flex-item {
@@ -249,6 +249,13 @@ button {
   background-color: var(--white);
   box-shadow: var(--shadow);
   border-radius: var(--radius);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  gap: 2rem;
+  padding: 1rem;
 }
 
 /* CLASS PAGE - HERO */
@@ -637,7 +644,7 @@ button {
     gap: 1rem;
   }
 
-  .left:has(img), .right:has(img) {
+  .flex-row aside {
     display: none;
   }
 } 
