@@ -26,8 +26,8 @@
             </ul>
         </nav>
         <div id="signup">
-            <a href="register.html" class="small-button">Register</a>
-            <a href="login.html" class="small-button-light">Login</a>
+            <a href="register.html" class="btn small">Register</a>
+            <a href="login.html" class="btn small light">Login</a>
         </div>
     </header>';
 
@@ -37,7 +37,7 @@
     function generateFooter() { 
 
     return '<footer class="main-footer">
-        <p>Copyright &copy; All right reserved</p>
+        <p>Copyright &copy; All rights reserved</p>
         <p>Rua njdfbajlfhak 00, 4000-000 Cidade | email@powerpit.com | +555 900 000 000</p>
         <p>Our transactions are made in euros (&euro;).</p>
     </footer>';

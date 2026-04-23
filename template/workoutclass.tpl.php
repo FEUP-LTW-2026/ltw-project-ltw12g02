@@ -15,7 +15,7 @@ function drawWorkoutClass(Workoutclass $workoutClass) { ?>
       <p><strong>Trainer:</strong> <?= $workoutClass->getTrainer()?></p>
       <p><strong>Room:</strong> <?= $workoutClass->getRoom()?></p>
       <p><strong>Available spots:</strong> <?= $workoutClass->getSpots()?></p>
-      <a class="small-button-light" href="booking.html">Book class</a>
+      <a class="btn small light" href="booking.html">Book class</a>
     </article>
 
 <?php } 

@@ -85,22 +85,6 @@ main {
   margin-bottom: 1.5rem;
 }
 
-/* é preciso este butao existir sequer agr? */
-.scrollbutton {
-  display: inline-block;
-  background: var(--lime);
-  color: var(--black);
-  padding: 1rem 1.8rem;
-  border-radius: 999px;
-  font-weight: 800;
-  transition: 0.25s ease;
-}
-
-.scrollbutton:hover {
-  background: var(--lime-soft);
-  transform: translateY(-2px);
-}
-
 /* GENERAL CONTENT WIDTH */
 .class-details {
   width: min(1120px, 92%);
@@ -187,7 +171,7 @@ main {
 
 }
 
-.class-session, .class-session-full {
+.class-session {
   background-color: white;
   border-radius: var(--radius);
   padding: 1rem;
@@ -200,31 +184,23 @@ main {
   align-items: flex-start;
 }
 
-.class-session-full {
+.class-session.full {
   background-color: var(--gray-card);
 }
 
-.class-session h3, .class-session-full h3 {
+.class-session h3 {
   width: 100%;
   margin: 0 0 0.5rem 0;
 }
 
-.class-session p, .class-session-full p {
+.class-session p {
   margin: 0;
   flex: 1 1 220px;
 }
 
-.class-session .small-button-light {
+.class-session .btn.small.light {
   margin-top: 0.5rem;
   align-self: flex-start;
-}
-
-.class-session-full .small-button-light {
-  margin-top: 0.5rem;
-  align-self: flex-start;
-  background-color: var(--gray-text);
-  pointer-events: none;
-  cursor: not-allowed;
 }
 
 
@@ -238,34 +214,41 @@ main {
   color: var(--lime);
 }
 
-.small-button {
+.btn {
   display: inline-block;
-  padding: 0.2rem 1rem;
-  border-radius: 999px;
   color: white;
   border: 1px solid white;
-  transition: 0.25s ease;
-}
-
-.small-button-light {
-  display: inline-block;
-  padding: 0.2rem 1rem;
+  padding: 1rem 1.8rem;
   border-radius: 999px;
-  color: var(--black);
-  background-color: var(--lime);
-  border: 1px solid transparent;
+  font-weight: 800;
   transition: 0.25s ease;
 }
 
-.small-button:hover {
+.btn:hover {
   color: var(--lime-soft);
   border: 1px solid var(--lime-soft);
   transform: translateY(-2px);
 }
 
-.small-button-light:hover {
+.btn.small {
+  padding: 0.2rem 1rem;
+  font-weight: normal;
+}
+
+.btn.light {
+  color: var(--black);
+  background-color: var(--lime);
+  border: 1px solid transparent;
+}
+
+.btn.light:hover {
   background-color: var(--lime-soft);
-  transform: translateY(-2px);
+}
+
+.btn.light.disabled {
+  background-color: var(--gray-text);
+  pointer-events: none;
+  cursor: not-allowed;
 }
 
 
