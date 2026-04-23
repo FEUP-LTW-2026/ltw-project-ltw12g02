@@ -59,46 +59,46 @@ button {
   font: inherit;
 }
 
+/*
+
 /* BUTTONS */
 
-.small-button,
-.small-button-light,
-.scrollbutton {
+.btn {
   display: inline-block;
   border-radius: 999px;
+  color: white;
+  border: 1px solid white;
+  padding: 1rem 1.8rem;
+  font-weight: 800;
   transition: 0.25s ease;
 }
 
-.small-button {
+.btn.small {
   padding: 0.2rem 1rem;
-  color: white;
-  border: 1px solid white;
+  font-weight: normal;
 }
 
-.small-button-light {
-  padding: 0.2rem 1rem;
-  color: var(--black);
-  background-color: var(--lime);
-  border: 1px solid transparent;
-}
-
-.scrollbutton {
-  background: var(--lime);
-  color: var(--black);
-  padding: 1rem 1.8rem;
-  font-weight: 800;
-}
-
-.small-button:hover {
+.btn:hover {
   color: var(--lime-soft);
   border: 1px solid var(--lime-soft);
   transform: translateY(-2px);
 }
 
-.small-button-light:hover,
-.scrollbutton:hover {
+.btn.light {
+  color: var(--black);
+  background-color: var(--lime);
+  border: 1px solid transparent;
+}
+
+.btn.light:hover {
   background-color: var(--lime-soft);
   transform: translateY(-2px);
+}
+
+.btn.disabled {
+  background-color: var(--gray-text);
+  pointer-events: none;
+  cursor: not-allowed;
 }
 
 .index-buttons {
@@ -299,21 +299,6 @@ button {
   max-width: 60ch;
 }
 
-.info-card dl {
-  display: grid;
-  gap: 0.5rem;
-  background-color: white;
-  box-shadow: var(--shadow);
-  padding: 2rem;
-  border-radius: var(--radius);
-}
-
-.info-card dt {
-  color: var(--lime);
-  text-transform: uppercase;
-  font-weight: bold;
-
-}
 
 /* CLASS PAGE - IMAGE BELOW*/
 
@@ -349,7 +334,7 @@ button {
   grid-template-rows: 1fr;
 }
 
-.class-session, .class-session-full {
+.class-session {
   border-radius: var(--radius);
   padding: 1rem;
   margin: 1rem;
@@ -365,145 +350,26 @@ button {
   margin-top: 3rem;
 }
 
-.class-session-full {
+.class-session.full {
   background-color: var(--gray-card);
 }
 
-.class-session h3, .class-session-full h3 {
+.class-session h3 {
   width: 100%;
   margin: 0 0 0.5rem 0;
 }
 
-.class-session p, .class-session-full p {
+.class-session p {
   margin: 0;
   flex: 1 1 220px;
 }
 
-.class-session .small-button-light, .class-session-full .small-button-light {
+.class-session .btn {
   margin-top: 0.5rem;
   align-self: flex-start;
 }
 
-.class-session-full .small-button-light {
-  background-color: var(--gray-text);
-  pointer-events: none;
-  cursor: not-allowed;
-}
 
-/* PROFILE PAGE */
-.profile-page main {
-  width: 1150px;
-  margin: 0 auto;
-  padding: 2rem 0 4rem;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
-}
-
-.profile-page main > section {
-  background: var(--white);
-  border-radius: 15px;
-  padding: 1.5rem;
-  box-shadow: var(--shadow);
-}
-
-.profile-page main > section > header {
-  margin-bottom: 1rem;
-}
-
-.profile-page main > section > header h3 {
-  font-size: 1.5rem;
-  color: var(--black);
-}
-
-/* PROFILE MEMBER */
-.profile-page .profile-member {
-  grid-column: 1 / -1;
-  background:
-    linear-gradient(135deg, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.80)),
-    url("https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=1600&q=80") center/cover no-repeat;
-  color: var(--white);
-  padding: 2rem;
-  overflow: hidden;
-}
-
-.profile-page .profile-member > header {
-  display: grid;
-  grid-template-columns: 170px 1fr;
-  grid-template-rows: auto auto auto;
-  column-gap: 1.5rem;
-  row-gap: 0.2rem;
-  align-items: center;
-  margin-bottom: 0;
-}
-
-.profile-page .profile-member > header img {
-  grid-row: 1 / 4;
-  width: 170px;
-  height: 170px;
-  object-fit: cover;
-  border-radius: 22px;
-}
-
-.profile-page .profile-member > header h3:first-of-type {
-  font-size: 0.80rem;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  color: var(--lime);
-  margin: 0;
-}
-
-.profile-page .profile-member > header h3:last-of-type {
-  font-size: 2rem;
-  color: var(--white);
-  line-height: 1;
-  margin: 0;
-}
-
-.profile-page .profile-member > header p {
-  color: rgba(255, 255, 255, 0.8);
-  margin: 0;
-}
-
-/* PROFILE INFORMATION */
-.profile-page .profile-information ul {
-  display: grid;
-  gap: 0;
-}
-
-.profile-page .profile-information li {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 1rem 0;
-  border-bottom: 1px solid var(--border);
-  color: var(--gray-text);
-}
-
-.profile-page .profile-information li:last-child {
-  border-bottom: none;
-}
-
-/* NEXT CLASSES */
-.profile-page .next-classes dl {
-  display: grid;
-  gap: 0;
-}
-
-.profile-page .next-classes dt {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 1rem 0;
-  border-bottom: 1px solid var(--border);
-  color: var(--black);
-}
-
-.profile-page .next-classes dd {
-  padding: 0.5rem 0 1rem;
-  margin-left: 0;
-  color: var(--gray-text);
-}
 
 /* FORM SECTION */
 .form_page {
@@ -614,9 +480,6 @@ button {
     grid-template-columns: 1fr;
   }
 
-  .info-card {
-    margin-top: 1rem;
-  }
 
   
   .site-header {
@@ -655,12 +518,5 @@ button {
 
   .left:has(img), .right:has(img) {
     display: none;
-  }
-
-  .profile-page main {
-    width: 100%;
-    padding: 1.5rem;
-    grid-template-columns: 1fr;
-    gap: 1rem;
   }
 } 

@@ -65,7 +65,7 @@
   justify-content: space-between;
   gap: 1rem;
   padding: 1rem 0;
-  border-bottom: 1px solid var(--gray-text);
+  border-bottom: 1px solid var(--border);
 }
 
 .card-dl-row:last-child {
@@ -82,3 +82,51 @@
   color: var(--gray-text);
   text-align: right;
 }
+
+/* PROFILE MEMBER CARD */
+
+.profile-member-card-content {
+  display: grid;
+  grid-template-columns: 170px 1fr;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.profile-member-card-content img {
+  width: 170px;
+  height: 170px;
+  object-fit: cover;
+  border-radius: 22px;
+}
+
+.profile-member-card-label {
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--lime);
+}
+
+.profile-member-card-meta {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/**/
+
+.card-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 2rem;
+  align-items: start;
+}
+
+.card-wrap p {
+  margin: 0;
+}
+
+.card-action {
+  margin-left: auto;
+}
+

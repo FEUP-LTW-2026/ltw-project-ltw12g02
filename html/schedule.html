@@ -1,140 +1,153 @@
-
 <!DOCTYPE html>
 <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Schedule</title>
-            <link rel="stylesheet" href="style.css">
-        </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedule</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="widgets.css">
+</head>
+<body>
+    <header class="site-header">
+        <label for="menu-check" id="menu-icon">
+            &#9776;
+        </label>
+        <a href="index.html"><img src="PowerPIT.png" alt="logo" width="50" height="50"></a>
+        <input type="checkbox" id="menu-check">
 
-        <body>
-            <header class="site-header">
-                <label for="menu-check" id="menu-icon">
-                    &#9776;
-                </label>
-                <a href="index.html"><img src="PowerPIT.png" alt="logo" width="50" height="50"></a>
-                <input type="checkbox" id="menu-check">
-                <nav id="pages">
-                    <ul>
-                        <li><a href="index.html">About us</a></li>
-                        <li><a href="index.html">Classes</a></li>
-                        <li><a href="index.html">Trainers</a></li>
-                        <li><a href="index.html">Equipment</a></li>
-                    </ul>
-                </nav>
-                <div id="signup">
-                    <a href="register.html" class="btn small">Register</a>
-                    <a href="login.html" class="btn small light">Login</a>
-                </div>
+        <nav id="pages">
+            <ul>
+                <li><a href="index.html">About us</a></li>
+                <li><a href="index.html">Classes</a></li>
+                <li><a href="index.html">Trainers</a></li>
+                <li><a href="index.html">Equipment</a></li>
+            </ul>
+        </nav>
+
+        <div id="signup">
+            <a href="register.html" class="btn small">Register</a>
+            <a href="login.html" class="btn small light">Login</a>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div id="class-header">
+                <h1>Body Pump</h1>
+                <img src="https://picsum.photos/600/300" alt="illustrative" width="600" height="300">
+                <a href="#available-classes" class="btn light">Schedule class</a>
+            </div>
+        </section>
+
+        <section class="class-details">
+            <article class="class-text">
+                <h2>About Body Pump</h2>
+                <p>
+                    The Body Pump class strengthens and tones all the main muscle groups
+                    through a series of squats, presses, raises, and curls.
+                </p>
+
+                <h2>Objectives</h2>
+                <ul>
+                    <li>Fat loss</li>
+                    <li>Toning</li>
+                    <li>Better cardiovascular health</li>
+                </ul>
+            </article>
+
+            <aside id="info" class="card">
+                <h2 class="card-title center">Class Info</h2>
+
+                <dl>
+                    <div class="card-dl-row">
+                        <dt>Duration</dt>
+                        <dd>30/45 minutes</dd>
+                    </div>
+                    <div class="card-dl-row">
+                        <dt>Type of training</dt>
+                        <dd>Strength and core</dd>
+                    </div>
+                    <div class="card-dl-row">
+                        <dt>Intensity</dt>
+                        <dd>Medium</dd>
+                    </div>
+                </dl>
+            </aside>
+        </section>
+
+        <section id="class-below-image">
+            <img src="https://picsum.photos/600/300" alt="ExerciseExample" width="600" height="300">
+        </section>
+
+        <section id="available-classes" class="class-list-section">
+            <header class="class-list-header">
+                <h2>Available Body Pump Classes</h2>
+                <p>Choose one of the upcoming Body Pump sessions.</p>
             </header>
 
-            <main>
-                <section class="hero">
-                    <div id="class-header">
-                        <h1>Body pump</h1>
-
-                        <img src="https://picsum.photos/600/300" alt="illustrative" height="300" width="600">
-
-                        <a href="#available-classes" class="btn light">Schedule class</a>
-
+            <section class="class-row">
+                <article class="card">
+                    <h3>Monday</h3>
+                    <div class="card-wrap">
+                        <p><strong>Time:</strong> 09:00</p>
+                        <p><strong>Trainer:</strong> Ana Costa</p>
+                        <p><strong>Room:</strong> Studio A</p>
+                        <p><strong>Available spots:</strong> 12</p>
+                        <a class="btn small light card-action" href="booking.html">Book class</a>
                     </div>
-                </section>
-                
-                
-                <section class="class-details">
-                    <article class="class-text">
-                        <h2>About Body Pump</h2>
-                        <p>
-                            The Body Pump class strengthens and tones all the main muscle groups
-                            through a series of squats, presses, raises, and curls.
-                        </p>
+                </article>
 
-                        <h2>Objectives</h2>
-                        <ul>
-                            <li>Fat loss</li>
-                            <li>Toning</li>
-                            <li>Better cardiovascular health</li>
-                        </ul>
-                    </article>
+                <article class="card">
+                    <h3>Tuesday</h3>
+                    <div class="card-wrap">
+                        <p><strong>Time:</strong> 18:00</p>
+                        <p><strong>Trainer:</strong> Miguel Silva</p>
+                        <p><strong>Room:</strong> Studio B</p>
+                        <p><strong>Available spots:</strong> 8</p>
+                        <a class="btn small light card-action" href="booking.html">Book class</a>
+                    </div>
+                </article>
 
-                    <aside id="info" class="info-card">
-                        <dl>
-                            <dt>Duration</dt>
-                            <dd>30/45 minutes</dd>
+                <article class="card">
+                    <h3>Wednesday</h3>
+                    <div class="card-wrap">
+                        <p><strong>Time:</strong> 13:00</p>
+                        <p><strong>Trainer:</strong> Sofia Martins</p>
+                        <p><strong>Room:</strong> Studio A</p>
+                        <p><strong>Available spots:</strong> 5</p>
+                        <a class="btn small light card-action" href="booking.html">Book class</a>
+                    </div>
+                </article>
 
-                            <dt>Type of training</dt>
-                            <dd>Strength and core</dd>
+                <article class="card">
+                    <h3>Thursday</h3>
+                    <div class="card-wrap">
+                        <p><strong>Time:</strong> 19:30</p>
+                        <p><strong>Trainer:</strong> Ricardo Lopes</p>
+                        <p><strong>Room:</strong> Studio C</p>
+                        <p><strong>Available spots:</strong> 10</p>
+                        <a class="btn small light card-action" href="booking.html">Book class</a>
+                    </div>
+                </article>
 
-                            <dt>Intensity</dt>
-                            <dd>Medium</dd>
-                        </dl>
-                    </aside>
-                </section>
-            
-                <section id="class-below-image">
-                    <img src="https://picsum.photos/600/300" alt="ExerciseExample" height="300" width="600">
-                </section>
-                
-                <section id="available-classes" class="class-list-section">
-                    <header class="class-list-header">
-                        <h2>Available Body Pump Classes</h2>
-                        <p>Choose one of the upcoming Body Pump sessions.</p>
-                    </header>
-
-                    <section class="class-row">
-                        <article class="class-session">
-                            <h3>Monday</h3>
-                            <p><strong>Time:</strong> 09:00</p>
-                            <p><strong>Trainer:</strong> Ana Costa</p>
-                            <p><strong>Room:</strong> Studio A</p>
-                            <p><strong>Available spots:</strong> 12</p>
-                            <a  class="btn small light" href="booking.html">Book class</a>
-                        </article>
-
-                        <article class="class-session">
-                            <h3>Tuesday</h3>
-                            <p><strong>Time:</strong> 18:00</p>
-                            <p><strong>Trainer:</strong> Miguel Silva</p>
-                            <p><strong>Room:</strong> Studio B</p>
-                            <p><strong>Available spots:</strong> 8</p>
-                            <a class="btn small light" href="booking.html">Book class</a>
-                        </article>
-
-                        <article class="class-session">
-                            <h3>Wednesday</h3>
-                            <p><strong>Time:</strong> 13:00</p>
-                            <p><strong>Trainer:</strong> Sofia Martins</p>
-                            <p><strong>Room:</strong> Studio A</p>
-                            <p><strong>Available spots:</strong> 5</p>
-                            <a  class="btn small light" href="booking.html">Book class</a>
-                        </article>
-
-                        <article class="class-session">
-                            <h3>Thursday</h3>
-                            <p><strong>Time:</strong> 19:30</p>
-                            <p><strong>Trainer:</strong> Ricardo Lopes</p>
-                            <p><strong>Room:</strong> Studio C</p>
-                            <p><strong>Available spots:</strong> 10</p>
-                            <a class="btn small light" href="booking.html">Book class</a>
-                        </article>
-
-                        <article class="class-session full">
-                            <h3>Saturday</h3>
-                            <p><strong>Time:</strong> 10:00</p>
-                            <p><strong>Trainer:</strong> Ana Costa</p>
-                            <p><strong>Room:</strong> Studio B</p>
-                            <p><strong>Available spots:</strong> 0</p>
-                            <a class="btn small light disabled" href="booking.html">Book class</a>
-                        </article>
-                </section>
+                <article class="card">
+                    <h3>Saturday</h3>
+                    <div class="card-wrap">
+                        <p><strong>Time:</strong> 10:00</p>
+                        <p><strong>Trainer:</strong> Ana Costa</p>
+                        <p><strong>Room:</strong> Studio B</p>
+                        <p><strong>Available spots:</strong> 0</p>
+                        <a class="btn small light disabled card-action" href="booking.html">Book class</a>
+                    </div>
+                </article>
             </section>
+        </section>
+    </main>
 
-        </main>
-            <footer class="main-footer">
-                <p>Copyright &copy; All rights reserved</p>
-                <p>Rua njdfbajlfhak 00, 4000-000 Cidade | email@powerpit.com | +555 900 000 000</p>
-                <p>Our transactions are made in euros (&euro;).</p>
-            </footer>
-        </body>
+    <footer class="main-footer">
+        <p>Copyright &copy; All rights reserved</p>
+        <p>Rua njdfbajlfhak 00, 4000-000 Cidade | email@powerpit.com | +555 900 000 000</p>
+        <p>Our transactions are made in euros (&euro;).</p>
+    </footer>
+</body>
 </html>
