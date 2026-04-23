@@ -12,8 +12,7 @@ require_once __DIR__ . '/database/workoutclass.class.php';
     <section class="class-row">
         <?php
         $workoutclass = new Workoutclass('10:00', 'Nuno Lima', 7, 1);
-        $workoutclass2 = new Workoutclass('10:00', 'Nuno Lima', 7, 7);
-
+        $workoutclass2 = new Workoutclass('10:00', 'Nuno Lima', 7, 7); 
         drawWorkoutClasses([$workoutclass, $workoutclass2, $workoutclass,$workoutclass2]);
        
         ?>
