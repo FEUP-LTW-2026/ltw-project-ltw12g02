@@ -31,8 +31,7 @@
 
 ## Running
 
-    sqlite3 database/database.db < database/database.sql
-    php -S localhost:9000
+    The html files are in the html folder. Open the files locally to see the pages (the pages we made are not all currently accessable from each other, it is needed to open the files separately).
 
 ## Credentials
 
