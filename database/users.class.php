@@ -2,6 +2,8 @@
 
 require_once(__DIR__ . '/enrollments.class.php');
 require_once(__DIR__ . '/workoutclass.class.php');
+require_once(__DIR__ . '/workoutclasstype.class.php');
+require_once(__DIR__ . '/trainers.class.php');
 
 class Users {
 

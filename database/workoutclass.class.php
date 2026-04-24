@@ -1,5 +1,8 @@
 <?php
-
+require_once(__DIR__ . '/users.class.php');
+require_once(__DIR__ . '/enrollments.class.php');
+require_once(__DIR__ . '/workoutclasstype.class.php');
+require_once(__DIR__ . '/trainers.class.php');
 class WorkoutClass {
     private int $id;
     private int $trainerId;

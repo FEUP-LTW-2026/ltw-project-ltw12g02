@@ -1,4 +1,10 @@
+
 <?php
+require_once(__DIR__ . '/users.class.php');
+require_once(__DIR__ . '/enrollments.class.php');
+require_once(__DIR__ . '/workoutclass.class.php');
+require_once(__DIR__ . '/workoutclasstype.class.php');
+
 
 class Trainers {
 
@@ -63,5 +69,9 @@ class Trainers {
             $row['Specializations'], 
             $row['Certifications']
         );
+    }
+
+    public function getUser(PDO $db): ?Users {
+        return Users::getUser($db, $this->user_id);
     }
 }

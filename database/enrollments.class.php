@@ -1,4 +1,7 @@
 <?php
+require_once(__DIR__ . '/users.class.php');
+require_once(__DIR__ . '/workoutclass.class.php');
+require_once(__DIR__ . '/workoutclasstype.class.php');
 
 class Enrollments {
 
