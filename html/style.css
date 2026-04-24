@@ -134,6 +134,10 @@ button {
   cursor: pointer;
 }
 
+#signup *:first-child {
+  margin-right: 0.3rem;
+}
+
 
 
 #main-header {
@@ -161,8 +165,9 @@ button {
   max-width: 40%;
 }
 
-.index-buttons {
+.index-buttons * {
   margin-top: 1rem;
+  margin-right: 0.3rem;
 }
 
 /* SECTIONS */
@@ -176,17 +181,18 @@ button {
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: space-around;
 }
 
 .flex-item.main > * {
   margin-left: 5rem;
 }
 
-.flex-item.main p, ul {
+.flex-item.main p, .flex-item.main ul {
   margin-top: 3rem;
   margin-bottom: 3rem;
   max-width: 80%;
+  text-align: justify;
 }
 
 .flex-item.side * {
@@ -286,6 +292,7 @@ button {
   .site-nav {
     display: none;
     position: absolute;
+    padding-top: 0;
     top: 5.5rem;
     left: 0;
     background: rgba(5, 5, 5, 0.96);
@@ -300,6 +307,7 @@ button {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    justify-content: flex-start;
     gap: 0rem;
   }
 
