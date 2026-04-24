@@ -130,7 +130,7 @@
 }
 
 .card-action {
-  margin-left: auto;
+  margin-left: 0;
 }
 
 /* full */
@@ -183,7 +183,7 @@
   grid-template-rows: 1fr;
 }
 
-@media (max-width: 40rem) {
+@media (max-width: 30rem) {
   .card-dl-row {
     flex-direction: column;
     align-items: flex-start;
@@ -193,4 +193,10 @@
   .card dd {
     text-align: left;
   }
+
+  .card-wrap {
+    display: block;
+  }
+  
+
 }
