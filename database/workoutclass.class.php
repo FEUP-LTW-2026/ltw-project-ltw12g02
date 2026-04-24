@@ -72,4 +72,18 @@ class WorkoutClass {
         );
     }
 
+
+    public function isFull(PDO $db) : bool {
+        $stmt = $db->prepare('
+            SELECT COUNT(*) AS EnrollmentCount
+            FROM Enrollments
+            WHERE ClassId = ?
+        ');
+
+        $stmt->execute([$this->id]);
+        $row = $stmt->fetch();
+
+        return $row['EnrollmentCount'] >= $this->capacity;
+    }
+
 }
