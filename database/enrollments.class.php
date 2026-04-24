@@ -1,7 +1,4 @@
 <?php
-require_once(__DIR__ . '/users.class.php');
-require_once(__DIR__ . '/workoutclass.class.php');
-require_once(__DIR__ . '/workoutclasstype.class.php');
 
 class Enrollments {
 
@@ -9,19 +6,20 @@ class Enrollments {
     private int $user_id;
     private int $class_id;
     private string $enrollment_date;
-
     private string $enrollment_status;
 
     public function __construct(
         int $enrollment_id,
         int $user_id,
         int $class_id,
-        string $enrollment_date
+        string $enrollment_date,
+        string $enrollment_status
     ) {
         $this->enrollment_id = $enrollment_id;
         $this->user_id = $user_id;
         $this->class_id = $class_id;
         $this->enrollment_date = $enrollment_date;
+        $this->enrollment_status = $enrollment_status;
     }
 
     public function get_enrollment_id(): int {
@@ -42,7 +40,11 @@ class Enrollments {
 
     public function get_enrollment_status(): string {
         return $this->enrollment_status;
-    }   
+    }
+
+    public function is_active(): bool {
+        return $this->enrollment_status === 'active';
+    }
 
     public static function getEnrollment(PDO $db, int $id): ?Enrollments {
         $stmt = $db->prepare('
@@ -62,15 +64,8 @@ class Enrollments {
             (int)$row['EnrollmentId'],
             (int)$row['UserId'],
             (int)$row['ClassId'],
-            $row['EnrollmentDate']
+            $row['EnrollmentDate'],
+            $row['Status']
         );
     }
-
-
-    public function is_active(): bool {
-        return $this->enrollment_status === 'active';
-    }
-
-
-
 }
