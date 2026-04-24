@@ -1,4 +1,8 @@
-<?php 
+<?php
+
+require_once(__DIR__ . '/enrollments.class.php');
+require_once(__DIR__ . '/workoutclass.class.php');
+
 class Users {
 
     private int $user_id;
@@ -81,15 +85,45 @@ class Users {
         ');
 
         $stmt->execute([$this->user_id]);
-        
-        $rows = $stmt->fetchAll();
 
-        if ($rows === false) {
-            return [];
+        $enrollments = [];
+
+        while ($row = $stmt->fetch()) {
+            $enrollments[] = new Enrollments(
+                (int)$row['EnrollmentId'],
+                (int)$row['UserId'],
+                (int)$row['ClassId'],
+                $row['EnrollmentDate'],
+                $row['Status']
+            );
         }
 
-        return $rows;
+        return $enrollments;
     }
 
-    
+    public function getWorkoutClasses(PDO $db): array {
+        $stmt = $db->prepare('
+            SELECT Classes.*
+            FROM Classes
+            JOIN Enrollments ON Enrollments.ClassId = Classes.ClassId
+            WHERE Enrollments.UserId = ?
+        ');
+
+        $stmt->execute([$this->user_id]);
+
+        $workoutClasses = [];
+
+        while ($row = $stmt->fetch()) {
+            $workoutClasses[] = new WorkoutClass(
+                (int)$row['ClassId'],
+                (int)$row['TrainerId'],
+                (int)$row['ClassTypeId'],
+                $row['Day'],
+                $row['StartTime'],
+                (int)$row['Capacity']
+            );
+        }
+
+        return $workoutClasses;
+    }
 }
