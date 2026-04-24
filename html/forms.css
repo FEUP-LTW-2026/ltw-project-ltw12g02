@@ -89,21 +89,14 @@
   font-weight: bold;
 }
 
-/* LINKS REGISTER and LOGIN */ 
-.register_link::before {
-  content: "Don't have an account?  ";
+.form_switch {
   color: var(--gray-text);
-  pointer-events: none;
 }
 
-.login_link::before {
-  content: "Already have an account?  ";
-  color: var(--gray-text);
-  pointer-events: none;
+.form_link {
+  color: black;
 }
 
-.register_link, .login_link {
-  grid-column: 2;
-  margin-top: 1rem;
-  color: var(--black);
+.form_link:hover{
+  color: var(--lime);
 }
