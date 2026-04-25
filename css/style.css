@@ -1,3 +1,6 @@
+@import url("widgets.css");
+@import url("forms.css");
+
 :root {
   --lime: #b7ff00;
   --lime-soft: #d8ff66;
@@ -10,6 +13,8 @@
   --border: #e9e9e9;
   --shadow: 0 14px 32px rgb(0,0,0,0.08);
   --radius: 24px;
+  --hero-bg: url("https://images.unsplash.com/photo-1574680178050-55c6a6a96e0a?auto=format&fit=crop&w=1600&q=80");
+
 }
 
 /* RESET */
@@ -134,6 +139,10 @@ button {
   cursor: pointer;
 }
 
+#signup *:first-child {
+  margin-right: 0.3rem;
+}
+
 
 
 #main-header {
@@ -161,8 +170,9 @@ button {
   max-width: 40%;
 }
 
-.index-buttons {
+.index-buttons * {
   margin-top: 1rem;
+  margin-right: 0.3rem;
 }
 
 /* SECTIONS */
@@ -176,17 +186,18 @@ button {
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: space-around;
 }
 
 .flex-item.main > * {
   margin-left: 5rem;
 }
 
-.flex-item.main p, ul {
-  margin-top: 3rem;
-  margin-bottom: 3rem;
+.flex-item.main p, .flex-item.main ul {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
   max-width: 80%;
+  text-align: justify;
 }
 
 .flex-item.side * {
@@ -286,6 +297,7 @@ button {
   .site-nav {
     display: none;
     position: absolute;
+    padding-top: 0;
     top: 5.5rem;
     left: 0;
     background: rgba(5, 5, 5, 0.96);
@@ -300,6 +312,7 @@ button {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    justify-content: flex-start;
     gap: 0rem;
   }
 
@@ -317,19 +330,14 @@ button {
   .flex-row {
     flex-direction: column;
   }
-
-  .flex-item.side:has(img) {
-    display: none;
-  }
-} 
-
-@media (max-width: 40rem) {
-  #main-header > p {
-    display: none;
-  }
 }
 
 @media (max-width: 30rem) {
+
+  #main-header > p {
+    display: none;
+  }
+
   .grid {
     grid-template-columns: 1fr;
   }

@@ -1,16 +1,3 @@
-:root {
-  --white: #ffffff;
-  --black: #050505;
-  --gray-text: #666666;
-  --border: #e9e9e9;
-  --shadow: 0 14px 32px rgba(0, 0, 0, 0.08);
-  --radius: 24px;
-  --lime: #b7ff00;
-
-  --hero-bg: url("https://images.unsplash.com/photo-1574680178050-55c6a6a96e0a?auto=format&fit=crop&w=1600&q=80");
-
-}
-
 /* CARD */
 
 .card {
