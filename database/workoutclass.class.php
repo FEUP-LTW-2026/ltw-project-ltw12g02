@@ -1,29 +1,27 @@
 <?php
-require_once(__DIR__ . '/users.class.php');
+
 require_once(__DIR__ . '/enrollments.class.php');
 require_once(__DIR__ . '/workoutclasstype.class.php');
 require_once(__DIR__ . '/trainers.class.php');
+
 class WorkoutClass {
     private int $id;
     private int $trainerId;
     private int $classTypeId;
-    private string $day;
-    private string $startTime;
+    private string $classDateTime;
     private int $capacity;
 
     public function __construct(
         int $id,
         int $trainerId,
         int $classTypeId,
-        string $day,
-        string $startTime,
+        string $classDateTime,
         int $capacity
     ) {
         $this->id = $id;
         $this->trainerId = $trainerId;
         $this->classTypeId = $classTypeId;
-        $this->day = $day;
-        $this->startTime = $startTime;
+        $this->classDateTime = $classDateTime;
         $this->capacity = $capacity;
     }
 
@@ -39,12 +37,8 @@ class WorkoutClass {
         return $this->classTypeId;
     }
 
-    public function getDay(): string {
-        return $this->day;
-    }
-
-    public function getStartTime(): string {
-        return $this->startTime;
+    public function getClassDateTime(): string {
+        return $this->classDateTime;
     }
 
     public function getCapacity(): int {
@@ -66,27 +60,25 @@ class WorkoutClass {
         }
 
         return new WorkoutClass(
-            $row['ClassId'],
-            $row['TrainerId'],
-            $row['ClassTypeId'],
-            $row['Day'],
-            $row['StartTime'],
-            $row['Capacity']
+            (int)$row['ClassId'],
+            (int)$row['TrainerId'],
+            (int)$row['ClassTypeId'],
+            $row['ClassDateTime'],
+            (int)$row['Capacity']
         );
     }
 
-
-    public function isFull(PDO $db) : bool {
+    public function isFull(PDO $db): bool {
         $stmt = $db->prepare('
             SELECT COUNT(*) AS EnrollmentCount
             FROM Enrollments
             WHERE ClassId = ?
+            AND Status = "active"
         ');
 
         $stmt->execute([$this->id]);
         $row = $stmt->fetch();
 
-        return $row['EnrollmentCount'] >= $this->capacity;
+        return (int)$row['EnrollmentCount'] >= $this->capacity;
     }
-
 }

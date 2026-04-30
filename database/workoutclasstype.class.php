@@ -1,61 +1,87 @@
-<?php 
+<?php
 
-    class WorkoutClassType {
+require_once(__DIR__ . '/workoutclass.class.php');
 
-        private $id;
-        private $name;
-        private $description;
-        private $duration;
+class WorkoutClassType {
 
+    private int $id;
+    private string $name;
+    private string $description;
+    private int $duration;
 
-        public function __construct(int $id,string $name,string $description,int $duration) { 
-         $this->id = $id;
-         $this->name = $name;
-         $this->description = $description;
-         $this->duration = $duration;
+    public function __construct(
+        int $id,
+        string $name,
+        string $description,
+        int $duration
+    ) { 
+        $this->id = $id;
+        $this->name = $name;
+        $this->description = $description;
+        $this->duration = $duration;
+    }
 
-        }
+    public function getId(): int { 
+        return $this->id;
+    }
 
-        public function getId() { 
-            return $this->id;
-        }
+    public function getName(): string {
+        return $this->name;
+    }
 
-        public function getName() {
-            return $this->name;
-        }
+    public function getDescription(): string {
+        return $this->description;
+    }
 
-        public function getDescription() {
-            return $this->description;
-        }
+    public function getDuration(): int {
+        return $this->duration;
+    }
 
-        public function getDuration() {
-            return $this->duration;
-        }
-
-        public static function getWorkoutClassType(PDO $db, int $id): ?WorkoutClassType {
-
-            $stmt = $db->prepare('
+    public static function getWorkoutClassType(PDO $db, int $id): ?WorkoutClassType {
+        $stmt = $db->prepare('
             SELECT * 
             FROM ClassType
             WHERE ClassTypeId = ?
-            ');
+        ');
 
-            $stmt->execute([$id]);
+        $stmt->execute([$id]);
 
-            $row = $stmt->fetch();
-            
-             if ($row === false) {
-                return null;
-                }
+        $row = $stmt->fetch();
 
+        if ($row === false) {
+            return null;
+        }
 
-            return new WorkoutClassType(
-                $row['id'],
-                $row['name'],
-                $row['description'],
-                $row['duration']
-                );
-
-        }        
-
+        return new WorkoutClassType(
+            (int)$row['ClassTypeId'],
+            $row['Name'],
+            $row['Description'],
+            (int)$row['Duration']
+        );
     }
+
+    public function getWorkoutClasses(PDO $db): array {
+        $stmt = $db->prepare('
+            SELECT *
+            FROM Classes
+            WHERE ClassTypeId = ?  
+            ORDER BY ClassDateTime
+        ');
+
+        $stmt->execute([$this->id]);
+
+        $classes = [];
+
+        while ($row = $stmt->fetch()) {
+            $classes[] = new WorkoutClass(
+                (int)$row['ClassId'],
+                (int)$row['TrainerId'],
+                (int)$row['ClassTypeId'],
+                $row['ClassDateTime'],
+                (int)$row['Capacity']
+            );
+        }
+
+        return $classes;
+    }
+}

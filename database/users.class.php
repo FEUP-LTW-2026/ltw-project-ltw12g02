@@ -104,28 +104,28 @@ class Users {
     }
 
     public function getWorkoutClasses(PDO $db): array {
-        $stmt = $db->prepare('
-            SELECT Classes.*
-            FROM Classes
-            JOIN Enrollments ON Enrollments.ClassId = Classes.ClassId
-            WHERE Enrollments.UserId = ?
-        ');
+    $stmt = $db->prepare('
+        SELECT Classes.*
+        FROM Classes
+        JOIN Enrollments ON Enrollments.ClassId = Classes.ClassId
+        WHERE Enrollments.UserId = ?
+        ORDER BY Classes.ClassDateTime
+    ');
 
-        $stmt->execute([$this->user_id]);
+    $stmt->execute([$this->user_id]);
 
-        $workoutClasses = [];
+    $workoutClasses = [];
 
-        while ($row = $stmt->fetch()) {
-            $workoutClasses[] = new WorkoutClass(
-                (int)$row['ClassId'],
-                (int)$row['TrainerId'],
-                (int)$row['ClassTypeId'],
-                $row['Day'],
-                $row['StartTime'],
-                (int)$row['Capacity']
-            );
-        }
-
-        return $workoutClasses;
+    while ($row = $stmt->fetch()) {
+        $workoutClasses[] = new WorkoutClass(
+            (int)$row['ClassId'],
+            (int)$row['TrainerId'],
+            (int)$row['ClassTypeId'],
+            $row['ClassDateTime'],
+            (int)$row['Capacity']
+        );
     }
+
+    return $workoutClasses;
+}
 }

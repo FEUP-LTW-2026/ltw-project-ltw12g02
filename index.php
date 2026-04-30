@@ -1,23 +1,21 @@
-<?php
+<?php 
+require_once(__DIR__ . '/template/common.tpl.php');
+require_once(__DIR__ . '/template/class.tpl.php');
+require_once(__DIR__ . '/database/connection.db.php');
+require_once(__DIR__ . '/database/workoutclasstype.class.php');
 
-require_once __DIR__ . '/template/common.tpl.php';
-require_once __DIR__ . '/template/workoutclass.tpl.php';
-require_once __DIR__ . '/database/workoutclass.class.php';
+generateHead();
+generateHeader();
+
+$id = 4;
+
+$db = getDatabaseConnection();
+
+$workoutClassType = WorkoutClassType::getWorkoutClassType($db, $id);
+
+
+drawClassHeader($workoutClassType);
+
+
+generateFooter();
 ?>
-
-<?= generateHead() ?>
-<body>
-    <?= generateHeader() ?>
-
-    <section class="class-row">
-        <?php
-        $workoutclass = new Workoutclass('10:00', 'Nuno Lima', 7, 1);
-        $workoutclass2 = new Workoutclass('10:00', 'Nuno Lima', 7, 7); 
-        drawWorkoutClasses([$workoutclass, $workoutclass2, $workoutclass,$workoutclass2]);
-       
-        ?>
-    </section>
-
-    <?= generateFooter() ?>
-</body>
-</html>
