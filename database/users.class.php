@@ -128,4 +128,91 @@ class Users {
 
     return $workoutClasses;
 }
+
+public static function getUserWithPassword(PDO $db, string $email, string $password): ?Users {
+    $stmt = $db->prepare('
+        SELECT *
+        FROM Users
+        WHERE Email = ?
+    ');
+
+    $stmt->execute([$email]);
+
+    $row = $stmt->fetch();
+
+    if ($row === false) {
+        return null;
+    }
+
+    if (!password_verify($password, $row['PasswordHash'])) {
+        return null;
+    }
+
+    return new Users(
+        (int)$row['UserId'],
+        $row['Name'],
+        $row['Username'],
+        $row['Email'],
+        $row['PasswordHash'],
+        $row['Role']
+    );
+}
+
+public static function emailExists(PDO $db, string $email): bool {
+    $stmt = $db->prepare('
+        SELECT UserId
+        FROM Users
+        WHERE Email = ?
+    ');
+
+    $stmt->execute([$email]);
+
+    return $stmt->fetch() !== false;
+}
+
+public static function usernameExists(PDO $db, string $username): bool {
+    $stmt = $db->prepare('
+        SELECT UserId
+        FROM Users
+        WHERE Username = ?
+    ');
+
+    $stmt->execute([$username]);
+
+    return $stmt->fetch() !== false;
+}
+
+public static function create(
+    PDO $db,
+    string $name,
+    string $username,
+    string $email,
+    string $password
+): ?Users {
+    $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+
+    $stmt = $db->prepare('
+        INSERT INTO Users (Name, Username, Email, PasswordHash, Role)
+        VALUES (?, ?, ?, ?, ?)
+    ');
+
+    $stmt->execute([
+        $name,
+        $username,
+        $email,
+        $passwordHash,
+        'member'
+    ]);
+
+    $id = (int)$db->lastInsertId();
+
+    return new Users(
+        $id,
+        $name,
+        $username,
+        $email,
+        $passwordHash,
+        'member'
+    );
+}
 }

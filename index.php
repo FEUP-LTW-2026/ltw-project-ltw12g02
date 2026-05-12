@@ -7,7 +7,7 @@ require_once(__DIR__ . '/database/workoutclasstype.class.php');
 generateHead();
 generateHeader();
 
-$id = 4;
+$id = 2;
 
 $db = getDatabaseConnection();
 

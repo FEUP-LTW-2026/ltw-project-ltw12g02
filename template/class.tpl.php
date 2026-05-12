@@ -14,3 +14,6 @@ function drawClassHeader(WorkoutClassType $workoutClassType){
 
 
  <?php }
+
+
+
