@@ -7,7 +7,7 @@ require_once(__DIR__ . '/../template/auth.tpl.php');
 $session = new Session();
 
 generateHead('PowerPit - Login');
-generateHeader();
+generateHeader($session);
 $messages = $session->getMessages();
 drawMessages($messages);
 drawLoginForm($session->getMessages());

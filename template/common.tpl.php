@@ -14,31 +14,34 @@ function generateHead(string $title) {
 <body>';
 }
 
-function generateHeader() {
-    echo '
-<header class="site-header">
-    <input type="checkbox" id="menu-check">
-    <label for="menu-check" id="menu-icon">&#9776;</label>
+function generateHeader(Session $session) { ?>
+    <header class="site-header">
+        <input type="checkbox" id="menu-check">
+        <label for="menu-check" id="menu-icon">&#9776;</label>
 
-    <a href="index.php">
-        <img src="../html/PowerPIT.png" alt="logo" width="50" height="50">
-    </a>
+        <a href="index.php">
+            <img src="../html/PowerPIT.png" alt="logo" width="50" height="50">
+        </a>
 
-    <nav class="site-nav">
-        <ul>
-            <li><a href="index.php">About&nbsp;us</a></li>
-            <li><a href="classes.php">Classes</a></li>
-            <li><a href="trainers.php">Trainers</a></li>
-            <li><a href="equipment.php">Equipment</a></li>
-        </ul>
-    </nav>
+        <nav class="site-nav">
+            <ul>
+                <li><a href="index.php#aboutus">About&nbsp;us</a></li>
+                <li><a href="classes.php">Classes</a></li>
+                <li><a href="trainers.php">Trainers</a></li>
+                <li><a href="equipment.php">Equipment</a></li>
+            </ul>
+        </nav>
 
-    <div id="signup">
-        <a href="register.php" class="btn small">Register</a>
-        <a href="../pages/login.php" class="btn small light">Login</a>
-    </div>
-</header>';
-}
+        <div id="signup">
+            <?php if ($session->isLoggedIn()) { ?>
+                <a href="../actions/action_logout.php" class="btn small light">Logout</a>
+            <?php } else { ?>
+                <a href="register.php" class="btn small">Register</a>
+                <a href="login.php" class="btn small light">Login</a>
+            <?php } ?>
+        </div>
+    </header>
+<?php }
 
 function generateFooter() {
     echo '
