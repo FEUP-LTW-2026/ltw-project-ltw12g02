@@ -273,6 +273,82 @@ button {
   margin-bottom: 0%;
 }
 
+/* CLASSES PAGE */
+
+.classes_page {
+  min-height: calc(100vh - 88px);
+  background: var(--white);
+  padding: 3rem 1rem 5rem;
+}
+
+.classes_intro {
+  width: min(56rem, 100%);
+  margin: 0 auto 3rem;
+  padding: 3rem 1rem;
+  text-align: center;
+  background: var(--white);
+  box-shadow: var(--shadow);
+  border-radius: var(--radius);
+}
+
+.classes_intro h1 {
+  color: var(--black);
+  text-transform: uppercase;
+  font-size: 2.4rem;
+  line-height: 1.1;
+  margin-bottom: 0.5rem;
+}
+
+.classes_intro p {
+  color: var(--gray-text);
+  text-transform: uppercase;
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+}
+
+.classes_list {
+  width: min(68rem, 100%);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.2rem;
+}
+
+.class_card {
+  background: var(--white);
+  box-shadow: var(--shadow);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: 0.25s ease;
+}
+
+.class_card:hover {
+  transform: translateY(-5px);
+}
+
+.class_card a {
+  display: block;
+}
+
+.class_card img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.class_card h2 {
+  padding: 1rem;
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--black);
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.class_card:hover h2 {
+  color: var(--lime);
+}
+
 /* RESPONSIVE */
 
 @media (max-width: 60rem) {
@@ -330,6 +406,10 @@ button {
   .flex-row {
     flex-direction: column;
   }
+
+    .classes_list {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 30rem) {
@@ -361,5 +441,17 @@ button {
 
   .card dd {
     text-align: left;
+  }
+
+    .classes_intro {
+    padding: 2rem 1rem;
+  }
+
+  .classes_intro h1 {
+    font-size: 1.8rem;
+  }
+
+  .classes_list {
+    grid-template-columns: 1fr;
   }
 }
