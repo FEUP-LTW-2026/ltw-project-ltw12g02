@@ -170,6 +170,61 @@
   grid-template-rows: 1fr;
 }
 
+/* MESSAGES */
+
+.message_area {
+  position: fixed;
+  top: 6rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(90%, 520px);
+  z-index: 9999;
+  display: grid;
+  gap: 0.8rem;
+}
+
+.message {
+  position: relative;
+  padding: 1rem 2.5rem 1rem 1.2rem;
+  border-radius: 14px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+}
+
+.message.error {
+  background-color: rgba(255, 0, 0, 0.18);
+  color: #8f0f0f;
+  border: 1px solid rgba(255, 0, 0, 0.35);
+}
+
+.message.success {
+  background-color: rgba(183, 255, 0, 0.55);
+  color: var(--black);
+  border: 1px solid rgba(183, 255, 0, 0.9);
+}
+
+.message_close {
+  position: absolute;
+  top: 0.45rem;
+  right: 0.7rem;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font-size: 1.2rem;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+}
+
+.message_close:hover {
+  opacity: 0.55;
+}
+
 @media (max-width: 30rem) {
   .card-dl-row {
     flex-direction: column;

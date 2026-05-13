@@ -4,7 +4,9 @@ require_once(__DIR__ . '/template/class.tpl.php');
 require_once(__DIR__ . '/database/connection.db.php');
 require_once(__DIR__ . '/database/workoutclasstype.class.php');
 
-generateHead();
+
+
+generateHead('PowerPit');
 generateHeader();
 
 $id = 2;

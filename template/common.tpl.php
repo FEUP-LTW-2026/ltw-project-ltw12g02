@@ -1,14 +1,15 @@
 <?php
 
-function generateHead() {
+function generateHead(string $title) {
     echo '
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PowerPIT</title>
+    <title>' . $title . '</title>
     <link rel="stylesheet" href="../css/style.css">
+    <script src="../js/messages.js" defer></script> 
 </head>
 <body>';
 }
@@ -34,7 +35,7 @@ function generateHeader() {
 
     <div id="signup">
         <a href="register.php" class="btn small">Register</a>
-        <a href="login.php" class="btn small light">Login</a>
+        <a href="../pages/login.php" class="btn small light">Login</a>
     </div>
 </header>';
 }
@@ -51,4 +52,19 @@ function generateFooter() {
 </html>';
 }
 
-?>
+
+function drawMessages(array $messages): void { ?>
+    <?php if (!empty($messages)) { ?>
+        <div class="message_area">
+            <?php foreach ($messages as $message) { ?>
+                <div class="message <?= htmlspecialchars($message['type']) ?>">
+                    <span><?= htmlspecialchars($message['text']) ?></span>
+
+                    <button type="button" class="message_close" aria-label="Close message">
+                        &times;
+                    </button>
+                </div>
+            <?php } ?>
+        </div>
+    <?php } ?>
+<?php } ?>
