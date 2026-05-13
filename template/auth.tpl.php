@@ -44,7 +44,7 @@ function drawRegisterForm(array $messages): void { ?>
             </header>
 
             <div class="form_box">
-                <form class="powerpit_form" action="actions/action_create_account.php" method="post">
+                <form class="powerpit_form" action="../actions/action_register.php" method="post">
                     <label>
                         Full Name:
                         <input type="text" name="name" required>

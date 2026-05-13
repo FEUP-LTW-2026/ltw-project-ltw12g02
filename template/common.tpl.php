@@ -53,6 +53,7 @@ function generateFooter() {
 }
 
 
+
 function drawMessages(array $messages): void { ?>
     <?php if (!empty($messages)) { ?>
         <div class="message_area">

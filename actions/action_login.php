@@ -7,9 +7,25 @@ $session = new Session();
 require_once(__DIR__ . '/../database/connection.db.php');
 require_once(__DIR__ . '/../database/users.class.php');
 
+
+$email = trim($_POST['email'] ?? '');
+$password = $_POST['password'] ?? '';
+
+if ($email === '' || $password === '') {
+    $session->addMessage('error', 'Please fill in all fields!');
+    header('Location: ../pages/login.php');
+    exit;
+}
+
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    $session->addMessage('error', 'Invalid email format!');
+    header('Location: ../pages/login.php');
+    exit;
+}
+
 $db = getDatabaseConnection();
 
-$user = Users::getUserWithPassword($db, $_POST['email'], $_POST['password']);
+$user = Users::getUserWithPassword($db, $email, $password);
 
 if ($user) {
     $session->setId($user->getUserId());
@@ -22,10 +38,9 @@ if ($user) {
 
     header('Location: ../pages/profile.php');
     exit;
-} else {
-    $session->addMessage('error', 'Wrong email or password!');
-
-    header('Location: ' . $_SERVER['HTTP_REFERER']);
-    exit;
 }
+
+$session->addMessage('error', 'Wrong email or password!');
+header('Location: ../pages/login.php');
+exit;
 ?>
