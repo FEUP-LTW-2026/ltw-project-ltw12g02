@@ -1,7 +1,7 @@
 <?php 
 require_once(__DIR__ . '/../utils/session.php');
 require_once(__DIR__ . '/../template/common.tpl.php');
-require_once(__DIR__ . '/../template/profile.tpl.php');
+require_once(__DIR__ . '/../template/edit_profile.tpl.php');
 require_once(__DIR__ . '/../database/connection.db.php');
 require_once(__DIR__ . '/../database/users.class.php');
 
@@ -22,14 +22,13 @@ if ($user === null) {
     exit;
 }
 
-$workoutClasses = $user->getWorkoutClasses($db);
 $messages = $session->getMessages();
 
-generateHead('PowerPIT - Profile');
+generateHead('PowerPIT - Edit Profile');
 generateHeader($session);
 
 drawMessages($messages);
-drawProfile($user, $workoutClasses);
+drawEditProfile($user);
 
 generateFooter();
-?><script src="../js/profile.js" defer></script>
+?>

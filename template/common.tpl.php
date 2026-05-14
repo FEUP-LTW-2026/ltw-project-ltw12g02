@@ -11,6 +11,7 @@ function generateHead(string $title) {
     <link rel="stylesheet" href="../css/style.css">
     <script src="../js/messages.js" defer></script>
     <script src="../js/classes.js" defer></script>
+    <script src="../js/profile.js" defer></script>
 </head>
 <body>';
 }
