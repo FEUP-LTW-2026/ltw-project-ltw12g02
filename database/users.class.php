@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 require_once(__DIR__ . '/enrollments.class.php');
 require_once(__DIR__ . '/workoutclass.class.php');
@@ -13,6 +14,7 @@ class Users {
     private string $email; 
     private string $passwordHash;
     private string $role;
+    private ?string $profileImage;
 
     public function __construct(
         int $user_id,
@@ -20,7 +22,8 @@ class Users {
         string $user_name,
         string $email,
         string $passwordHash,
-        string $role
+        string $role,
+        ?string $profileImage
     ) {
         $this->user_id = $user_id;
         $this->name = $name;
@@ -28,6 +31,7 @@ class Users {
         $this->email = $email;
         $this->passwordHash = $passwordHash;
         $this->role = $role;
+        $this->profileImage = $profileImage;
     }
 
     public function getUserId(): int {
@@ -54,6 +58,10 @@ class Users {
         return $this->role;
     }
 
+    public function getProfileImage(): ?string {
+        return $this->profileImage ?? 'default.png';
+    }
+
     public static function getUser(PDO $db, int $id): ?Users {
         $stmt = $db->prepare('
             SELECT *
@@ -75,7 +83,8 @@ class Users {
             $row['Username'],
             $row['Email'],
             $row['PasswordHash'],
-            $row['Role']
+            $row['Role'],
+            $row['ProfileImage']
         );
     }
 
@@ -104,115 +113,138 @@ class Users {
     }
 
     public function getWorkoutClasses(PDO $db): array {
-    $stmt = $db->prepare('
-        SELECT Classes.*
-        FROM Classes
-        JOIN Enrollments ON Enrollments.ClassId = Classes.ClassId
-        WHERE Enrollments.UserId = ?
-        ORDER BY Classes.ClassDateTime
-    ');
+        $stmt = $db->prepare('
+            SELECT Classes.*
+            FROM Classes
+            JOIN Enrollments ON Enrollments.ClassId = Classes.ClassId
+            WHERE Enrollments.UserId = ?
+            ORDER BY Classes.ClassDateTime
+        ');
 
-    $stmt->execute([$this->user_id]);
+        $stmt->execute([$this->user_id]);
 
-    $workoutClasses = [];
+        $workoutClasses = [];
 
-    while ($row = $stmt->fetch()) {
-        $workoutClasses[] = new WorkoutClass(
-            (int)$row['ClassId'],
-            (int)$row['TrainerId'],
-            (int)$row['ClassTypeId'],
-            $row['ClassDateTime'],
-            (int)$row['Capacity']
+        while ($row = $stmt->fetch()) {
+            $workoutClasses[] = new WorkoutClass(
+                (int)$row['ClassId'],
+                (int)$row['TrainerId'],
+                (int)$row['ClassTypeId'],
+                $row['ClassDateTime'],
+                (int)$row['Capacity']
+            );
+        }
+
+        return $workoutClasses;
+    }
+
+    public static function getUserWithPassword(PDO $db, string $email, string $password): ?Users {
+        $stmt = $db->prepare('
+            SELECT *
+            FROM Users
+            WHERE Email = ?
+        ');
+
+        $stmt->execute([$email]);
+
+        $row = $stmt->fetch();
+
+        if ($row === false) {
+            return null;
+        }
+
+        if (!password_verify($password, $row['PasswordHash'])) {
+            return null;
+        }
+
+        return new Users(
+            (int)$row['UserId'],
+            $row['Name'],
+            $row['Username'],
+            $row['Email'],
+            $row['PasswordHash'],
+            $row['Role'],
+            $row['ProfileImage']
         );
     }
 
-    return $workoutClasses;
-}
+    public static function emailExists(PDO $db, string $email): bool {
+        $stmt = $db->prepare('
+            SELECT UserId
+            FROM Users
+            WHERE Email = ?
+        ');
 
-public static function getUserWithPassword(PDO $db, string $email, string $password): ?Users {
-    $stmt = $db->prepare('
-        SELECT *
-        FROM Users
-        WHERE Email = ?
-    ');
+        $stmt->execute([$email]);
 
-    $stmt->execute([$email]);
-
-    $row = $stmt->fetch();
-
-    if ($row === false) {
-        return null;
+        return $stmt->fetch() !== false;
     }
 
-    if (!password_verify($password, $row['PasswordHash'])) {
-        return null;
+    public static function usernameExists(PDO $db, string $username): bool {
+        $stmt = $db->prepare('
+            SELECT UserId
+            FROM Users
+            WHERE Username = ?
+        ');
+
+        $stmt->execute([$username]);
+
+        return $stmt->fetch() !== false;
     }
 
-    return new Users(
-        (int)$row['UserId'],
-        $row['Name'],
-        $row['Username'],
-        $row['Email'],
-        $row['PasswordHash'],
-        $row['Role']
-    );
+    public static function create(
+        PDO $db,
+        string $name,
+        string $username,
+        string $email,
+        string $password
+    ): ?Users {
+        $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+
+        $stmt = $db->prepare('
+            INSERT INTO Users (Name, Username, Email, PasswordHash, Role, ProfileImage)
+            VALUES (?, ?, ?, ?, ?, ?)
+        ');
+
+        $stmt->execute([
+            $name,
+            $username,
+            $email,
+            $passwordHash,
+            'member',
+            null
+        ]);
+
+        $id = (int)$db->lastInsertId();
+
+        return new Users(
+            $id,
+            $name,
+            $username,
+            $email,
+            $passwordHash,
+            'member',
+            null
+        );
+    }
+
+    public function updateProfileImage(PDO $db, string $profileImage): void {
+        $stmt = $db->prepare('
+            UPDATE Users
+            SET ProfileImage = ?
+            WHERE UserId = ?
+        ');
+
+        $stmt->execute([
+            $profileImage,
+            $this->user_id
+        ]);
+
+        $this->profileImage = $profileImage;
+    }
+
+    
 }
 
-public static function emailExists(PDO $db, string $email): bool {
-    $stmt = $db->prepare('
-        SELECT UserId
-        FROM Users
-        WHERE Email = ?
-    ');
-
-    $stmt->execute([$email]);
-
-    return $stmt->fetch() !== false;
-}
-
-public static function usernameExists(PDO $db, string $username): bool {
-    $stmt = $db->prepare('
-        SELECT UserId
-        FROM Users
-        WHERE Username = ?
-    ');
-
-    $stmt->execute([$username]);
-
-    return $stmt->fetch() !== false;
-}
-
-public static function create(
-    PDO $db,
-    string $name,
-    string $username,
-    string $email,
-    string $password
-): ?Users {
-    $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-
-    $stmt = $db->prepare('
-        INSERT INTO Users (Name, Username, Email, PasswordHash, Role)
-        VALUES (?, ?, ?, ?, ?)
-    ');
-
-    $stmt->execute([
-        $name,
-        $username,
-        $email,
-        $passwordHash,
-        'member'
-    ]);
-
-    $id = (int)$db->lastInsertId();
-
-    return new Users(
-        $id,
-        $name,
-        $username,
-        $email,
-        $passwordHash,
-        'member'
-    );
-}
-}
+    
+?>
