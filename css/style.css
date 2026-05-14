@@ -279,83 +279,91 @@ button {
 /* CLASSES PAGE */
 
 .classes_page {
-  min-height: calc(100vh - 88px);
   background: var(--gray-bg);
-  padding: 3rem 1rem 5rem;
 }
 
-/* CLASSES HERO */
-/* Reuses .flex-row, .flex-row.dark, .flex-item, .main and .side */
+/* Reuses .flex-row, .flex-item, .main, .side, .dark, .light */
 
-.classes_hero {
-  width: min(72rem, 100%);
-  margin: 0 auto 3.5rem;
-  padding: 0;
-  min-height: 22rem;
-  overflow: hidden;
-  box-shadow: var(--shadow);
+.classes_feature {
+  padding: 4rem 6%;
+  gap: 3rem;
+  align-items: center;
 }
 
-.classes_hero .flex-item.main {
-  padding: 4rem 3rem;
-  justify-content: center;
-}
-
-.classes_hero .flex-item.main > * {
+.classes_feature .flex-item.main > * {
   margin-left: 0;
 }
 
-.classes_hero_label {
-  color: var(--lime);
-  text-transform: uppercase;
-  font-size: 0.8rem;
-  font-weight: 800;
-  letter-spacing: 0.16em;
-  margin-bottom: 1rem;
-}
-
-.classes_hero .flex-item.main h1 {
-  color: var(--white);
-  text-transform: uppercase;
-  font-size: 2.7rem;
-  line-height: 1.05;
-  max-width: 28rem;
-  margin-bottom: 1.1rem;
-}
-
-.hero_line {
-  width: 3rem;
-  height: 0.2rem;
-  background: var(--lime);
-  margin-bottom: 1.4rem;
-}
-
-.classes_hero .flex-item.main p {
-  max-width: 34rem;
-  margin-top: 0;
-  margin-bottom: 0;
-  color: rgba(255, 255, 255, 0.78);
+.classes_feature .flex-item.main p,
+.classes_feature .flex-item.main ul {
+  max-width: 36rem;
   text-align: left;
 }
 
-.classes_hero .flex-item.side {
-  min-height: 22rem;
+.classes_feature .flex-item.main h1 {
+  max-width: 34rem;
+  font-size: 2.4rem;
+  line-height: 1.05;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
 }
 
-.classes_hero .flex-item.side img {
+.classes_feature.dark .flex-item.main h1 {
+  color: var(--white);
+}
+
+.classes_feature.light .flex-item.main h1 {
+  color: var(--black);
+}
+
+.classes_label {
+  color: var(--lime);
+  text-transform: uppercase;
+  font-size: 1rem;
+  font-weight: 900;
+  letter-spacing: 0.2em;
+  margin-bottom: 1rem;
+}
+
+.classes_feature .flex-item.side img {
   width: 100%;
-  height: 100%;
+  height: 24rem;
   max-width: none;
   object-fit: cover;
-  border-radius: 0;
-  box-shadow: none;
-  background: none;
 }
+
+/* CAROUSEL SECTION */
+
+.classes_carousel_section {
+  padding: 4rem 1rem;
+  background: var(--gray-bg);
+}
+
+.classes_carousel_section > header {
+  width: min(78rem, 100%);
+  margin: 0 auto 2rem;
+  text-align: center;
+}
+
+.classes_carousel_section > header h1 {
+  color: var(--black);
+  text-transform: uppercase;
+  font-size: 2.4rem;
+  line-height: 1;
+}
+
+.classes_carousel_section > header .classes_label {
+  color: var(--black);
+  font-size: 0.85rem;
+  letter-spacing: 0.16em;
+  margin-bottom: 0.7rem;
+}
+
 
 /* CAROUSEL */
 
 .classes_carousel {
-  width: min(72rem, 100%);
+  width: min(78rem, 100%);
   margin: 0 auto;
   position: relative;
 }
@@ -367,41 +375,54 @@ button {
 
 .carousel_track {
   display: flex;
-  gap: 1rem;
+  gap: 1.2rem;
   transition: transform 0.35s ease;
 }
 
 /* CLASS CARD */
 
 .class_card {
-  flex: 0 0 calc((100% - 2rem) / 3);
-  text-align: center;
+  flex: 0 0 calc((100% - 2.4rem) / 3);
+  background: var(--white);
+  box-shadow: var(--shadow);
+  overflow: hidden;
 }
 
 .class_card a {
   display: block;
+  height: 100%;
 }
 
 .class_card img {
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
-  background: var(--white);
-  box-shadow: var(--shadow);
   transition: filter 0.25s ease;
 }
 
 .class_card:hover img {
-  filter: brightness(0.88);
+  filter: brightness(0.84);
 }
 
-.class_card h2 {
-  margin-top: 0.9rem;
+.class_card_info {
+  padding: 1rem;
+  text-align: center;
+  background: var(--white);
+}
+
+.class_card_info h2 {
   color: var(--black);
-  font-size: 1.08rem;
+  font-size: 1rem;
   font-weight: 900;
   text-transform: uppercase;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.03em;
+  margin-bottom: 0.25rem;
+}
+
+.class_card_info p {
+  color: var(--gray-text);
+  font-size: 0.85rem;
+  font-weight: 700;
 }
 
 /* CAROUSEL BUTTONS */
@@ -411,14 +432,15 @@ button {
   top: 42%;
   transform: translateY(-50%);
 
-  width: 2.8rem;
-  height: 4.2rem;
+  width: 3rem;
+  height: 3rem;
 
   border: none;
-  background: rgba(5, 5, 5, 0.75);
+  border-radius: 50%;
+  background: rgba(5, 5, 5, 0.78);
   color: var(--white);
 
-  font-size: 2.4rem;
+  font-size: 2rem;
   line-height: 1;
   cursor: pointer;
 
@@ -444,11 +466,11 @@ button {
 }
 
 .carousel_btn[data-carousel-prev] {
-  left: 0;
+  left: 0.8rem;
 }
 
 .carousel_btn[data-carousel-next] {
-  right: 0;
+  right: 0.8rem;
 }
 
 /* RESPONSIVE */
@@ -511,27 +533,15 @@ button {
 
   /* CLASSES */
 
-    .classes_page {
-    padding: 2rem 1rem 4rem;
+    .classes_feature {
+    padding: 3rem 1rem;
   }
 
-  .classes_hero {
-    min-height: auto;
+  .classes_feature .flex-item.main h1 {
+    font-size: 2rem;
   }
 
-  .classes_hero .flex-item.main {
-    padding: 3rem 2rem;
-  }
-
-  .classes_hero .flex-item.main h1 {
-    font-size: 2.2rem;
-  }
-
-  .classes_hero .flex-item.side {
-    min-height: 18rem;
-  }
-
-  .classes_hero .flex-item.side img {
+  .classes_feature .flex-item.side img {
     height: 18rem;
   }
 
@@ -540,7 +550,7 @@ button {
   }
 
   .class_card {
-    flex-basis: calc((100% - 1rem) / 2);
+    flex-basis: calc((100% - 1.2rem) / 2);
   }
 }
 
@@ -577,44 +587,29 @@ button {
 
   /* CLASSES */
 
-    .classes_page {
-    padding: 2rem 1rem 3rem;
+  .classes_feature {
+    padding: 2.5rem 1rem;
   }
 
-  .classes_hero .flex-item.main {
-    padding: 2.2rem 1.4rem;
+  .classes_feature .flex-item.main h1 {
+    font-size: 1.7rem;
   }
 
-  .classes_hero .flex-item.main h1 {
+  .classes_carousel_section {
+    padding: 3rem 1rem;
+  }
+
+  .classes_carousel_section > header h1 {
     font-size: 1.8rem;
-  }
-
-  .classes_hero_label {
-    font-size: 0.7rem;
-  }
-
-  .classes_hero .flex-item.main p {
-    font-size: 0.9rem;
-  }
-
-  .classes_hero .flex-item.side,
-  .classes_hero .flex-item.side img {
-    height: 15rem;
-    min-height: 15rem;
   }
 
   .class_card {
     flex-basis: 100%;
   }
 
-  .class_card h2 {
-    font-size: 1rem;
-  }
-
   .carousel_btn {
-    width: 2.4rem;
-    height: 3.4rem;
-    font-size: 2rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1.7rem;
   }
-  
 }
