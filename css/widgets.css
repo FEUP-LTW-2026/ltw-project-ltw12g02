@@ -359,6 +359,18 @@
   cursor: pointer;
 }
 
+.edit-profile-photo {
+  cursor: pointer;
+}
+
+.edit-profile-file-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  overflow: hidden;
+}
+
 @media (max-width: 30rem) {
   .card-dl-row {
     flex-direction: column;

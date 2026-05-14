@@ -25,20 +25,23 @@ function drawEditProfileDialog(Users $user): void { ?>
                 method="post"
                 enctype="multipart/form-data"
             >
-                <label class="edit-profile-photo">
+                <label class="edit-profile-photo" for="profile-image-input">
                     <img 
+                        class="profile-image-preview"
                         src="../assets/users/<?= htmlspecialchars($user->getProfileImage()) ?>" 
                         alt="Profile picture"
                     >
 
                     <span>Change photo</span>
-
-                    <input 
-                        type="file" 
-                        name="profile_image"
-                        accept="image/png, image/jpeg, image/webp"
-                    >
                 </label>
+
+                <input 
+                    id="profile-image-input"
+                    class="edit-profile-file-input"
+                    type="file" 
+                    name="profile_image"
+                    accept="image/png, image/jpeg, image/webp, image/avif"
+                >
 
                 <label>
                     Name
@@ -107,9 +110,10 @@ function drawEditProfileDialog(Users $user): void { ?>
             </form>
         </section>
     </dialog>
-<?php } 
+<?php } ?>
 
 
+<?php
 function drawProfile(Users $user, array $workoutClasses): void { ?>
     <main>
         <section class="flex-row light">
@@ -117,6 +121,7 @@ function drawProfile(Users $user, array $workoutClasses): void { ?>
                 <div class="card card--dark">
                     <div class="profile-member-card-content">
                         <img 
+                            class="profile-image-preview"
                             src="../assets/users/<?= htmlspecialchars($user->getProfileImage()) ?>" 
                             alt="Profile picture" 
                             width="200" 

@@ -58,7 +58,7 @@ class Users {
         return $this->role;
     }
 
-    public function getProfileImage(): ?string {
+    public function getProfileImage(): string {
         return $this->profileImage ?? 'default.png';
     }
 
@@ -192,6 +192,22 @@ class Users {
         return $stmt->fetch() !== false;
     }
 
+    public static function usernameExistsForOtherUser(PDO $db, string $username, int $userId): bool {
+        $stmt = $db->prepare('
+            SELECT UserId
+            FROM Users
+            WHERE Username = ?
+              AND UserId != ?
+        ');
+
+        $stmt->execute([
+            $username,
+            $userId
+        ]);
+
+        return $stmt->fetch() !== false;
+    }
+
     public static function create(
         PDO $db,
         string $name,
@@ -228,6 +244,32 @@ class Users {
         );
     }
 
+    public function updateProfileData(
+        PDO $db,
+        string $name,
+        string $username,
+        string $passwordHash
+    ): void {
+        $stmt = $db->prepare('
+            UPDATE Users
+            SET Name = ?,
+                Username = ?,
+                PasswordHash = ?
+            WHERE UserId = ?
+        ');
+
+        $stmt->execute([
+            $name,
+            $username,
+            $passwordHash,
+            $this->user_id
+        ]);
+
+        $this->name = $name;
+        $this->user_name = $username;
+        $this->passwordHash = $passwordHash;
+    }
+
     public function updateProfileImage(PDO $db, string $profileImage): void {
         $stmt = $db->prepare('
             UPDATE Users
@@ -242,9 +284,5 @@ class Users {
 
         $this->profileImage = $profileImage;
     }
-
-    
 }
-
-    
 ?>

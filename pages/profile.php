@@ -32,4 +32,4 @@ drawMessages($messages);
 drawProfile($user, $workoutClasses);
 
 generateFooter();
-?><script src="../js/profile.js" defer></script>
+?>
