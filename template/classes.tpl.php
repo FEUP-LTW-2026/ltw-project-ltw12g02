@@ -5,30 +5,9 @@ require_once(__DIR__ . '/../database/workoutclasstype.class.php');
 
 function drawClassesPage(array $classTypes): void { ?>
     <main class="classes_page">
-        <?php
-            $heroImage = !empty($classTypes) ? $classTypes[0]->getImagePath() : '../assets/class1.png';
-        ?>
-
-        <section class="flex-row dark classes_hero">
-            <article class="flex-item main">
-                <p class="classes_hero_label">PowerPIT Classes</p>
-
-                <h1>Our Group Classes</h1>
-
-                <span class="hero_line"></span>
-
-                <p>
-                    Discover intense, dynamic and motivating group workouts.
-                    Find the class that fits your goal and train with real energy.
-                </p>
-            </article>
-
-            <aside class="flex-item side">
-                <img 
-                    src="<?= htmlspecialchars($heroImage) ?>" 
-                    alt="PowerPIT group classes"
-                >
-            </aside>
+        <section class="classes_banner">
+            <p>PowerPIT Classes</p>
+            <h1>Choose your workout</h1>
         </section>
 
         <section class="classes_carousel" aria-label="Workout classes carousel">
@@ -46,7 +25,10 @@ function drawClassesPage(array $classTypes): void { ?>
                                     alt="<?= htmlspecialchars($workoutClassType->getName()) ?>"
                                 >
 
-                                <h2><?= htmlspecialchars($workoutClassType->getName()) ?></h2>
+                                <div class="class_card_info">
+                                    <h2><?= htmlspecialchars($workoutClassType->getName()) ?></h2>
+                                    <p><?= $workoutClassType->getDuration() ?> min</p>
+                                </div>
                             </a>
                         </article>
                     <?php } ?>
