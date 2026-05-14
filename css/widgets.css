@@ -243,7 +243,10 @@
 
 .popup-dialog,
 .edit-profile-dialog {
-  width: min(92vw, 42rem);
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: min(90%, 520px);
   max-height: 90vh;
   padding: 0;
   border: none;
@@ -264,8 +267,9 @@
 }
 
 .popup-card,
-.edit-profile-dialog .edit-profile-card {
+.edit-profile-card {
   position: relative;
+  width: 100%;
   max-height: 90vh;
   overflow-y: auto;
   padding: 2.5rem;
