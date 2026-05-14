@@ -114,7 +114,11 @@ button {
   gap: 2rem;
 }
 
-.header-text {
+.site-nav #profile {
+  display: none;
+}
+
+#menu-check:not(:checked) ~ .site-nav ul li {
   color: var(--white);
   text-transform: uppercase;
   font-weight: bold;
@@ -123,22 +127,71 @@ button {
   transition: 0.2s ease;
 }
 
-.site-nav ul li:hover {
+#menu-check:not(:checked) ~ .site-nav ul li:hover {
   color: var(--lime-soft);
   border-bottom: 3px solid var(--lime-soft);
 }
 
-#menu-check {
-  display: none;
-}
 
-.icon {
+#menu-icon {
   font-size: 30px;
   color: white;
   cursor: pointer;
+  display: none;
 }
 
-.icon menu-icon {
+#menu-check, #profile-check {
+  display: none;
+}
+
+#menu-check:checked ~ nav {
+  left: 0.25rem;
+
+  #profile img {
+    border-radius: 0;
+  }
+}
+
+#profile-check:checked ~ nav {
+  right: 0.25rem;
+}
+
+#menu-check:checked ~ nav, #profile-check:checked ~ nav {
+  display: block;
+  box-shadow: var(--shadow);
+  position: absolute;
+  top: 5.95rem;
+  background: rgb(20, 20, 20);
+  line-height: 2rem;
+  border-radius: 10px;
+  color: var(--white);
+
+  #profile {
+    display: flex;
+    padding: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid gray;
+  }
+
+  ul {
+    padding-left: 1rem;
+    padding-bottom: 1rem;
+    display: grid;
+    gap: 0rem;
+    margin-top: 0.5rem;
+  }
+
+  ul li {
+    transition: 0.2s ease;
+    border-right: 3px solid transparent;
+  }
+
+  ul li:hover {
+    color: var(--lime-soft);
+  }
+}
+
+#signup nav {
   display: none;
 }
 
@@ -146,7 +199,15 @@ button {
   margin-right: 0.3rem;
 }
 
+#profile {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
 
+#profile img {
+  border-radius: 100%;
+}
 
 #main-header {
   margin-left: 5rem;
@@ -496,35 +557,6 @@ button {
 
   .site-nav {
     display: none;
-    position: absolute;
-    padding-top: 0;
-    top: 5.5rem;
-    left: 0;
-    background: rgba(5, 5, 5, 0.96);
-    line-height: 2rem;
-  }
-
-  #menu-check:checked ~ nav {
-    display: block;
-  }
-
-  .site-nav ul {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
-    gap: 0rem;
-  }
-
-  .site-nav ul li {
-    padding: 0 1rem;
-    border-bottom: none;
-    border-left: 3px solid transparent;
-  }
-
-  .site-nav ul li:hover {
-    border-bottom: none;
-    border-left: 3px solid var(--lime-soft);
   }
 
   .flex-row {

@@ -9,6 +9,7 @@ function generateHead(string $title) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>' . $title . '</title>
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="../js/messages.js" defer></script>
     <script src="../js/classes.js" defer></script>
 </head>
@@ -18,27 +19,53 @@ function generateHead(string $title) {
 function generateHeader(Session $session) { ?>
     <header class="site-header">
         <input type="checkbox" id="menu-check">
-        <label for="menu-check" id="icon menu-icon">&#9776;</label>
+        <label for="menu-check" id="menu-icon">&#9776;</label>
 
         <a href="index.php">
             <img src="../html/PowerPIT.png" alt="logo" width="50" height="50">
         </a>
 
         <nav class="site-nav">
+            <div id="profile">
+                <img src="../html/PowerPIT.png" alt="logo" width="100" height="50">
+            </div>
             <ul>
-                <li><a href="index.php#aboutus" class="header-text">About&nbsp;us</a></li>
-                <li><a href="classes.php" class="header-text">Classes</a></li>
-                <li><a href="trainers.php" class="header-text">Trainers</a></li>
-                <li><a href="equipment.php" class="header-text">Equipment</a></li>
+                <li><a href="index.php#aboutus"><i class="fa fa-id-card" aria-hidden="true"></i> About&nbsp;us</a></li>
+                <li><a href="classes.php"><i class="fa fa-users" aria-hidden="true"></i> Classes</a></li>
+                <li><a href="trainers.php"><i class="fa fa-id-badge" aria-hidden="true"></i> Trainers</a></li>
+                <li><a href="equipment.php"><i class="fa fa-th" aria-hidden="true"></i> Equipment</a></li>
             </ul>
         </nav>
 
         <div id="signup">
-            <?php if ($session->isLoggedIn()) { ?>
-                <a href="profile.php" class="header-text">
-                    username
-                </a>
-                <a href="../actions/action_logout.php" class="icon">D</a>
+            <?php if ($session->isLoggedIn()) { 
+                $db = getDatabaseConnection();
+                $user = Users::getUser($db, $session->getId()); ?>
+                <input type="checkbox" id="profile-check">
+                <label for="profile-check" href="profile.php" id="profile">
+                    <img 
+                        src="../assets/users/<?= htmlspecialchars($user->getProfileImage()) ?>" 
+                        alt="Profile picture" 
+                        width="50" 
+                        height="50"
+                    >  
+                </label>
+                <nav class="profile-nav">
+                    <div id="profile">
+                        <img 
+                            src="../assets/users/<?= htmlspecialchars($user->getProfileImage()) ?>" 
+                            alt="Profile picture" 
+                            width="35" 
+                            height="35"
+                        >
+                        <?= htmlspecialchars($user->getUserName()) ?>
+                    </div>
+                    <ul>
+                        <li><a href="profile.php" ><i class="fa fa-user-circle" aria-hidden="true"></i> Profile</a></li>
+                        <li><a href="../actions/action_logout.php"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a></li>
+                    </ul>
+                </nav>
+                
             <?php } else { ?>
                 <a href="register.php" class="btn small">Register</a>
                 <a href="login.php" class="btn small light">Login</a>
