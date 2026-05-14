@@ -113,6 +113,14 @@ INSERT INTO ClassType (Name, Description, Duration) VALUES
 ('Functional Training', 'Training session focused on balance, mobility, coordination and core strength.', 60),
 ('Spinning', 'Indoor cycling class designed for cardio and endurance improvement.', 45),
 ('Pilates', 'Class focused on posture, flexibility, controlled movement and core stability.', 60);
+('Yoga', 'Class focused on flexibility, breathing, balance and body awareness.', 60),
+('Body Pump', 'Strength training class using weights to improve muscular endurance.', 60),
+('Zumba', 'Dance fitness class combining cardio, rhythm and full-body movement.', 45),
+('Cross Training', 'High intensity functional workout combining strength, cardio and agility.', 60),
+('Boxing', 'Combat-inspired class focused on cardio, coordination and explosive movement.', 45),
+('Core Training', 'Workout focused on abdominal strength, stability and posture control.', 30),
+('Stretching', 'Low intensity class focused on mobility, flexibility and muscle recovery.', 30),
+('Legs and Glutes', 'Lower body workout focused on strength, endurance and muscle toning.', 45);
 
 INSERT INTO Classes (TrainerId, ClassTypeId, ClassDateTime, Capacity) VALUES
 (1, 1, '2026-04-27 09:00', 20),

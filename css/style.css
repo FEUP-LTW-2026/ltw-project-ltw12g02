@@ -273,6 +273,181 @@ button {
   margin-bottom: 0%;
 }
 
+/* CLASSES PAGE */
+
+.classes_page {
+  min-height: calc(100vh - 88px);
+  background: var(--gray-bg);
+  padding: 3rem 1rem 5rem;
+}
+
+/* CLASSES HERO */
+/* Reuses .flex-row, .flex-row.dark, .flex-item, .main and .side */
+
+.classes_hero {
+  width: min(72rem, 100%);
+  margin: 0 auto 3.5rem;
+  padding: 0;
+  min-height: 22rem;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+.classes_hero .flex-item.main {
+  padding: 4rem 3rem;
+  justify-content: center;
+}
+
+.classes_hero .flex-item.main > * {
+  margin-left: 0;
+}
+
+.classes_hero_label {
+  color: var(--lime);
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  margin-bottom: 1rem;
+}
+
+.classes_hero .flex-item.main h1 {
+  color: var(--white);
+  text-transform: uppercase;
+  font-size: 2.7rem;
+  line-height: 1.05;
+  max-width: 28rem;
+  margin-bottom: 1.1rem;
+}
+
+.hero_line {
+  width: 3rem;
+  height: 0.2rem;
+  background: var(--lime);
+  margin-bottom: 1.4rem;
+}
+
+.classes_hero .flex-item.main p {
+  max-width: 34rem;
+  margin-top: 0;
+  margin-bottom: 0;
+  color: rgba(255, 255, 255, 0.78);
+  text-align: left;
+}
+
+.classes_hero .flex-item.side {
+  min-height: 22rem;
+}
+
+.classes_hero .flex-item.side img {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  border-radius: 0;
+  box-shadow: none;
+  background: none;
+}
+
+/* CAROUSEL */
+
+.classes_carousel {
+  width: min(72rem, 100%);
+  margin: 0 auto;
+  position: relative;
+}
+
+.carousel_viewport {
+  width: 100%;
+  overflow: hidden;
+}
+
+.carousel_track {
+  display: flex;
+  gap: 1rem;
+  transition: transform 0.35s ease;
+}
+
+/* CLASS CARD */
+
+.class_card {
+  flex: 0 0 calc((100% - 2rem) / 3);
+  text-align: center;
+}
+
+.class_card a {
+  display: block;
+}
+
+.class_card img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  background: var(--white);
+  box-shadow: var(--shadow);
+  transition: filter 0.25s ease;
+}
+
+.class_card:hover img {
+  filter: brightness(0.88);
+}
+
+.class_card h2 {
+  margin-top: 0.9rem;
+  color: var(--black);
+  font-size: 1.08rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+/* CAROUSEL BUTTONS */
+
+.carousel_btn {
+  position: absolute;
+  top: 42%;
+  transform: translateY(-50%);
+
+  width: 2.8rem;
+  height: 4.2rem;
+
+  border: none;
+  background: rgba(5, 5, 5, 0.75);
+  color: var(--white);
+
+  font-size: 2.4rem;
+  line-height: 1;
+  cursor: pointer;
+
+  display: grid;
+  place-items: center;
+
+  opacity: 0;
+  pointer-events: none;
+  z-index: 5;
+
+  transition: opacity 0.25s ease, background 0.25s ease;
+}
+
+.carousel_btn:hover {
+  background: rgba(5, 5, 5, 0.95);
+  color: var(--white);
+}
+
+.classes_carousel:hover .carousel_btn,
+.classes_carousel:focus-within .carousel_btn {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.carousel_btn[data-carousel-prev] {
+  left: 0;
+}
+
+.carousel_btn[data-carousel-next] {
+  right: 0;
+}
+
 /* RESPONSIVE */
 
 @media (max-width: 60rem) {
@@ -331,6 +506,39 @@ button {
     flex-direction: column;
   }
 
+  /* CLASSES */
+
+    .classes_page {
+    padding: 2rem 1rem 4rem;
+  }
+
+  .classes_hero {
+    min-height: auto;
+  }
+
+  .classes_hero .flex-item.main {
+    padding: 3rem 2rem;
+  }
+
+  .classes_hero .flex-item.main h1 {
+    font-size: 2.2rem;
+  }
+
+  .classes_hero .flex-item.side {
+    min-height: 18rem;
+  }
+
+  .classes_hero .flex-item.side img {
+    height: 18rem;
+  }
+
+  .classes_carousel {
+    width: min(46rem, 100%);
+  }
+
+  .class_card {
+    flex-basis: calc((100% - 1rem) / 2);
+  }
 }
 
 @media (max-width: 30rem) {
@@ -362,6 +570,48 @@ button {
 
   .card dd {
     text-align: left;
+  }
+
+  /* CLASSES */
+
+    .classes_page {
+    padding: 2rem 1rem 3rem;
+  }
+
+  .classes_hero .flex-item.main {
+    padding: 2.2rem 1.4rem;
+  }
+
+  .classes_hero .flex-item.main h1 {
+    font-size: 1.8rem;
+  }
+
+  .classes_hero_label {
+    font-size: 0.7rem;
+  }
+
+  .classes_hero .flex-item.main p {
+    font-size: 0.9rem;
+  }
+
+  .classes_hero .flex-item.side,
+  .classes_hero .flex-item.side img {
+    height: 15rem;
+    min-height: 15rem;
+  }
+
+  .class_card {
+    flex-basis: 100%;
+  }
+
+  .class_card h2 {
+    font-size: 1rem;
+  }
+
+  .carousel_btn {
+    width: 2.4rem;
+    height: 3.4rem;
+    font-size: 2rem;
   }
   
 }
