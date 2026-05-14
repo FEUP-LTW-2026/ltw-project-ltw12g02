@@ -8,7 +8,7 @@ function drawProfile(Users $user, array $workoutClasses): void { ?>
                 <div class="card card--dark">
                     <div class="profile-member-card-content">
                         <img 
-                            src="https://picsum.photos/600/300" 
+                            src="../assets/users/<?= htmlspecialchars($user->getProfileImage()) ?>" 
                             alt="Profile picture" 
                             width="200" 
                             height="100"

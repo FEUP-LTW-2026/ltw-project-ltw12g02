@@ -18,6 +18,7 @@ CREATE TABLE Users(
    Email NVARCHAR(100) NOT NULL,
    PasswordHash NVARCHAR(255) NOT NULL,
    Role NVARCHAR(20) NOT NULL,
+   ProfileImage NVARCHAR(255),
 
    UNIQUE (Username),
    UNIQUE (Email)
@@ -90,19 +91,6 @@ CREATE INDEX IF NOT EXISTS IFK_EnrollmentsClassId ON Enrollments (ClassId);
    Populate Tables
 ********************************************************************************/
 
-INSERT INTO Users (Name, Username, Email, PasswordHash, Role) VALUES
-('Ana Martins', 'anamartins', 'ana@powerpit.pt', 'hash_ana_123', 'admin'),
-('Bruno Costa', 'brunocosta', 'bruno@powerpit.pt', 'hash_bruno_123', 'trainer'),
-('Carla Sousa', 'carlasousa', 'carla@powerpit.pt', 'hash_carla_123', 'trainer'),
-('Diana Silva', 'dianasilva', 'diana@powerpit.pt', 'hash_diana_123', 'member'),
-('Eduardo Ferreira', 'eduardoferreira', 'eduardo@powerpit.pt', 'hash_eduardo_123', 'member'),
-('Filipa Gomes', 'filipagomes', 'filipa@powerpit.pt', 'hash_filipa_123', 'member'),
-('Goncalo Ribeiro', 'goncaloribeiro', 'goncalo@powerpit.pt', 'hash_goncalo_123', 'member'),
-('Helena Moreira', 'helenamoreira', 'helena@powerpit.pt', 'hash_helena_123', 'member'),
-('Ines Rocha', 'inesrocha', 'ines@powerpit.pt', 'hash_ines_123', 'member'),
-('Joao Mendes', 'joaomendes', 'joao@powerpit.pt', 'hash_joao_123', 'member'),
-('Marta Cunha', 'martacunha', 'marta@powerpit.pt', 'hash_marta_123', 'member'),
-('Nuno Alves', 'nunoalves', 'nuno@powerpit.pt', 'hash_nuno_123', 'member');
 
 INSERT INTO Trainers (UserId, Bio, Specializations, Certifications) VALUES
 (2, 'Experienced trainer focused on strength and conditioning.', 'HIIT, Strength Training, Functional Training', 'Level 3 PT'),
