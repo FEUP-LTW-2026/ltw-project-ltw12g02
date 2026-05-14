@@ -170,6 +170,20 @@
   grid-template-rows: 1fr;
 }
 
+/* PROFILE */
+
+.profile-member-card-content {
+  display: grid;
+  grid-template-columns: 170px 1fr auto;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.profile-member-card-content .profile-edit-btn {
+  justify-self: end;
+  align-self: center;
+}
+
 /* MESSAGES */
 
 .message_area {
@@ -223,6 +237,142 @@
 
 .message_close:hover {
   opacity: 0.55;
+}
+
+/* POPUPS / DIALOGS */
+
+.popup-dialog,
+.edit-profile-dialog {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: min(90%, 520px);
+  max-height: 90vh;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius);
+  background: transparent;
+  overflow: visible;
+}
+
+.popup-dialog:not([open]),
+.edit-profile-dialog:not([open]) {
+  display: none;
+}
+
+.popup-dialog::backdrop,
+.edit-profile-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(5px);
+}
+
+.popup-card,
+.edit-profile-card {
+  position: relative;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 2.5rem;
+}
+
+.popup-close,
+.edit-profile-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 2.2rem;
+  height: 2.2rem;
+  border: none;
+  border-radius: 50%;
+  background: var(--black);
+  color: var(--white);
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.popup-close:hover,
+.edit-profile-close:hover {
+  background: var(--lime);
+  color: var(--black);
+  transform: scale(1.05);
+}
+
+.popup-header,
+.edit-profile-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.popup-header h1,
+.edit-profile-header h1 {
+  margin: 0.4rem 0;
+  font-size: 2.4rem;
+  color: var(--black);
+}
+
+.popup-header p:last-child,
+.edit-profile-header p:last-child {
+  margin: 0;
+  color: var(--gray-text);
+}
+
+.popup-form,
+.edit-profile-form {
+  display: grid;
+  gap: 1.2rem;
+}
+
+.popup-form label,
+.edit-profile-form label {
+  display: grid;
+  gap: 0.5rem;
+  color: var(--black);
+  font-weight: 800;
+}
+
+.popup-form input,
+.edit-profile-form input {
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--white);
+  color: var(--black);
+  font-size: 1rem;
+}
+
+.popup-form input:focus,
+.edit-profile-form input:focus {
+  outline: none;
+  border-color: var(--lime);
+}
+
+.popup-actions,
+.edit-profile-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.popup-actions button,
+.edit-profile-actions button {
+  cursor: pointer;
+}
+
+.edit-profile-photo {
+  cursor: pointer;
+}
+
+.edit-profile-file-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  overflow: hidden;
 }
 
 @media (max-width: 30rem) {
