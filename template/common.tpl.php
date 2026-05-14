@@ -19,7 +19,7 @@ function generateHead(string $title) {
 function generateHeader(Session $session) { ?>
     <header class="site-header">
         <input type="checkbox" id="menu-check">
-        <label for="menu-check" id="menu-icon">&#9776;</label>
+        <label for="menu-check" id="icon menu-icon">&#9776;</label>
 
         <a href="index.php">
             <img src="../html/PowerPIT.png" alt="logo" width="50" height="50">
@@ -27,16 +27,19 @@ function generateHeader(Session $session) { ?>
 
         <nav class="site-nav">
             <ul>
-                <li><a href="index.php#aboutus">About&nbsp;us</a></li>
-                <li><a href="classes.php">Classes</a></li>
-                <li><a href="trainers.php">Trainers</a></li>
-                <li><a href="equipment.php">Equipment</a></li>
+                <li><a href="index.php#aboutus" class="header-text">About&nbsp;us</a></li>
+                <li><a href="classes.php" class="header-text">Classes</a></li>
+                <li><a href="trainers.php" class="header-text">Trainers</a></li>
+                <li><a href="equipment.php" class="header-text">Equipment</a></li>
             </ul>
         </nav>
 
         <div id="signup">
             <?php if ($session->isLoggedIn()) { ?>
-                <a href="../actions/action_logout.php" class="btn small light">Logout</a>
+                <a href="profile.php" class="header-text">
+                    username
+                </a>
+                <a href="../actions/action_logout.php" class="icon">D</a>
             <?php } else { ?>
                 <a href="register.php" class="btn small">Register</a>
                 <a href="login.php" class="btn small light">Login</a>

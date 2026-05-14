@@ -114,7 +114,7 @@ button {
   gap: 2rem;
 }
 
-.site-nav ul li {
+.header-text {
   color: var(--white);
   text-transform: uppercase;
   font-weight: bold;
@@ -132,11 +132,14 @@ button {
   display: none;
 }
 
-#menu-icon {
-  display: none;
+.icon {
   font-size: 30px;
   color: white;
   cursor: pointer;
+}
+
+.icon menu-icon {
+  display: none;
 }
 
 #signup *:first-child {
