@@ -596,29 +596,86 @@ button {
   border-color: var(--lime);
 }
 
-@media (max-width: 40rem) {
-  .popup-card,
-  .edit-profile-dialog .edit-profile-card {
-    padding: 1.5rem;
-  }
+/* TRAINERS PAGE */
 
-  .popup-header h1,
-  .edit-profile-header h1 {
-    font-size: 2rem;
-  }
+.trainers_page {
+  background: var(--gray-bg);
+}
 
-  .popup-actions,
-  .edit-profile-actions {
-    flex-direction: column-reverse;
-  }
+/* Reuses .classes_carousel_section, .grid and .card */
 
-  .popup-actions .btn,
-  .popup-actions button,
-  .edit-profile-actions .btn,
-  .edit-profile-actions button {
-    width: 100%;
-    text-align: center;
-  }
+.trainers_grid {
+  width: min(78rem, 100%);
+  margin: 0 auto;
+  padding: 0;
+  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+}
+
+.trainer_card {
+  padding: 0;
+  overflow: hidden;
+  background: var(--white);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.trainer_card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 42px rgb(0, 0, 0, 0.14);
+}
+
+.trainer_card > img {
+  width: 100%;
+  height: 22rem;
+  object-fit: cover;
+}
+
+.trainer_card_content {
+  padding: 1.5rem;
+}
+
+.trainer_card_content h2 {
+  color: var(--black);
+  font-size: 1.7rem;
+  line-height: 1;
+  margin-bottom: 1rem;
+}
+
+.trainer_bio {
+  color: var(--gray-text);
+  margin-bottom: 1rem;
+}
+
+.trainer_tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.trainer_tags li {
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  background: var(--gray-bg);
+  color: var(--black);
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.trainer_certifications {
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--border);
+  color: var(--gray-text);
+  font-size: 0.9rem;
+}
+
+.trainer_certifications strong {
+  color: var(--black);
+}
+
+.trainers_empty {
+  width: min(42rem, 100%);
+  margin: 0 auto;
+  text-align: center;
 }
 
 /* RESPONSIVE */
@@ -730,5 +787,34 @@ button {
     width: 2.5rem;
     height: 2.5rem;
     font-size: 1.7rem;
+  }
+
+    .popup-card,
+  .edit-profile-dialog .edit-profile-card {
+    padding: 1.5rem;
+  }
+
+  .popup-header h1,
+  .edit-profile-header h1 {
+    font-size: 2rem;
+  }
+
+  .popup-actions,
+  .edit-profile-actions {
+    flex-direction: column-reverse;
+  }
+
+  .popup-actions .btn,
+  .popup-actions button,
+  .edit-profile-actions .btn,
+  .edit-profile-actions button {
+    width: 100%;
+    text-align: center;
+  }
+
+  /* TRAINERS PAGE */
+  
+  .trainer_card > img {
+    height: 20rem;
   }
 }

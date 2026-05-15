@@ -74,4 +74,29 @@ class Trainers {
     public function getUser(PDO $db): ?Users {
         return Users::getUser($db, $this->user_id);
     }
+
+    public static function getAllTrainers(PDO $db): array {
+        $stmt = $db->prepare('
+            SELECT Trainers.*
+            FROM Trainers
+            JOIN Users ON Users.UserId = Trainers.UserId
+            ORDER BY Users.Name
+        ');
+
+        $stmt->execute();
+
+        $trainers = [];
+
+        while ($row = $stmt->fetch()) {
+            $trainers[] = new Trainers(
+                (int)$row['TrainerId'],
+                (int)$row['UserId'],
+                $row['Bio'],
+                $row['Specializations'],
+                $row['Certifications']
+            );
+        }
+
+        return $trainers;
+    }
 }
