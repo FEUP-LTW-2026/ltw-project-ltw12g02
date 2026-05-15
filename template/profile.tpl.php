@@ -7,7 +7,7 @@ function drawEditProfileDialog(Users $user): void { ?>
             <button 
                 type="button" 
                 class="edit-profile-close" 
-                id="close-edit-profile-dialog"
+                data-dialog-close
                 aria-label="Close edit profile dialog"
             >
                 &times;
@@ -98,7 +98,7 @@ function drawEditProfileDialog(Users $user): void { ?>
                     <button 
                         type="button" 
                         class="btn small edit-profile-cancel"
-                        id="cancel-edit-profile-dialog"
+                        data-dialog-close
                     >
                         Cancel
                     </button>
@@ -139,7 +139,7 @@ function drawProfile(Users $user, array $workoutClasses): void { ?>
                         <button 
                             type="button" 
                             class="btn small light profile-edit-btn"
-                            id="open-edit-profile-dialog"
+                            data-dialog-target="edit-profile-dialog"
                         >
                             Edit Profile
                         </button>
@@ -184,7 +184,7 @@ function drawProfile(Users $user, array $workoutClasses): void { ?>
                     <dl>
                         <?php foreach ($workoutClasses as $workoutClass) { ?>
                             <div class="card-dl-row">
-                                <dt>Class #<?= htmlspecialchars((string)$workoutClass->getClassId()) ?></dt>
+                                <dt>Class #<?= htmlspecialchars((string)$workoutClass->getId()) ?></dt>
                                 <dd>
                                     <?= htmlspecialchars(date('d M · H:i', strtotime($workoutClass->getClassDateTime()))) ?>
                                 </dd>

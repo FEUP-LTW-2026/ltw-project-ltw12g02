@@ -1,9 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const editProfileDialog = document.querySelector('#edit-profile-dialog');
-  const openEditProfileButton = document.querySelector('#open-edit-profile-dialog');
-  const closeEditProfileButton = document.querySelector('#close-edit-profile-dialog');
-  const cancelEditProfileButton = document.querySelector('#cancel-edit-profile-dialog');
-
   const profileImageInput = document.querySelector('#profile-image-input');
   const profileImageButtons = document.querySelectorAll('.edit-profile-photo');
   const profileImagePreviews = document.querySelectorAll('.profile-image-preview');
@@ -26,32 +21,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  if (editProfileDialog && openEditProfileButton) {
-    openEditProfileButton.addEventListener('click', () => {
-      saveOriginalImages();
-      editProfileDialog.showModal();
-    });
+  const openEditProfileButton = document.querySelector('[data-dialog-target="edit-profile-dialog"]');
+  const closeEditProfileButtons = document.querySelectorAll('#edit-profile-dialog [data-dialog-close]');
+
+  if (openEditProfileButton) {
+    openEditProfileButton.addEventListener('click', saveOriginalImages);
   }
 
-  if (editProfileDialog && closeEditProfileButton) {
-    closeEditProfileButton.addEventListener('click', () => {
-      restoreOriginalImages();
-      editProfileDialog.close();
-    });
-  }
+  closeEditProfileButtons.forEach((button) => {
+    button.addEventListener('click', restoreOriginalImages);
+  });
 
-  if (editProfileDialog && cancelEditProfileButton) {
-    cancelEditProfileButton.addEventListener('click', () => {
-      restoreOriginalImages();
-      editProfileDialog.close();
-    });
-  }
+  const editProfileDialog = document.querySelector('#edit-profile-dialog');
 
   if (editProfileDialog) {
     editProfileDialog.addEventListener('click', (event) => {
       if (event.target === editProfileDialog) {
         restoreOriginalImages();
-        editProfileDialog.close();
       }
     });
   }
