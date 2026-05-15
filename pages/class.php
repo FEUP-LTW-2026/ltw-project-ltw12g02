@@ -15,7 +15,7 @@ $workoutClassType = WorkoutClassType::getWorkoutClassType($db, $id);
 
 generateHead('PowerPit - ' . $workoutClassType->getName());
 generateHeader($session);
-drawClassPage($workoutClassType);
+drawClassPage($workoutClassType,$db);
 
 generateFooter();
 ?>

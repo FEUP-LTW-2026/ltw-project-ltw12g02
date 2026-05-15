@@ -12,6 +12,7 @@ function generateHead(string $title) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="../js/messages.js" defer></script>
     <script src="../js/classes.js" defer></script>
+    <script src="../js/popup.js" defer></script>
     <script src="../js/profile.js" defer></script>
 </head>
 <body>';
