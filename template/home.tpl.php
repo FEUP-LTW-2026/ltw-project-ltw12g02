@@ -1,18 +1,24 @@
 <?php
 declare(strict_types = 1);
 
-function drawHomepage(): void { ?>
+function drawHomepage(Session $session): void { ?>
     <main>
         <section class="image-bg">
             <div id="main-header">
                 <h6 class="highlight-text">Power. Discipline. Results.</h6>
                 <h1>Train with <br><span class="highlight-text">real energy</span></h1>
                 <p>In PowerPIT you find training, focus and the right environment to evolve. Group classes, bodybuilding zones, professional trainers and modern equipment.</p>
-
-                <div class="index-buttons">
-                    <a href="register.php" class="btn small light">Sign up</a>
-                    <a href="#classes" class="btn small">Explore classes</a>  
-                </div> 
+                <?php if ($session->isLoggedIn()) { ?>
+                    <div class="index-buttons">
+                        <a href="classes.php" class="btn small light">Book a Class</a>
+                        <a href="trainers.php" class="btn small">Meet our Trainers</a>  
+                    </div> 
+                <?php } else { ?>
+                    <div class="index-buttons">
+                        <a href="register.php" class="btn small light">Sign up</a>
+                        <a href="#classes" class="btn small">Explore classes</a>  
+                    </div> 
+                <?php } ?>
             </div>
         </section>
 
