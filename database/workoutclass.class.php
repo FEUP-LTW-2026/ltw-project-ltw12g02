@@ -81,4 +81,11 @@ class WorkoutClass {
 
         return (int)$row['EnrollmentCount'] >= $this->capacity;
     }
+
+    public function getTrainerName(PDO $db) : string{
+
+        return Trainers::getTrainer($db,$this->trainerId)->getName($db);
+
+
+    }
 }

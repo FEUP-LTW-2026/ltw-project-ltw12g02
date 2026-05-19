@@ -9,10 +9,10 @@ function drawClassPage(WorkoutClassType $workoutClassType, PDO $db): void {
 ?>
     <main>
         <?php drawClassHeader($workoutClassType); ?>
-        <?php drawClassAbout($workoutClassType); ?>
+        <?php drawClassAbout($db,$workoutClassType); ?>
         <?php drawClassImage(); ?>
         <?php drawAvailableClassesIntro($workoutClassType); ?>
-        <?php drawAvailableClasses($workoutClassType, $workoutClasses); ?>
+        <?php drawAvailableClasses($db,$workoutClassType, $workoutClasses); ?>
     </main>
 <?php } ?>
 
@@ -37,7 +37,7 @@ function drawClassHeader(WorkoutClassType $workoutClassType): void { ?>
 
 
 <?php
-function drawClassAbout(WorkoutClassType $workoutClassType): void { ?>
+function drawClassAbout(PDO  $db,WorkoutClassType $workoutClassType): void { ?>
     <section class="flex-row light">
         <article class="flex-item main">
             <h2>About <?= htmlspecialchars($workoutClassType->getName()) ?></h2>
@@ -110,7 +110,7 @@ function drawAvailableClassesIntro(WorkoutClassType $workoutClassType): void { ?
 
 
 <?php
-function drawAvailableClasses(WorkoutClassType $workoutClassType, array $workoutClasses): void { ?>
+function drawAvailableClasses(PDO $db,WorkoutClassType $workoutClassType, array $workoutClasses): void { ?>
     <section id="available-classes" class="grid">
         <?php if (empty($workoutClasses)) { ?>
             <article class="card">
@@ -120,15 +120,15 @@ function drawAvailableClasses(WorkoutClassType $workoutClassType, array $workout
         <?php } ?>
 
         <?php foreach ($workoutClasses as $workoutClass) { ?>
-            <?php drawClassCard($workoutClass); ?>
-            <?php drawBookingDialog($workoutClassType, $workoutClass); ?>
+            <?php drawClassCard($db,$workoutClass); ?>
+            <?php drawBookingDialog($db,$workoutClassType, $workoutClass); ?>
         <?php } ?>
     </section>
 <?php } ?>
 
 
 <?php
-function drawClassCard(WorkoutClass $workoutClass): void {
+function drawClassCard(PDO $db,WorkoutClass $workoutClass): void {
     $timestamp = strtotime($workoutClass->getClassDateTime());
 
     $day = date('l', $timestamp);
@@ -143,7 +143,7 @@ function drawClassCard(WorkoutClass $workoutClass): void {
         <div class="card-wrap">
             <p><strong>Date:</strong> <?= htmlspecialchars($date) ?></p>
             <p><strong>Time:</strong> <?= htmlspecialchars($time) ?></p>
-            <p><strong>Trainer:</strong> Trainer #<?= htmlspecialchars((string)$workoutClass->getTrainerId()) ?></p>
+            <p><strong>Trainer:</strong><?= htmlspecialchars((string)$workoutClass->getTrainerName($db)) ?></p>
             <p><strong>Capacity:</strong> <?= htmlspecialchars((string)$workoutClass->getCapacity()) ?></p>
 
             <button 
@@ -159,7 +159,7 @@ function drawClassCard(WorkoutClass $workoutClass): void {
 
 
 <?php
-function drawBookingDialog(WorkoutClassType $workoutClassType, WorkoutClass $workoutClass): void {
+function drawBookingDialog(PDO $db,WorkoutClassType $workoutClassType, WorkoutClass $workoutClass): void {
     $timestamp = strtotime($workoutClass->getClassDateTime());
 
     $day = date('l', $timestamp);
@@ -208,7 +208,7 @@ function drawBookingDialog(WorkoutClassType $workoutClassType, WorkoutClass $wor
 
                 <div class="card-dl-row">
                     <dt>Trainer</dt>
-                    <dd>Trainer #<?= htmlspecialchars((string)$workoutClass->getTrainerId()) ?></dd>
+                    <dd><?= htmlspecialchars((string)$workoutClass->getTrainerName($db)) ?></dd>
                 </div>
 
                 <div class="card-dl-row">

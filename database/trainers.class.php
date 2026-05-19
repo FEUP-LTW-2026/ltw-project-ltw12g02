@@ -99,4 +99,11 @@ class Trainers {
 
         return $trainers;
     }
+
+    public function getName(PDO $db) : string{
+
+        return UserS::getUser($db,$this->user_id)->getName();
+
+
+    }
 }
