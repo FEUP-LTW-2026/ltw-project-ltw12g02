@@ -1,4 +1,5 @@
 const button = document.querySelector(".message_close")
+const message = document.querySelector(".message_area")
 
 function close_message(){
 
@@ -13,3 +14,8 @@ function close_message(){
 
 
 button.addEventListener("click", close_message)
+
+setTimeout(()=>{
+    message.remove();
+},3000)
+
