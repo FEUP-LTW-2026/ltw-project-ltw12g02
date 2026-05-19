@@ -10,7 +10,7 @@ $session = new Session();
 generateHead('PowerPit');
 generateHeader($session);
 
-drawHomepage();
+drawHomepage($session);
 
 generateFooter();
 ?>
