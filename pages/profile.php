@@ -1,9 +1,15 @@
 <?php 
+declare(strict_types = 1);
+
 require_once(__DIR__ . '/../utils/session.php');
 require_once(__DIR__ . '/../template/common.tpl.php');
 require_once(__DIR__ . '/../template/profile.tpl.php');
 require_once(__DIR__ . '/../database/connection.db.php');
 require_once(__DIR__ . '/../database/users.class.php');
+require_once(__DIR__ . '/../database/trainers.class.php');
+require_once(__DIR__ . '/../database/enrollments.class.php');
+require_once(__DIR__ . '/../database/workoutclass.class.php');
+require_once(__DIR__ . '/../database/workoutclasstype.class.php');
 
 $session = new Session();
 
@@ -22,14 +28,13 @@ if ($user === null) {
     exit;
 }
 
-$workoutClasses = $user->getWorkoutClasses($db);
 $messages = $session->getMessages();
 
 generateHead('PowerPIT - Profile');
 generateHeader($session);
 
 drawMessages($messages);
-drawProfile($user, $workoutClasses);
+drawProfile($db, $user);
 
 generateFooter();
 ?>

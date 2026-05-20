@@ -1,6 +1,120 @@
 <?php
 declare(strict_types = 1);
 
+require_once(__DIR__ . '/../database/users.class.php');
+require_once(__DIR__ . '/../database/trainers.class.php');
+require_once(__DIR__ . '/../database/enrollments.class.php');
+require_once(__DIR__ . '/../database/workoutclass.class.php');
+require_once(__DIR__ . '/../database/workoutclasstype.class.php');
+
+
+function getTrainerByUserIdForProfile(PDO $db, int $userId): ?Trainers {
+    $stmt = $db->prepare('
+        SELECT *
+        FROM Trainers
+        WHERE UserId = ?
+    ');
+
+    $stmt->execute([$userId]);
+    $row = $stmt->fetch();
+
+    if ($row === false) {
+        return null;
+    }
+
+    return new Trainers(
+        (int)$row['TrainerId'],
+        (int)$row['UserId'],
+        $row['Bio'],
+        $row['Specializations'],
+        $row['Certifications']
+    );
+}
+
+
+function getAssignedClassesForTrainer(PDO $db, int $trainerId): array {
+    $stmt = $db->prepare('
+        SELECT *
+        FROM Classes
+        WHERE TrainerId = ?
+        ORDER BY ClassDateTime
+    ');
+
+    $stmt->execute([$trainerId]);
+
+    $classes = [];
+
+    while ($row = $stmt->fetch()) {
+        $classes[] = new WorkoutClass(
+            (int)$row['ClassId'],
+            (int)$row['TrainerId'],
+            (int)$row['ClassTypeId'],
+            $row['ClassDateTime'],
+            (int)$row['Capacity']
+        );
+    }
+
+    return $classes;
+}
+
+
+function getMembersByClassIdForProfile(PDO $db, int $classId): array {
+    $stmt = $db->prepare('
+        SELECT Users.*
+        FROM Enrollments
+        JOIN Users ON Users.UserId = Enrollments.UserId
+        WHERE Enrollments.ClassId = ?
+          AND Enrollments.Status = ?
+        ORDER BY Users.Name
+    ');
+
+    $stmt->execute([
+        $classId,
+        'active'
+    ]);
+
+    $members = [];
+
+    while ($row = $stmt->fetch()) {
+        $members[] = new Users(
+            (int)$row['UserId'],
+            $row['Name'],
+            $row['Username'],
+            $row['Email'],
+            $row['PasswordHash'],
+            $row['Role'],
+            $row['ProfileImage']
+        );
+    }
+
+    return $members;
+}
+
+
+function getWorkoutClassDisplayName(PDO $db, WorkoutClass $workoutClass): string {
+    if (!method_exists($workoutClass, 'getClassTypeId')) {
+        return 'Class #' . $workoutClass->getId();
+    }
+
+    $classType = WorkoutClassType::getWorkoutClassType($db, $workoutClass->getClassTypeId());
+
+    if ($classType === null) {
+        return 'Class #' . $workoutClass->getId();
+    }
+
+    return $classType->getName();
+}
+
+
+function splitTrainerText(?string $text): array {
+    if ($text === null || trim($text) === '') {
+        return [];
+    }
+
+    return array_filter(array_map('trim', explode(',', $text)));
+}
+
+
 function drawEditProfileDialog(Users $user): void { ?>
     <dialog id="edit-profile-dialog" class="edit-profile-dialog">
         <section class="card edit-profile-card">
@@ -110,11 +224,96 @@ function drawEditProfileDialog(Users $user): void { ?>
             </form>
         </section>
     </dialog>
-<?php } ?>
+<?php }
 
 
-<?php
-function drawProfile(Users $user, array $workoutClasses): void { ?>
+function drawEditTrainerProfileDialog(Trainers $trainer): void { ?>
+    <dialog id="edit-trainer-profile-dialog" class="edit-profile-dialog">
+        <section class="card edit-profile-card">
+            <button 
+                type="button" 
+                class="edit-profile-close" 
+                data-dialog-close
+                aria-label="Close edit trainer profile dialog"
+            >
+                &times;
+            </button>
+
+            <header class="edit-profile-header">
+                <p class="profile-member-card-label">PowerPIT Trainer</p>
+                <h1>Edit Trainer Profile</h1>
+                <p>Update your public trainer information</p>
+            </header>
+
+            <form 
+                class="edit-profile-form" 
+                action="../actions/action_edit_trainer_profile.php" 
+                method="post"
+            >
+                <label>
+                    Bio
+                    <textarea 
+                        name="bio"
+                        placeholder="Write your trainer bio"
+                    ><?= htmlspecialchars($trainer->getBio() ?? '') ?></textarea>
+                </label>
+
+                <label>
+                    Specializations
+                    <input 
+                        type="text" 
+                        name="specializations" 
+                        value="<?= htmlspecialchars($trainer->getSpecializations() ?? '') ?>"
+                        placeholder="Strength, HIIT, Pilates..."
+                    >
+                </label>
+
+                <label>
+                    Certifications
+                    <input 
+                        type="text" 
+                        name="certifications" 
+                        value="<?= htmlspecialchars($trainer->getCertifications() ?? '') ?>"
+                        placeholder="Personal Trainer Level 3, CPR..."
+                    >
+                </label>
+
+                <div class="edit-profile-actions">
+                    <button 
+                        type="button" 
+                        class="btn small edit-profile-cancel"
+                        data-dialog-close
+                    >
+                        Cancel
+                    </button>
+
+                    <button type="submit" class="btn small light">
+                        Save Trainer Profile
+                    </button>
+                </div>
+            </form>
+        </section>
+    </dialog>
+<?php }
+
+
+function drawProfile(PDO $db, Users $user): void {
+    if ($user->getRole() === 'trainer') {
+        $trainer = getTrainerByUserIdForProfile($db, $user->getUserId());
+
+        if ($trainer !== null) {
+            drawTrainerProfile($db, $user, $trainer);
+            return;
+        }
+    }
+
+    drawMemberProfile($db, $user);
+}
+
+
+function drawMemberProfile(PDO $db, Users $user): void {
+    $workoutClasses = $user->getWorkoutClasses($db);
+?>
     <main>
         <section class="flex-row light">
             <div class="flex-item">
@@ -184,7 +383,7 @@ function drawProfile(Users $user, array $workoutClasses): void { ?>
                     <dl>
                         <?php foreach ($workoutClasses as $workoutClass) { ?>
                             <div class="card-dl-row">
-                                <dt>Class #<?= htmlspecialchars((string)$workoutClass->getId()) ?></dt>
+                                <dt><?= htmlspecialchars(getWorkoutClassDisplayName($db, $workoutClass)) ?></dt>
                                 <dd>
                                     <?= htmlspecialchars(date('d M · H:i', strtotime($workoutClass->getClassDateTime()))) ?>
                                 </dd>
@@ -197,4 +396,175 @@ function drawProfile(Users $user, array $workoutClasses): void { ?>
 
         <?php drawEditProfileDialog($user); ?>
     </main>
-<?php } ?>
+<?php }
+
+
+function drawTrainerProfile(PDO $db, Users $user, Trainers $trainer): void {
+    $assignedClasses = getAssignedClassesForTrainer($db, $trainer->getTrainerId());
+?>
+    <main>
+        <section class="flex-row light">
+            <div class="flex-item">
+                <div class="card card--dark">
+                    <div class="profile-member-card-content">
+                        <img 
+                            class="profile-image-preview"
+                            src="../assets/users/<?= htmlspecialchars($user->getProfileImage()) ?>" 
+                            alt="Trainer profile picture" 
+                            width="200" 
+                            height="100"
+                        >
+
+                        <div>
+                            <p class="profile-member-card-label">PowerPIT Trainer</p>
+                            <h1><?= htmlspecialchars($user->getName()) ?></h1>
+                            <p class="profile-member-card-meta">
+                                <?= htmlspecialchars(ucfirst($user->getRole())) ?> Account
+                            </p>
+                        </div>
+
+                        <button 
+                            type="button" 
+                            class="btn small light profile-edit-btn"
+                            data-dialog-target="edit-profile-dialog"
+                        >
+                            Edit Profile
+                        </button>
+                    </div>
+
+                    <div class="trainer_profile_extra">
+                        <p>
+                            <?= htmlspecialchars($trainer->getBio() ?? 'No trainer bio added yet.') ?>
+                        </p>
+
+                        <div class="trainer_fake_review">
+                            <strong>4.8 / 5</strong>
+                            <span>Based on member reviews</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="grid">
+            <?php drawTrainerPublicCard($trainer); ?>
+            <?php drawTrainerScheduleCard($db, $assignedClasses); ?>
+        </section>
+
+        <section class="grid">
+            <?php drawTrainerRosterCard($db, $assignedClasses); ?>
+        </section>
+
+        <?php drawEditProfileDialog($user); ?>
+        <?php drawEditTrainerProfileDialog($trainer); ?>
+    </main>
+<?php }
+
+
+function drawTrainerPublicCard(Trainers $trainer): void {
+    $specializations = splitTrainerText($trainer->getSpecializations());
+?>
+    <article class="card">
+        <h2 class="card-title center">Trainer Information</h2>
+
+        <h3>Specializations</h3>
+
+        <?php if (empty($specializations)) { ?>
+            <p>No specializations added yet.</p>
+        <?php } else { ?>
+            <ul class="trainer_tags">
+                <?php foreach ($specializations as $specialization) { ?>
+                    <li><?= htmlspecialchars($specialization) ?></li>
+                <?php } ?>
+            </ul>
+        <?php } ?>
+
+        <p class="trainer_certifications">
+            <strong>Certifications:</strong>
+            <?= htmlspecialchars($trainer->getCertifications() ?? 'No certifications added yet.') ?>
+        </p>
+
+        <button 
+            type="button" 
+            class="btn small light trainer-public-edit-btn"
+            data-dialog-target="edit-trainer-profile-dialog"
+        >
+            Edit Trainer Information
+        </button>
+    </article>
+<?php }
+
+
+function drawTrainerScheduleCard(PDO $db, array $assignedClasses): void { ?>
+    <article class="card">
+        <h2 class="card-title center">Assigned Schedule</h2>
+
+        <?php if (empty($assignedClasses)) { ?>
+            <p>You do not have any assigned classes yet.</p>
+        <?php } else { ?>
+            <dl>
+                <?php foreach ($assignedClasses as $workoutClass) { 
+                    $timestamp = strtotime($workoutClass->getClassDateTime());
+                    $members = getMembersByClassIdForProfile($db, $workoutClass->getId());
+                ?>
+                    <div class="card-dl-row">
+                        <dt><?= htmlspecialchars(getWorkoutClassDisplayName($db, $workoutClass)) ?></dt>
+                        <dd>
+                            <?= htmlspecialchars(date('d M · H:i', $timestamp)) ?>
+                            · <?= htmlspecialchars((string)count($members)) ?>/<?= htmlspecialchars((string)$workoutClass->getCapacity()) ?> members
+                        </dd>
+                    </div>
+                <?php } ?>
+            </dl>
+        <?php } ?>
+    </article>
+<?php }
+
+
+function drawTrainerRosterCard(PDO $db, array $assignedClasses): void { ?>
+    <article class="card trainer_roster_card">
+        <h2 class="card-title center">Class Rosters</h2>
+
+        <?php if (empty($assignedClasses)) { ?>
+            <p>No rosters available yet.</p>
+        <?php } else { ?>
+            <?php foreach ($assignedClasses as $workoutClass) {
+                $members = getMembersByClassIdForProfile($db, $workoutClass->getId());
+                $timestamp = strtotime($workoutClass->getClassDateTime());
+            ?>
+                <section class="trainer_roster_group">
+                    <header class="trainer_roster_header">
+                        <h3><?= htmlspecialchars(getWorkoutClassDisplayName($db, $workoutClass)) ?></h3>
+                        <p>
+                            <?= htmlspecialchars(date('d M · H:i', $timestamp)) ?>
+                            · <?= htmlspecialchars((string)count($members)) ?>/<?= htmlspecialchars((string)$workoutClass->getCapacity()) ?> members
+                        </p>
+                    </header>
+
+                    <?php if (empty($members)) { ?>
+                        <p>No members enrolled in this class yet.</p>
+                    <?php } else { ?>
+                        <ul class="trainer_roster_members">
+                            <?php foreach ($members as $member) { ?>
+                                <li>
+                                    <img 
+                                        src="../assets/users/<?= htmlspecialchars($member->getProfileImage()) ?>" 
+                                        alt="Member profile picture"
+                                    >
+
+                                    <div>
+                                        <strong><?= htmlspecialchars($member->getName()) ?></strong>
+                                        <span>@<?= htmlspecialchars($member->getUserName()) ?></span>
+                                    </div>
+
+                                    <span><?= htmlspecialchars($member->getEmail()) ?></span>
+                                </li>
+                            <?php } ?>
+                        </ul>
+                    <?php } ?>
+                </section>
+            <?php } ?>
+        <?php } ?>
+    </article>
+<?php }
+?>

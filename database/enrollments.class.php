@@ -81,4 +81,36 @@ class Enrollments {
         'active'
     ]);
     }
+
+    public static function getMembersByClassId(PDO $db, int $classId): array {
+    $stmt = $db->prepare('
+        SELECT Users.*
+        FROM Enrollments
+        JOIN Users ON Users.UserId = Enrollments.UserId
+        WHERE Enrollments.ClassId = ?
+          AND Enrollments.Status = ?
+        ORDER BY Users.Name
+    ');
+
+    $stmt->execute([
+        $classId,
+        'active'
+    ]);
+
+    $members = [];
+
+    while ($row = $stmt->fetch()) {
+        $members[] = new Users(
+            (int)$row['UserId'],
+            $row['Name'],
+            $row['Username'],
+            $row['Email'],
+            $row['PasswordHash'],
+            $row['Role'],
+            $row['ProfileImage']
+        );
+    }
+
+    return $members;
+    }
 }

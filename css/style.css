@@ -596,87 +596,126 @@ button {
   border-color: var(--lime);
 }
 
-/* TRAINERS PAGE */
+/* TRAINER PROFILE - SAME CARD STRUCTURE AS MEMBER */
 
-.trainers_page {
-  background: var(--gray-bg);
+.trainer_profile_extra {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1.5rem;
+  align-items: center;
 }
 
-/* Reuses .classes_carousel_section, .grid and .card */
-
-.trainers_grid {
-  width: min(78rem, 100%);
-  margin: 0 auto;
-  padding: 0;
-  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+.trainer_profile_extra p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.85);
+  max-width: 48rem;
 }
 
-.trainer_card {
-  padding: 0;
-  overflow: hidden;
-  background: var(--white);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+.trainer_fake_review {
+  padding: 0.8rem 1rem;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.1);
+  text-align: center;
+  min-width: 9rem;
 }
 
-.trainer_card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 20px 42px rgb(0, 0, 0, 0.14);
-}
-
-.trainer_card > img {
-  width: 100%;
-  height: 22rem;
-  object-fit: cover;
-}
-
-.trainer_card_content {
-  padding: 1.5rem;
-}
-
-.trainer_card_content h2 {
-  color: var(--black);
-  font-size: 1.7rem;
+.trainer_fake_review strong {
+  display: block;
+  color: var(--lime);
+  font-size: 1.4rem;
   line-height: 1;
-  margin-bottom: 1rem;
 }
 
-.trainer_bio {
-  color: var(--gray-text);
-  margin-bottom: 1rem;
-}
-
-.trainer_tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
-}
-
-.trainer_tags li {
-  padding: 0.35rem 0.7rem;
-  border-radius: 999px;
-  background: var(--gray-bg);
-  color: var(--black);
+.trainer_fake_review span {
+  display: block;
+  margin-top: 0.3rem;
+  color: rgba(255, 255, 255, 0.75);
   font-size: 0.8rem;
-  font-weight: 800;
 }
 
-.trainer_certifications {
-  padding-top: 0.8rem;
+.trainer-public-edit-btn {
+  margin-top: 1.2rem;
+}
+
+.trainer_roster_card {
+  width: 100%;
+}
+
+.trainer_roster_group {
+  padding: 1.2rem 0;
   border-top: 1px solid var(--border);
+}
+
+.trainer_roster_group:first-of-type {
+  border-top: none;
+  padding-top: 0;
+}
+
+.trainer_roster_header {
+  margin-bottom: 1rem;
+}
+
+.trainer_roster_header h3 {
+  color: var(--black);
+  font-size: 1.3rem;
+}
+
+.trainer_roster_header p {
+  color: var(--gray-text);
+}
+
+.trainer_roster_members {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.trainer_roster_members li {
+  display: grid;
+  grid-template-columns: 58px 1fr auto;
+  gap: 1rem;
+  align-items: center;
+  padding: 0.8rem;
+  border-radius: 16px;
+  background: var(--gray-card);
+}
+
+.trainer_roster_members img {
+  width: 58px;
+  height: 58px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.trainer_roster_members strong {
+  display: block;
+  color: var(--black);
+}
+
+.trainer_roster_members span {
   color: var(--gray-text);
   font-size: 0.9rem;
 }
 
-.trainer_certifications strong {
+.edit-profile-form textarea {
+  width: 100%;
+  min-height: 8rem;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--white);
   color: var(--black);
+  font-size: 1rem;
+  resize: vertical;
 }
 
-.trainers_empty {
-  width: min(42rem, 100%);
-  margin: 0 auto;
-  text-align: center;
+.edit-profile-form textarea:focus {
+  outline: none;
+  border-color: var(--lime);
 }
+
 
 /* RESPONSIVE */
 
@@ -812,9 +851,16 @@ button {
     text-align: center;
   }
 
-  /* TRAINERS PAGE */
-  
-  .trainer_card > img {
-    height: 20rem;
+  .trainer_profile_extra {
+    grid-template-columns: 1fr;
+  }
+
+  .trainer_roster_members li {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .trainer_roster_members img {
+    justify-self: center;
   }
 }
