@@ -68,4 +68,17 @@ class Enrollments {
             $row['Status']
         );
     }
+
+    public static function addEnrollmentToDb(PDO $db, int $userId, int $classId): void {
+    $stmt = $db->prepare('
+        INSERT INTO Enrollments (UserId, ClassId, EnrollmentDate, Status)
+        VALUES (?, ?, datetime("now"), ?)
+    ');
+
+    $stmt->execute([
+        $userId,
+        $classId,
+        'active'
+    ]);
+    }
 }

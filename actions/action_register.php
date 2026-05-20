@@ -60,6 +60,6 @@ $session->setRole($user->getRole());
 
 $session->addMessage('success', 'Account created successfully!');
 
-header('Location: ../pages/profile.php');
-exit;
+header('Location: ' . $_SERVER['HTTP_REFERER']);
+exit();
 ?>

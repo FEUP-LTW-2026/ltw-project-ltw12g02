@@ -106,4 +106,53 @@ class Trainers {
 
 
     }
+
+    public static function getTrainerByUserId(PDO $db, int $userId): ?Trainers {
+    $stmt = $db->prepare('
+        SELECT *
+        FROM Trainers
+        WHERE UserId = ?
+    ');
+
+    $stmt->execute([$userId]);
+
+    $row = $stmt->fetch();
+
+    if ($row === false) {
+        return null;
+    }
+
+    return new Trainers(
+        (int)$row['TrainerId'],
+        (int)$row['UserId'],
+        $row['Bio'],
+        $row['Specializations'],
+        $row['Certifications']
+    );
+    }
+
+    public function getAssignedClasses(PDO $db): array {
+    $stmt = $db->prepare('
+        SELECT *
+        FROM Classes
+        WHERE TrainerId = ?
+        ORDER BY ClassDateTime
+    ');
+
+    $stmt->execute([$this->trainer_id]);
+
+    $classes = [];
+
+    while ($row = $stmt->fetch()) {
+        $classes[] = new WorkoutClass(
+            (int)$row['ClassId'],
+            (int)$row['TrainerId'],
+            (int)$row['ClassTypeId'],
+            $row['ClassDateTime'],
+            (int)$row['Capacity']
+        );
+    }
+
+    return $classes;
+}
 }
