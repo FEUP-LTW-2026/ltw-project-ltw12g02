@@ -2,10 +2,10 @@
 declare(strict_types = 1);
 
 require_once(__DIR__ . '/../utils/session.php');
-$session = new Session();
-
 require_once(__DIR__ . '/../database/connection.db.php');
 require_once(__DIR__ . '/../database/users.class.php');
+
+$session = new Session();
 
 if (!$session->isLoggedIn()) {
     header('Location: ../pages/login.php');
@@ -76,6 +76,12 @@ if ($wantsToChangePassword) {
 
     if ($newPassword !== $confirmPassword) {
         $session->addMessage('error', 'New passwords do not match!');
+        header('Location: ../pages/profile.php');
+        exit;
+    }
+
+    if (strlen($newPassword) < 6) {
+        $session->addMessage('error', 'New password must have at least 6 characters!');
         header('Location: ../pages/profile.php');
         exit;
     }

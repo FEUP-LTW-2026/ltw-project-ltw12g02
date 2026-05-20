@@ -302,7 +302,7 @@ function drawProfile(PDO $db, Users $user): void {
         $trainer = getTrainerByUserIdForProfile($db, $user->getUserId());
 
         if ($trainer !== null) {
-            drawTrainerProfile($db, $user, $trainer);
+            drawTrainerProfile($db, $user, $trainer, true);
             return;
         }
     }
@@ -399,7 +399,7 @@ function drawMemberProfile(PDO $db, Users $user): void {
 <?php }
 
 
-function drawTrainerProfile(PDO $db, Users $user, Trainers $trainer): void {
+function drawTrainerProfile(PDO $db, Users $user, Trainers $trainer, bool $canEdit): void {
     $assignedClasses = getAssignedClassesForTrainer($db, $trainer->getTrainerId());
 ?>
     <main>
@@ -419,17 +419,23 @@ function drawTrainerProfile(PDO $db, Users $user, Trainers $trainer): void {
                             <p class="profile-member-card-label">PowerPIT Trainer</p>
                             <h1><?= htmlspecialchars($user->getName()) ?></h1>
                             <p class="profile-member-card-meta">
-                                <?= htmlspecialchars(ucfirst($user->getRole())) ?> Account
+                                <?php if ($canEdit) { ?>
+                                    @<?= htmlspecialchars($user->getUserName()) ?> · <?= htmlspecialchars($user->getEmail()) ?>
+                                <?php } else { ?>
+                                    @<?= htmlspecialchars($user->getUserName()) ?>
+                                <?php } ?>
                             </p>
                         </div>
 
-                        <button 
-                            type="button" 
-                            class="btn small light profile-edit-btn"
-                            data-dialog-target="edit-profile-dialog"
-                        >
-                            Edit Profile
-                        </button>
+                        <?php if ($canEdit) { ?>
+                            <button 
+                                type="button" 
+                                class="btn small light profile-edit-btn"
+                                data-dialog-target="edit-profile-dialog"
+                            >
+                                Edit Profile
+                            </button>
+                        <?php } ?>
                     </div>
 
                     <div class="trainer_profile_extra">
@@ -447,7 +453,7 @@ function drawTrainerProfile(PDO $db, Users $user, Trainers $trainer): void {
         </section>
 
         <section class="grid">
-            <?php drawTrainerPublicCard($trainer); ?>
+            <?php drawTrainerPublicCard($trainer, $canEdit); ?>
             <?php drawTrainerScheduleCard($db, $assignedClasses); ?>
         </section>
 
@@ -455,13 +461,15 @@ function drawTrainerProfile(PDO $db, Users $user, Trainers $trainer): void {
             <?php drawTrainerRosterCard($db, $assignedClasses); ?>
         </section>
 
-        <?php drawEditProfileDialog($user); ?>
-        <?php drawEditTrainerProfileDialog($trainer); ?>
+        <?php if ($canEdit) { ?>
+            <?php drawEditProfileDialog($user); ?>
+            <?php drawEditTrainerProfileDialog($trainer); ?>
+        <?php } ?>
     </main>
 <?php }
 
 
-function drawTrainerPublicCard(Trainers $trainer): void {
+function drawTrainerPublicCard(Trainers $trainer, bool $canEdit): void {
     $specializations = splitTrainerText($trainer->getSpecializations());
 ?>
     <article class="card">
@@ -484,13 +492,15 @@ function drawTrainerPublicCard(Trainers $trainer): void {
             <?= htmlspecialchars($trainer->getCertifications() ?? 'No certifications added yet.') ?>
         </p>
 
-        <button 
-            type="button" 
-            class="btn small light trainer-public-edit-btn"
-            data-dialog-target="edit-trainer-profile-dialog"
-        >
-            Edit Trainer Information
-        </button>
+        <?php if ($canEdit) { ?>
+            <button 
+                type="button" 
+                class="btn small light trainer-public-edit-btn"
+                data-dialog-target="edit-trainer-profile-dialog"
+            >
+                Edit Trainer Information
+            </button>
+        <?php } ?>
     </article>
 <?php }
 

@@ -88,4 +88,15 @@ class WorkoutClass {
 
 
     }
+
+    public static function addWorkoutClassToDb(PDO $db, int $trainerId,int $classTypeId,string $date, int $capacity) : void{
+
+        $stmt = $db->prepare('
+        INSERT INTO Classes (TrainerId,ClassTypeId,ClassDateTime,Capacity)
+        VALUES (?,?,?,?)
+        ');
+
+        $stmt->execute([$trainerId,$classTypeId,$date,$capacity]);
+
+    }
 }
