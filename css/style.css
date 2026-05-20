@@ -717,6 +717,119 @@ button {
 }
 
 
+/* TRAINERS PAGE */
+
+.trainers_page {
+  background: var(--gray-bg);
+}
+
+/* TRAINERS GRID */
+
+.trainers_grid {
+  width: min(78rem, 100%);
+  margin: 0 auto;
+  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+}
+
+/* EMPTY STATE */
+
+.trainers_empty {
+  width: min(40rem, 100%);
+  margin: 0 auto;
+  text-align: center;
+}
+
+.trainers_empty h2 {
+  color: var(--black);
+  margin-bottom: 0.5rem;
+}
+
+.trainers_empty p {
+  color: var(--gray-text);
+}
+
+/* TRAINER CARD */
+
+.trainer_card {
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.trainer_card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 38px rgba(0, 0, 0, 0.12);
+}
+
+.trainer_card_link > img {
+  width: 100%;
+  height: 18rem;
+  object-fit: cover;
+  background: var(--gray-card);
+}
+
+.trainer_card_content {
+  flex: 1;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.trainer_card_content h2 {
+  margin: 0.4rem 0 0.8rem;
+  color: var(--black);
+  font-size: 1.6rem;
+  line-height: 1.1;
+}
+
+.trainer_bio {
+  color: var(--gray-text);
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+}
+
+/* SPECIALIZATION TAGS */
+
+.trainer_tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: auto;
+  margin-bottom: 1rem;
+}
+
+.trainer_tags li {
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  background: var(--black);
+  color: var(--white);
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.trainer_tags li:hover {
+  background: var(--lime);
+  color: var(--black);
+}
+
+/* CERTIFICATIONS */
+
+.trainer_certifications {
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  color: var(--gray-text);
+  font-size: 0.9rem;
+}
+
+.trainer_certifications strong {
+  color: var(--black);
+}
+
+
 /* RESPONSIVE */
 
 @media (max-width: 60rem) {
@@ -766,6 +879,14 @@ button {
 
   .class_card {
     flex-basis: calc((100% - 1.2rem) / 2);
+  }
+
+    .trainers_grid {
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  }
+
+  .trainer_card_link > img {
+    height: 16rem;
   }
 }
 
@@ -862,5 +983,20 @@ button {
 
   .trainer_roster_members img {
     justify-self: center;
+  }
+    .trainers_grid {
+    grid-template-columns: 1fr;
+  }
+
+  .trainer_card_link > img {
+    height: 15rem;
+  }
+
+  .trainer_card_content {
+    padding: 1.2rem;
+  }
+
+  .trainer_card_content h2 {
+    font-size: 1.4rem;
   }
 }

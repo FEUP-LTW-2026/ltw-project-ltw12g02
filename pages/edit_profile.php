@@ -28,7 +28,7 @@ generateHead('PowerPIT - Edit Profile');
 generateHeader($session);
 
 drawMessages($messages);
-drawEditProfile($user);
+drawEditProfileDialog($user);
 
 generateFooter();
 ?>

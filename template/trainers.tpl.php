@@ -19,8 +19,9 @@ function drawTrainersPage(array $trainers, PDO $db): void { ?>
             <article class="flex-item main">
                 <p class="classes_label">PowerPIT Trainers</p>
 
-                <h1>Train smarter
-                    <p>Reach your goals</p>
+                <h1>
+                    Train smarter<br>
+                    Reach your goals
                 </h1>
 
                 <p>
@@ -77,36 +78,41 @@ function drawTrainerCard(Trainers $trainer, PDO $db): void {
     ?>
 
     <article class="card trainer_card">
-        <img 
-            src="../assets/users/<?= htmlspecialchars($user->getProfileImage()) ?>" 
-            alt="<?= htmlspecialchars($user->getName()) ?>"
+        <a 
+            href="../pages/trainer_profile.php?id=<?= htmlspecialchars((string)$trainer->getTrainerId()) ?>" 
+            class="trainer_card_link"
         >
+            <img 
+                src="../assets/users/<?= htmlspecialchars($user->getProfileImage()) ?>" 
+                alt="<?= htmlspecialchars($user->getName()) ?>"
+            >
 
-        <div class="trainer_card_content">
-            <p class="profile-member-card-label">PowerPIT Coach</p>
+            <div class="trainer_card_content">
+                <p class="profile-member-card-label">PowerPIT Coach</p>
 
-            <h2><?= htmlspecialchars($user->getName()) ?></h2>
+                <h2><?= htmlspecialchars($user->getName()) ?></h2>
 
-            <?php if ($trainer->getBio() !== null && $trainer->getBio() !== '') { ?>
-                <p class="trainer_bio">
-                    <?= htmlspecialchars($trainer->getBio()) ?>
-                </p>
-            <?php } ?>
+                <?php if ($trainer->getBio() !== null && $trainer->getBio() !== '') { ?>
+                    <p class="trainer_bio">
+                        <?= htmlspecialchars($trainer->getBio()) ?>
+                    </p>
+                <?php } ?>
 
-            <?php if (!empty($specializations)) { ?>
-                <ul class="trainer_tags">
-                    <?php foreach ($specializations as $specialization) { ?>
-                        <li><?= htmlspecialchars($specialization) ?></li>
-                    <?php } ?>
-                </ul>
-            <?php } ?>
+                <?php if (!empty($specializations)) { ?>
+                    <ul class="trainer_tags">
+                        <?php foreach ($specializations as $specialization) { ?>
+                            <li><?= htmlspecialchars($specialization) ?></li>
+                        <?php } ?>
+                    </ul>
+                <?php } ?>
 
-            <?php if ($trainer->getCertifications() !== null && $trainer->getCertifications() !== '') { ?>
-                <p class="trainer_certifications">
-                    <strong>Certifications:</strong>
-                    <?= htmlspecialchars($trainer->getCertifications()) ?>
-                </p>
-            <?php } ?>
-        </div>
+                <?php if ($trainer->getCertifications() !== null && $trainer->getCertifications() !== '') { ?>
+                    <p class="trainer_certifications">
+                        <strong>Certifications:</strong>
+                        <?= htmlspecialchars($trainer->getCertifications()) ?>
+                    </p>
+                <?php } ?>
+            </div>
+        </a>
     </article>
 <?php } ?>
