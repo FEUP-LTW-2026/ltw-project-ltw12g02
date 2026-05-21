@@ -1,5 +1,8 @@
 <?php
 
+require_once(__DIR__ . '/../database/connection.db.php');
+require_once(__DIR__ . '/../database/users.class.php');
+
 function generateHead(string $title) {
     echo '
 <!DOCTYPE html>
@@ -44,34 +47,45 @@ function generateHeader(Session $session) { ?>
         </nav>
 
         <div id="signup">
-            <?php if ($session->isLoggedIn()) { 
+            <?php 
+            if ($session->isLoggedIn()) { 
                 $db = getDatabaseConnection();
-                $user = Users::getUser($db, $session->getId()); ?>
-                <input type="checkbox" id="profile-check">
-                <label for="profile-check" href="profile.php" id="profile">
-                    <img 
-                        src="../assets/users/<?= htmlspecialchars($user->getProfileImage()) ?>" 
-                        alt="Profile picture" 
-                        width="50" 
-                        height="50"
-                    >  
-                </label>
-                <nav class="profile-nav">
-                    <div id="profile">
+                $user = Users::getUser($db, $session->getId());
+
+                if ($user !== null) { ?>
+                    <input type="checkbox" id="profile-check">
+
+                    <label for="profile-check" id="profile">
                         <img 
                             src="../assets/users/<?= htmlspecialchars($user->getProfileImage()) ?>" 
                             alt="Profile picture" 
-                            width="35" 
-                            height="35"
-                        >
-                        <?= htmlspecialchars($user->getUserName()) ?>
-                    </div>
-                    <ul>
-                        <li><a href="profile.php" ><i class="fa fa-user-circle" aria-hidden="true"></i> Profile</a></li>
-                        <li><a href="../actions/action_logout.php"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a></li>
-                    </ul>
-                </nav>
-                
+                            width="50" 
+                            height="50"
+                        >  
+                    </label>
+
+                    <nav class="profile-nav">
+                        <div id="profile">
+                            <img 
+                                src="../assets/users/<?= htmlspecialchars($user->getProfileImage()) ?>" 
+                                alt="Profile picture" 
+                                width="35" 
+                                height="35"
+                            >
+
+                            <?= htmlspecialchars($user->getUserName()) ?>
+                        </div>
+
+                        <ul>
+                            <li><a href="profile.php"><i class="fa fa-user-circle" aria-hidden="true"></i> Profile</a></li>
+                            <li><a href="../actions/action_logout.php"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a></li>
+                        </ul>
+                    </nav>
+                <?php } else { ?>
+                    <a href="register.php" class="btn small">Register</a>
+                    <a href="login.php" class="btn small light">Login</a>
+                <?php } ?>
+
             <?php } else { ?>
                 <a href="register.php" class="btn small">Register</a>
                 <a href="login.php" class="btn small light">Login</a>
