@@ -829,6 +829,73 @@ button {
   color: var(--black);
 }
 
+/* EQUIPMENT PAGE */
+
+.equipment_page {
+  background: var(--gray-bg);
+}
+
+/* Reuses .classes_feature, .classes_carousel_section, .grid, .card, .card-dl-row */
+
+.equipment_groups {
+  width: min(78rem, 100%);
+  margin: 0 auto;
+  display: grid;
+  gap: 3rem;
+}
+
+.equipment_group {
+  display: grid;
+  gap: 1.2rem;
+}
+
+.equipment_group_header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.8rem;
+}
+
+.equipment_group_header .classes_label {
+  color: var(--black);
+  margin-bottom: 0;
+}
+
+.equipment_group_header h2 {
+  color: var(--gray-text);
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.equipment_grid {
+  padding: 0;
+  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+}
+
+.equipment_card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.equipment_card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 42px rgb(0, 0, 0, 0.14);
+}
+
+.equipment_card h2 {
+  color: var(--black);
+  font-size: 1.5rem;
+  line-height: 1;
+  margin-bottom: 1rem;
+}
+
+.equipment_empty {
+  width: min(42rem, 100%);
+  margin: 0 auto;
+  text-align: center;
+}
 
 /* RESPONSIVE */
 
@@ -998,5 +1065,10 @@ button {
 
   .trainer_card_content h2 {
     font-size: 1.4rem;
+  }
+
+  .equipment_group_header {
+    align-items: flex-start;
+    flex-direction: column;
   }
 }

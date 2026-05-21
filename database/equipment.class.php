@@ -68,8 +68,8 @@ class Equipment {
     public static function getAllEquipment(PDO $db): array {
         $stmt = $db->prepare(
             'SELECT *
-             FROM Equipment
-             ORDER BY Name'
+            FROM Equipment
+            ORDER BY Type, Name'
         );
 
         $stmt->execute();
