@@ -4,7 +4,7 @@ require_once(__DIR__ . '/../database/connection.db.php');
 require_once(__DIR__ . '/../database/users.class.php');
 
 function generateHead(string $title) {
-    echo '
+     ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,9 +18,10 @@ function generateHead(string $title) {
     <script src="../js/popup.js" defer></script>
     <script src="../js/profile.js" defer></script>
     <script src="../js/booking_class.js" defer></script>
+    <script src="../js/search_users.js" defer></script>
 </head>
-<body>';
-}
+<body>;
+<?php } 
 
 function generateHeader(Session $session) { ?>
     <header class="site-header">
