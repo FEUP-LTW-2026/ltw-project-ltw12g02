@@ -21,6 +21,8 @@ $db = getDatabaseConnection();
 
 $role = Users::getUser($db,$session->getId())->getRole();
 
+
+
 if ($role !== 'admin') {
     header('Location: index.php');
     exit;

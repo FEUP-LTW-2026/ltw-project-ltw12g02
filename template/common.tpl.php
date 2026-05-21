@@ -37,6 +37,9 @@ function generateHeader(Session $session) { ?>
                 <li><a href="classes.php"><i class="fa fa-users" aria-hidden="true"></i> Classes</a></li>
                 <li><a href="trainers.php"><i class="fa fa-id-badge" aria-hidden="true"></i> Trainers</a></li>
                 <li><a href="equipment.php"><i class="fa fa-th" aria-hidden="true"></i> Equipment</a></li>
+                <?php if ($session->getRole() === 'admin'){ ?>
+                <li><a href="admin.php"><i class="fa fa-shield" aria-hidden="true"></i> Admin</a></li>
+                <?php } ?>
             </ul>
         </nav>
 
