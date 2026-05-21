@@ -830,6 +830,130 @@ button {
 }
 
 
+.admin-dashboard {
+    max-width: 1150px;
+    margin: 3rem auto;
+    padding: 0 1.5rem;
+}
+
+.admin-hero {
+    background: linear-gradient(135deg, #111827, #1f2937);
+    color: white;
+    border-radius: 24px;
+    padding: 2.5rem;
+    margin-bottom: 2rem;
+}
+
+.admin-label {
+    text-transform: uppercase;
+    letter-spacing: 0.12rem;
+    font-size: 0.8rem;
+    color: #cbd5e1;
+    margin-bottom: 0.6rem;
+}
+
+.admin-hero h1 {
+    font-size: 2.4rem;
+    margin-bottom: 0.7rem;
+}
+
+.admin-hero p {
+    color: #e5e7eb;
+    max-width: 600px;
+}
+
+.admin-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+}
+
+.admin-stat-card {
+    background: white;
+    border-radius: 18px;
+    padding: 1.4rem;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+}
+
+.admin-stat-card span {
+    display: block;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #111827;
+}
+
+.admin-stat-card p {
+    margin-top: 0.4rem;
+    color: #6b7280;
+}
+
+.admin-actions h2,
+.admin-quick-actions h2 {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.admin-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+}
+
+.admin-card {
+    display: block;
+    background: white;
+    border-radius: 20px;
+    padding: 1.6rem;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.admin-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.13);
+}
+
+.admin-card h3 {
+    margin-bottom: 0.6rem;
+    font-size: 1.3rem;
+}
+
+.admin-card p {
+    color: #6b7280;
+    line-height: 1.4;
+    margin-bottom: 1rem;
+}
+
+.admin-card span {
+    font-weight: 600;
+    color: #111827;
+}
+
+.quick-actions-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.quick-action {
+    background: #111827;
+    color: white;
+    text-decoration: none;
+    padding: 0.85rem 1.2rem;
+    border-radius: 999px;
+    font-weight: 600;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.quick-action:hover {
+    background: #374151;
+    transform: translateY(-2px);
+}
+
 /* RESPONSIVE */
 
 @media (max-width: 60rem) {
