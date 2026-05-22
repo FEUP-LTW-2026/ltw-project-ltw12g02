@@ -154,5 +154,5 @@ class Trainers {
     }
 
     return $classes;
-}
+    }
 }

@@ -10,7 +10,7 @@ function generateHead(string $title) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>' . $title . '</title>
+    <title> <?= $title ?></title>
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="../js/messages.js" defer></script>
@@ -95,8 +95,7 @@ function generateHeader(Session $session) { ?>
     </header>
 <?php }
 
-function generateFooter() {
-    echo '
+function generateFooter() { ?>
 <footer class="main-footer">
     <p>Copyright &copy; All rights reserved</p>
     <p>Rua njdfbajlfhak 00, 4000-000 Cidade | email@powerpit.com | +555 900 000 000</p>
@@ -104,8 +103,8 @@ function generateFooter() {
 </footer>
 
 </body>
-</html>';
-}
+</html>
+<?php } 
 
 
 

@@ -835,7 +835,6 @@ button {
   background: var(--gray-bg);
 }
 
-/* Reuses .classes_feature, .classes_carousel_section, .grid, .card, .card-dl-row */
 
 .equipment_groups {
   width: min(78rem, 100%);
