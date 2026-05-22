@@ -51,7 +51,7 @@ function drawEquipmentPage(array $equipment): void { ?>
                                 <h2><?= count($items) ?> items</h2>
                             </header>
 
-                            <div class="grid equipment_grid">
+                            <div class="equipment_gallery">
                                 <?php foreach ($items as $item) {
                                     drawEquipmentCard($item);
                                 } ?>
@@ -103,36 +103,23 @@ function drawEquipmentCard(Equipment $item): void {
     $statusClass = getEquipmentStatusClass($item->getStatus());
     $image = 'equipment' . $item->getId() . '.png';
 ?>
-    <article class="equipment_card">
-        <div class="equipment_card_image">
-            <img
-                src="../assets/equipment/<?= htmlspecialchars($image) ?>"
-                alt="<?= htmlspecialchars($item->getName()) ?>"
-            >
+    <article class="equipment_gallery_card">
+        <img
+            src="../assets/equipment/<?= htmlspecialchars($image) ?>"
+            alt="<?= htmlspecialchars($item->getName()) ?>"
+        >
 
+        <div class="equipment_gallery_overlay">
             <span class="equipment_status <?= htmlspecialchars($statusClass) ?>">
                 <?= htmlspecialchars($item->getStatus()) ?>
             </span>
-        </div>
 
-        <div class="equipment_card_content">
-            <p class="equipment_card_type">
-                <?= htmlspecialchars($item->getType()) ?>
-            </p>
+            <div>
+                <p><?= htmlspecialchars($item->getType()) ?></p>
+                <h2><?= htmlspecialchars($item->getName()) ?></h2>
+            </div>
 
-            <h2><?= htmlspecialchars($item->getName()) ?></h2>
-
-            <dl>
-                <div class="card-dl-row">
-                    <dt>Quantity</dt>
-                    <dd><?= htmlspecialchars((string)$item->getQuantity()) ?></dd>
-                </div>
-
-                <div class="card-dl-row">
-                    <dt>Status</dt>
-                    <dd><?= htmlspecialchars($item->getStatus()) ?></dd>
-                </div>
-            </dl>
+            <strong><?= htmlspecialchars((string)$item->getQuantity()) ?> units</strong>
         </div>
     </article>
 <?php } ?>

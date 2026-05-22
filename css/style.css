@@ -867,16 +867,18 @@ button {
   margin: 0 auto;
 }
 
+/* GROUPS */
+
 .equipment_groups {
   width: min(78rem, 100%);
   margin: 0 auto;
   display: grid;
-  gap: 3rem;
+  gap: 3.5rem;
 }
 
 .equipment_group {
   display: grid;
-  gap: 1.2rem;
+  gap: 1rem;
 }
 
 .equipment_group_header {
@@ -895,92 +897,87 @@ button {
 
 .equipment_group_header h2 {
   color: var(--gray-text);
-  font-size: 1rem;
+  font-size: 0.95rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
 
-.equipment_grid {
-  padding: 0;
-  grid-template-columns: repeat(auto-fit, minmax(21rem, 1fr));
+/* GALLERY */
+
+.equipment_gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 21rem);
+  justify-content: center;
+  gap: 1.2rem;
 }
 
-.equipment_card {
-  background: var(--white);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  overflow: hidden;
-  min-height: 28rem;
-  display: flex;
-  flex-direction: column;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
+/* CARD */
 
-.equipment_card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 22px 44px rgba(0, 0, 0, 0.14);
-}
-
-.equipment_card_image {
+.equipment_gallery_card {
   position: relative;
-  height: 13rem;
+  width: 21rem;
+  height: 22rem;
   overflow: hidden;
+  border-radius: var(--radius);
   background: var(--black);
+  box-shadow: var(--shadow);
 }
 
-.equipment_card_image img {
+.equipment_gallery_card img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.25s ease, filter 0.25s ease;
+  filter: brightness(0.72);
+  transition: transform 0.28s ease, filter 0.28s ease;
 }
 
-.equipment_card:hover .equipment_card_image img {
-  transform: scale(1.04);
-  filter: brightness(0.82);
+.equipment_gallery_card:hover img {
+  transform: scale(1.05);
+  filter: brightness(0.52);
 }
 
-.equipment_card_image .equipment_status {
+.equipment_gallery_overlay {
   position: absolute;
-  left: 1rem;
-  top: 1rem;
-}
-
-.equipment_card_content {
-  flex: 1;
-  padding: 1.4rem;
+  inset: 0;
+  padding: 1.3rem;
+  color: var(--white);
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 }
 
-.equipment_card_type {
+.equipment_gallery_overlay p {
   color: var(--lime);
-  background: var(--black);
-  width: fit-content;
-  padding: 0.3rem 0.65rem;
-  border-radius: 999px;
-  font-size: 0.68rem;
+  font-size: 0.78rem;
   font-weight: 900;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  margin-bottom: 1rem;
+  letter-spacing: 0.12em;
+  margin-bottom: 0.45rem;
 }
 
-.equipment_card h2 {
+.equipment_gallery_overlay h2 {
+  color: var(--white);
+  font-size: 2rem;
+  line-height: 1;
+  text-transform: uppercase;
+  max-width: 16rem;
+}
+
+.equipment_gallery_overlay strong {
+  width: fit-content;
+  padding: 0.45rem 0.8rem;
+  border-radius: 999px;
+  background: var(--lime);
   color: var(--black);
-  font-size: 1.7rem;
-  line-height: 1.05;
-  margin-bottom: 1.4rem;
+  font-size: 0.85rem;
+  font-weight: 900;
 }
 
-.equipment_card dl {
-  margin-top: auto;
-}
+/* STATUS */
 
 .equipment_status {
-  display: inline-block;
   width: fit-content;
-  padding: 0.35rem 0.7rem;
+  padding: 0.4rem 0.75rem;
   border-radius: 999px;
   font-size: 0.68rem;
   font-weight: 900;
@@ -989,19 +986,21 @@ button {
 }
 
 .equipment_status.available {
-  background: rgba(183, 255, 0, 0.9);
+  background: var(--lime);
   color: var(--black);
 }
 
 .equipment_status.maintenance {
-  background: rgba(245, 183, 0, 0.95);
+  background: #f5b700;
   color: var(--black);
 }
 
 .equipment_status.unavailable {
-  background: rgba(214, 40, 40, 0.9);
+  background: #d62828;
   color: var(--white);
 }
+
+/* EMPTY STATE */
 
 .equipment_empty {
   width: min(42rem, 100%);
@@ -1546,6 +1545,25 @@ button {
   .admin-trainer-row {
     grid-template-columns: 1fr;
   }
+
+  /* EQUIPMENT */
+
+  .equipment_section {
+    padding: 3.5rem 1rem;
+  }
+
+  .equipment_grid {
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+    gap: 1.4rem;
+  }
+
+  .equipment_card {
+    min-height: 23rem;
+  }
+
+  .equipment_card_image {
+    height: 12rem;
+  }
 }
 
 @media (max-width: 30rem) {
@@ -1658,11 +1676,6 @@ button {
     font-size: 1.4rem;
   }
 
-  .equipment_group_header {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
   .admin-wrap {
     width: min(100% - 1.5rem, 78rem);
   }
@@ -1730,5 +1743,55 @@ button {
   .admin-users-controls-row .btn {
     width: 100%;
     justify-content: center;
+  }
+
+  /* EQUIPMENT */
+
+  .equipment_section {
+    padding: 3rem 1rem;
+  }
+
+  .equipment_section_header {
+    margin-bottom: 2rem;
+  }
+
+  .equipment_section_header h1 {
+    font-size: 1.9rem;
+  }
+
+  .equipment_groups {
+    gap: 2.3rem;
+  }
+
+  .equipment_group_header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .equipment_grid {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
+
+  .equipment_card {
+    min-height: auto;
+  }
+
+  .equipment_card_image {
+    height: 11rem;
+  }
+
+  .equipment_card_content {
+    padding: 1.1rem;
+  }
+
+  .equipment_card h2 {
+    font-size: 1.4rem;
+  }
+
+  .equipment_card_footer {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.35rem;
   }
 }
