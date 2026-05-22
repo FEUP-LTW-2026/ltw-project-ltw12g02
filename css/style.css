@@ -585,17 +585,6 @@ button {
   color: var(--black);
 }
 
-.edit-profile-cancel {
-  color: var(--black);
-  border-color: var(--black);
-  background: transparent;
-}
-
-.edit-profile-cancel:hover {
-  color: var(--black);
-  border-color: var(--lime);
-}
-
 /* TRAINER PROFILE - SAME CARD STRUCTURE AS MEMBER */
 
 .trainer_profile_extra {
