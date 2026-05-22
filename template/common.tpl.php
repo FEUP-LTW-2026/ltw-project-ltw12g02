@@ -20,7 +20,7 @@ function generateHead(string $title) {
     <script src="../js/booking_class.js" defer></script>
     <script src="../js/search_users.js" defer></script>
 </head>
-<body>;
+<body>  
 <?php } 
 
 function generateHeader(Session $session) { ?>
