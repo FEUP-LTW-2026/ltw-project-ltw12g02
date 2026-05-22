@@ -536,14 +536,14 @@ button {
 
 /* EDIT PROFILE POPUP */
 
-.edit-profile-photo {
+.popup-photo {
   justify-self: center;
   position: relative;
   cursor: pointer;
   margin-bottom: 0.5rem;
 }
 
-.edit-profile-photo img {
+.popup-photo img {
   width: 11rem;
   height: 11rem;
   object-fit: cover;
@@ -552,7 +552,7 @@ button {
   box-shadow: var(--shadow);
 }
 
-.edit-profile-photo span {
+.popup-photo span {
   position: absolute;
   left: 50%;
   bottom: 0.4rem;
@@ -566,11 +566,11 @@ button {
   white-space: nowrap;
 }
 
-.edit-profile-photo input {
+.popup-photo input {
   display: none;
 }
 
-.edit-profile-password {
+.popup-password {
   display: grid;
   gap: 1.2rem;
   margin-top: 1rem;
@@ -578,20 +578,20 @@ button {
   border-top: 1px solid var(--border);
 }
 
-.edit-profile-password h2 {
+.popup-password h2 {
   margin: 0;
   text-align: center;
   font-size: 1.5rem;
   color: var(--black);
 }
 
-.edit-profile-cancel {
+.popup-cancel {
   color: var(--black);
   border-color: var(--black);
   background: transparent;
 }
 
-.edit-profile-cancel:hover {
+.popup-cancel:hover {
   color: var(--black);
   border-color: var(--lime);
 }
@@ -699,7 +699,7 @@ button {
   font-size: 0.9rem;
 }
 
-.edit-profile-form textarea {
+.popup-form textarea {
   width: 100%;
   min-height: 8rem;
   padding: 1rem;
@@ -711,7 +711,7 @@ button {
   resize: vertical;
 }
 
-.edit-profile-form textarea:focus {
+.popup-form textarea:focus {
   outline: none;
   border-color: var(--lime);
 }
@@ -950,24 +950,20 @@ button {
   }
 
     .popup-card,
-  .edit-profile-dialog .edit-profile-card {
+  .popup-dialog .popup-card {
     padding: 1.5rem;
   }
 
-  .popup-header h1,
-  .edit-profile-header h1 {
+  .popup-header h1 {
     font-size: 2rem;
   }
 
-  .popup-actions,
-  .edit-profile-actions {
+  .popup-actions {
     flex-direction: column-reverse;
   }
 
   .popup-actions .btn,
-  .popup-actions button,
-  .edit-profile-actions .btn,
-  .edit-profile-actions button {
+  .popup-actions button { 
     width: 100%;
     text-align: center;
   }

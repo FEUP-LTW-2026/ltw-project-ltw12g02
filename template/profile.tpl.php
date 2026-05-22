@@ -116,30 +116,30 @@ function splitTrainerText(?string $text): array {
 
 
 function drawEditProfileDialog(Users $user): void { ?>
-    <dialog id="edit-profile-dialog" class="edit-profile-dialog">
-        <section class="card edit-profile-card">
+    <dialog id="edit-profile-dialog" class="popup-dialog">
+        <section class="card popup-card">
             <button 
                 type="button" 
-                class="edit-profile-close" 
+                class="popup-close" 
                 data-dialog-close
                 aria-label="Close edit profile dialog"
             >
                 &times;
             </button>
 
-            <header class="edit-profile-header">
+            <header class="popup-header">
                 <p class="profile-member-card-label">PowerPIT Account</p>
                 <h1>Edit Profile</h1>
                 <p>Update your profile information</p>
             </header>
 
             <form 
-                class="edit-profile-form" 
+                class="popup-form" 
                 action="../actions/action_edit_profile.php" 
                 method="post"
                 enctype="multipart/form-data"
             >
-                <label class="edit-profile-photo" for="profile-image-input">
+                <label class="popup-photo" for="profile-image-input">
                     <img 
                         class="profile-image-preview"
                         src="../assets/users/<?= htmlspecialchars($user->getProfileImage()) ?>" 
@@ -151,7 +151,7 @@ function drawEditProfileDialog(Users $user): void { ?>
 
                 <input 
                     id="profile-image-input"
-                    class="edit-profile-file-input"
+                    class="popup-file-input"
                     type="file" 
                     name="profile_image"
                     accept="image/png, image/jpeg, image/webp, image/avif"
@@ -177,7 +177,7 @@ function drawEditProfileDialog(Users $user): void { ?>
                     >
                 </label>
 
-                <section class="edit-profile-password">
+                <section class="popup-password">
                     <h2>Change Password</h2>
 
                     <label>
@@ -208,10 +208,10 @@ function drawEditProfileDialog(Users $user): void { ?>
                     </label>
                 </section>
 
-                <div class="edit-profile-actions">
+                <div class="popup-actions">
                     <button 
                         type="button" 
-                        class="btn small edit-profile-cancel"
+                        class="btn small popup-cancel"
                         data-dialog-close
                     >
                         Cancel
@@ -228,25 +228,25 @@ function drawEditProfileDialog(Users $user): void { ?>
 
 
 function drawEditTrainerProfileDialog(Trainers $trainer): void { ?>
-    <dialog id="edit-trainer-profile-dialog" class="edit-profile-dialog">
-        <section class="card edit-profile-card">
+    <dialog id="edit-trainer-profile-dialog" class="popup-dialog">
+        <section class="card popup-card">
             <button 
                 type="button" 
-                class="edit-profile-close" 
+                class="popup-close" 
                 data-dialog-close
                 aria-label="Close edit trainer profile dialog"
             >
                 &times;
             </button>
 
-            <header class="edit-profile-header">
+            <header class="popup-header">
                 <p class="profile-member-card-label">PowerPIT Trainer</p>
                 <h1>Edit Trainer Profile</h1>
                 <p>Update your public trainer information</p>
             </header>
 
             <form 
-                class="edit-profile-form" 
+                class="popup-form" 
                 action="../actions/action_edit_trainer_profile.php" 
                 method="post"
             >
@@ -278,10 +278,10 @@ function drawEditTrainerProfileDialog(Trainers $trainer): void { ?>
                     >
                 </label>
 
-                <div class="edit-profile-actions">
+                <div class="popup-actions">
                     <button 
                         type="button" 
-                        class="btn small edit-profile-cancel"
+                        class="btn small popup-cancel"
                         data-dialog-close
                     >
                         Cancel
@@ -312,7 +312,8 @@ function drawProfile(PDO $db, Users $user): void {
 
 
 function drawMemberProfile(PDO $db, Users $user): void {
-    $workoutClasses = $user->getWorkoutClasses($db);
+    $nextClasses = $user->getWorkoutNextClasses($db);
+    $classHistory = $user->getWorkoutClassHistory($db);
 ?>
     <main>
         <section class="flex-row light">
@@ -374,14 +375,14 @@ function drawMemberProfile(PDO $db, Users $user): void {
                 </dl>
             </article>
 
-            <aside class="card">
+            <article class="card">
                 <h2 class="card-title center">Next Classes</h2>
 
-                <?php if (empty($workoutClasses)) { ?>
+                <?php if (empty($nextClasses)) { ?>
                     <p>You do not have any booked classes yet.</p>
                 <?php } else { ?>
                     <dl>
-                        <?php foreach ($workoutClasses as $workoutClass) { ?>
+                        <?php foreach ($nextClasses as $workoutClass) { ?>
                             <div class="card-dl-row">
                                 <dt><?= htmlspecialchars(getWorkoutClassDisplayName($db, $workoutClass)) ?></dt>
                                 <dd>
@@ -391,10 +392,41 @@ function drawMemberProfile(PDO $db, Users $user): void {
                         <?php } ?>
                     </dl>
                 <?php } ?>
-            </aside>
+            </article>
+
+            <article class="card">
+                <h2 class="card-title center">Classes History</h2>
+
+                <?php if (empty($classHistory)) { ?>
+                    <p>You do not have any booked classes yet.</p>
+                <?php } else { ?>
+                    <dl>
+                        <?php foreach ($classHistory as $workoutClass) {
+                             $dialogId = 'review-dialog-' . $workoutClass->getId();
+                             $classType = WorkoutClassType::getWorkoutClassType($db, $workoutClass->getClassTypeId());
+                             drawReviewDialog($db, $classType, $workoutClass);
+                             ?>
+                            <div class="card-dl-row">
+                                <dt><?= htmlspecialchars(getWorkoutClassDisplayName($db, $workoutClass)) ?></dt>
+                            
+                                <dd>
+                                    <button 
+                                        type="button" 
+                                        class="btn small light profile-edit-btn"
+                                        data-dialog-target="<?=htmlspecialchars($dialogId)?>"
+                                    >
+                                        Review
+                                    </button>
+                                    <?= htmlspecialchars(date('d M · H:i', strtotime($workoutClass->getClassDateTime()))) ?>
+                                </dd>
+                            </div>
+                        <?php } ?>
+                    </dl>
+                <?php } ?>
+            </article>
         </section>
 
-        <?php drawEditProfileDialog($user); ?>
+        <?php drawEditProfileDialog($user);?>
     </main>
 <?php }
 
@@ -578,3 +610,110 @@ function drawTrainerRosterCard(PDO $db, array $assignedClasses): void { ?>
     </article>
 <?php }
 ?>
+
+<?php function drawReviewDialog(PDO $db,WorkoutClassType $workoutClassType, WorkoutClass $workoutClass): void {
+    $timestamp = strtotime($workoutClass->getClassDateTime());
+
+    $day = date('l', $timestamp);
+    $date = date('d M Y', $timestamp);
+    $time = date('H:i', $timestamp);
+
+    $dialogId = 'review-dialog-' . $workoutClass->getId();
+?>
+    <dialog id="<?= htmlspecialchars($dialogId) ?>" class="popup-dialog">
+        <section class="card popup-card">
+            <button 
+                type="button" 
+                class="popup-close" 
+                data-dialog-close
+                aria-label="Close booking dialog"
+            >
+                &times;
+            </button>
+
+            <header class="popup-header">
+                <p class="profile-member-card-label"><?= htmlspecialchars($workoutClassType->getName())?> Class</p>
+                <h1>Review Class</h1>
+                <p>Rate this class and give us your feedback.</p>
+            </header>
+
+            <dl>
+                <h2>Info</h2>
+                <div class="card-dl-row">
+                    <dt>Class</dt>
+                    <dd><?= htmlspecialchars($workoutClassType->getName()) ?></dd>
+                </div>
+
+                <div class="card-dl-row">
+                    <dt>Date</dt>
+                    <dd><?= htmlspecialchars($date)?>,<?= htmlspecialchars($time) ?></dd>
+                </div>
+
+                <div class="card-dl-row">
+                    <dt>Trainer</dt>
+                    <dd><?= htmlspecialchars((string)$workoutClass->getTrainerName($db)) ?></dd>
+                </div>
+            </dl>
+
+            <form 
+                class="popup-form"
+                id="review-form"
+                action="../actions/action_review.php" 
+                method="post"
+            >
+                <input 
+                    type="hidden" 
+                    name="class_id" 
+                    value="<?= htmlspecialchars((string)$workoutClass->getId()) ?>"
+                >
+                <h2>Review</h2>
+
+                <label>
+                    Rating
+                    <div class="rating">
+
+                        <input type="radio" name="rating" id="star5" value="5">
+                        <label for="star5">★</label>
+
+                        <input type="radio" name="rating" id="star4" value="4">
+                        <label for="star4">★</label>
+
+                        <input type="radio" name="rating" id="star3" value="3">
+                        <label for="star3">★</label>
+
+                        <input type="radio" name="rating" id="star2" value="2">
+                        <label for="star2">★</label>
+
+                        <input type="radio" name="rating" id="star1" value="1">
+                        <label for="star1">★</label>
+
+                    </div>
+                </label>
+
+                <label>
+                    Review
+                    <textarea 
+                        name="review"
+                        placeholder="Tell us your opinion!"
+                    ></textarea>
+                </label>
+
+                
+
+                <div class="popup-actions">
+                    <button 
+                        type="button" 
+                        class="btn small"
+                        data-dialog-close
+                    >
+                        Cancel
+                    </button>
+
+                    <button type="submit" class="btn small light">
+                        Confirm Review
+                    </button>
+                </div>
+            </form>
+        </section>
+    </dialog>
+<?php } ?>

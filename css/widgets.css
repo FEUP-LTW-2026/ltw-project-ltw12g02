@@ -241,8 +241,7 @@
 
 /* POPUPS / DIALOGS */
 
-.popup-dialog,
-.edit-profile-dialog {
+.popup-dialog {
   position: fixed;
   inset: 0;
   margin: auto;
@@ -255,19 +254,16 @@
   overflow: visible;
 }
 
-.popup-dialog:not([open]),
-.edit-profile-dialog:not([open]) {
+.popup-dialog:not([open]) {
   display: none;
 }
 
-.popup-dialog::backdrop,
-.edit-profile-dialog::backdrop {
+.popup-dialog::backdrop {
   background: rgba(0, 0, 0, 0.55);
   backdrop-filter: blur(5px);
 }
 
-.popup-card,
-.edit-profile-card {
+.popup-card {
   position: relative;
   width: 100%;
   max-height: 90vh;
@@ -275,8 +271,7 @@
   padding: 2.5rem;
 }
 
-.popup-close,
-.edit-profile-close {
+.popup-close {
   position: absolute;
   top: 1rem;
   right: 1rem;
@@ -293,48 +288,41 @@
   transition: 0.25s ease;
 }
 
-.popup-close:hover,
-.edit-profile-close:hover {
+.popup-close:hover {
   background: var(--lime);
   color: var(--black);
   transform: scale(1.05);
 }
 
-.popup-header,
-.edit-profile-header {
+.popup-header {
   text-align: center;
   margin-bottom: 2rem;
 }
 
-.popup-header h1,
-.edit-profile-header h1 {
+.popup-header h1 {
   margin: 0.4rem 0;
   font-size: 2.4rem;
   color: var(--black);
 }
 
-.popup-header p:last-child,
-.edit-profile-header p:last-child {
+.popup-header p:last-child{
   margin: 0;
   color: var(--gray-text);
 }
 
-.popup-form,
-.edit-profile-form {
+.popup-form {
   display: grid;
   gap: 1.2rem;
 }
 
-.popup-form label,
-.edit-profile-form label {
+.popup-form label {
   display: grid;
   gap: 0.5rem;
   color: var(--black);
   font-weight: 800;
 }
 
-.popup-form input,
-.edit-profile-form input {
+.popup-form input {
   width: 100%;
   padding: 1rem;
   border: 1px solid var(--border);
@@ -344,35 +332,58 @@
   font-size: 1rem;
 }
 
-.popup-form input:focus,
-.edit-profile-form input:focus {
+.popup-form input:focus {
   outline: none;
   border-color: var(--lime);
 }
 
-.popup-actions,
-.edit-profile-actions {
+.popup-actions {
   display: flex;
   justify-content: center;
   gap: 1rem;
   margin-top: 1rem;
 }
 
-.popup-actions button,
-.edit-profile-actions button {
+.popup-actions button {
   cursor: pointer;
 }
 
-.edit-profile-photo {
+.popup-photo {
   cursor: pointer;
 }
 
-.edit-profile-file-input {
+.popup-file-input {
   position: absolute;
   width: 1px;
   height: 1px;
   opacity: 0;
   overflow: hidden;
+}
+
+/* RATING */
+
+.rating {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+}
+
+.rating input {
+  display: none;
+}
+
+.rating label {
+  font-size: 2rem;
+  color: gray;
+  cursor: pointer;
+  transition: 0.2s;
+  padding-right: 0.5rem;
+}
+
+.rating label:hover,
+.rating label:hover ~ label,
+.rating input:checked ~ label {
+  color: gold;
 }
 
 @media (max-width: 30rem) {

@@ -1,4 +1,4 @@
-const bookingForms = document.querySelectorAll('#booking-form');
+const bookingForms = document.querySelectorAll('#review-form');
 
 bookingForms.forEach((form) => {
     form.addEventListener('submit', (event) => {
@@ -12,14 +12,14 @@ bookingForms.forEach((form) => {
 
             if (request.status === 200) {
                 card.innerHTML = `
-                    <button type="button" class="popup-close" aria-label="Close booking dialog">
+                    <button type="button" class="popup-close" aria-label="Close review dialog">
                         &times;
                     </button>
 
                     <header class="popup-header">
-                        <p class="profile-member-card-label">PowerPIT Booking</p>
-                        <h1>Booked!</h1>
-                        <p>Your class booking has been confirmed.</p>
+                        <p class="profile-member-card-label">PowerPIT Review</p>
+                        <h1>Thank you!</h1>
+                        <p>Your review has been sent. We appreciate your feedback.</p>
                     </header>
 
                     <div class="popup-actions">
@@ -30,14 +30,14 @@ bookingForms.forEach((form) => {
                 `;
             } else if (request.status === 409) {
                 card.innerHTML = `
-                    <button type="button" class="popup-close" aria-label="Close booking dialog">
+                    <button type="button" class="popup-close" aria-label="Close review dialog">
                         &times;
                     </button>
 
                     <header class="popup-header">
-                        <p class="profile-member-card-label">PowerPIT Booking</p>
-                        <h1>Already booked</h1>
-                        <p>You have already booked this class.</p>
+                        <p class="profile-member-card-label">PowerPIT Review</p>
+                        <h1>Already reviewed</h1>
+                        <p>You have already reviewed this class.</p>
                     </header>
 
                     <div class="popup-actions">
@@ -48,14 +48,14 @@ bookingForms.forEach((form) => {
                 `;
             } else {
                 card.innerHTML = `
-                    <button type="button" class="popup-close" aria-label="Close booking dialog">
+                    <button type="button" class="popup-close" aria-label="Close review dialog">
                         &times;
                     </button>
 
                     <header class="popup-header">
-                        <p class="profile-member-card-label">PowerPIT Booking</p>
-                        <h1>Booking failed</h1>
-                        <p>Could not complete the booking. Please try again.</p>
+                        <p class="profile-member-card-label">PowerPIT Review</p>
+                        <h1>Review failed</h1>
+                        <p>Could not send the review. Please try again.</p>
                     </header>
 
                     <div class="popup-actions">

@@ -224,6 +224,7 @@ function drawBookingDialog(PDO $db,WorkoutClassType $workoutClassType, WorkoutCl
 
             <form 
                 class="popup-form" 
+                id="booking-form"
                 action="../actions/action_book_class.php" 
                 method="post"
             >

@@ -138,6 +138,58 @@ class Users {
         return $workoutClasses;
     }
 
+    public function getWorkoutClassHistory(PDO $db): array {
+        $stmt = $db->prepare('
+            SELECT Classes.*
+            FROM Classes
+            JOIN Enrollments ON Enrollments.ClassId = Classes.ClassId
+            WHERE Enrollments.UserId = ? AND Classes.ClassDateTime < datetime()
+            ORDER BY Classes.ClassDateTime DESC
+        ');
+
+        $stmt->execute([$this->user_id]);
+
+        $workoutClasses = [];
+
+        while ($row = $stmt->fetch()) {
+            $workoutClasses[] = new WorkoutClass(
+                (int)$row['ClassId'],
+                (int)$row['TrainerId'],
+                (int)$row['ClassTypeId'],
+                $row['ClassDateTime'],
+                (int)$row['Capacity']
+            );
+        }
+
+        return $workoutClasses;
+    }
+
+    public function getWorkoutNextClasses(PDO $db): array {
+        $stmt = $db->prepare('
+            SELECT Classes.*
+            FROM Classes
+            JOIN Enrollments ON Enrollments.ClassId = Classes.ClassId
+            WHERE Enrollments.UserId = ? AND Classes.ClassDateTime > datetime()
+            ORDER BY Classes.ClassDateTime
+        ');
+
+        $stmt->execute([$this->user_id]);
+
+        $workoutClasses = [];
+
+        while ($row = $stmt->fetch()) {
+            $workoutClasses[] = new WorkoutClass(
+                (int)$row['ClassId'],
+                (int)$row['TrainerId'],
+                (int)$row['ClassTypeId'],
+                $row['ClassDateTime'],
+                (int)$row['Capacity']
+            );
+        }
+
+        return $workoutClasses;
+    }
+
     public static function getUserWithPassword(PDO $db, string $email, string $password): ?Users {
         $stmt = $db->prepare('
             SELECT *

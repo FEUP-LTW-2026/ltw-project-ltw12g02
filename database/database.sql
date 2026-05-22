@@ -61,6 +61,8 @@ CREATE TABLE Enrollments(
    ClassId INTEGER NOT NULL,
    EnrollmentDate DATETIME NOT NULL,
    Status NVARCHAR(20) NOT NULL,
+   Rating INTEGER,
+   Review NVARCHAR(500),
 
    UNIQUE (UserId, ClassId),
    FOREIGN KEY (UserId) REFERENCES Users (UserId) ON DELETE NO ACTION ON UPDATE NO ACTION,

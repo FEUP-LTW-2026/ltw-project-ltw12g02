@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   const profileImageInput = document.querySelector('#profile-image-input');
-  const profileImageButtons = document.querySelectorAll('.edit-profile-photo');
+  const profileImageButtons = document.querySelectorAll('.popup-photo');
   const profileImagePreviews = document.querySelectorAll('.profile-image-preview');
 
   let originalImageSources = [];

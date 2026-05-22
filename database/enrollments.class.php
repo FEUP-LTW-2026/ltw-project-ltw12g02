@@ -7,6 +7,8 @@ class Enrollments {
     private int $class_id;
     private string $enrollment_date;
     private string $enrollment_status;
+    private int $rating;
+    private int $review;
 
     public function __construct(
         int $enrollment_id,
@@ -20,6 +22,8 @@ class Enrollments {
         $this->class_id = $class_id;
         $this->enrollment_date = $enrollment_date;
         $this->enrollment_status = $enrollment_status;
+        $this->rating = -1;
+        $this->review = "";
     }
 
     public function get_enrollment_id(): int {
@@ -40,6 +44,14 @@ class Enrollments {
 
     public function get_enrollment_status(): string {
         return $this->enrollment_status;
+    }
+
+    public function get_rating(): int {
+        return $this->rating;
+    }
+
+    public function get_review(): string {
+        return $this->review;
     }
 
     public function is_active(): bool {
@@ -65,7 +77,9 @@ class Enrollments {
             (int)$row['UserId'],
             (int)$row['ClassId'],
             $row['EnrollmentDate'],
-            $row['Status']
+            $row['Status'],
+            (int)$row['Rating'],
+            $row['Review']
         );
     }
 
@@ -112,5 +126,27 @@ class Enrollments {
     }
 
     return $members;
+    }
+
+    public static function updateReview(
+        PDO $db,
+        int $userId, 
+        int $classId,
+        int $rating,
+        string $review,
+    ): void {
+        $stmt = $db->prepare('
+            UPDATE ENROLLMENTS
+            SET Rating = ?,
+                Review = ?
+            WHERE UserId = ? AND ClassId = ?
+        ');
+
+        $stmt->execute([
+            $rating,
+            $review,
+            $userId,
+            $classId
+        ]);
     }
 }
