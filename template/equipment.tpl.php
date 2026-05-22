@@ -26,10 +26,13 @@ function drawEquipmentPage(array $equipment): void { ?>
             </aside>
         </section>
 
-        <section class="classes_carousel_section">
-            <header>
+        <section class="equipment_section">
+            <header class="equipment_section_header">
                 <p class="classes_label">Gym equipment</p>
                 <h1>Our equipment</h1>
+                <p>
+                    Explore the equipment available at PowerPIT, grouped by training type.
+                </p>
             </header>
 
             <?php if (empty($equipment)) { ?>
@@ -60,8 +63,10 @@ function drawEquipmentPage(array $equipment): void { ?>
 
         </section>
     </main>
-<?php }
+<?php } ?>
 
+
+<?php
 function groupEquipmentByType(array $equipment): array {
     $groups = [];
 
@@ -78,29 +83,56 @@ function groupEquipmentByType(array $equipment): array {
     return $groups;
 }
 
-function drawEquipmentCard(Equipment $item): void { ?>
-    <article class="card equipment_card">
-        <p class="profile-member-card-label">
-            <?= htmlspecialchars($item->getStatus()) ?>
-        </p>
 
-        <h2><?= htmlspecialchars($item->getName()) ?></h2>
+function getEquipmentStatusClass(string $status): string {
+    $status = strtolower($status);
 
-        <dl>
-            <div class="card-dl-row">
-                <dt>Type</dt>
-                <dd><?= htmlspecialchars($item->getType()) ?></dd>
-            </div>
+    if ($status === 'available') {
+        return 'available';
+    }
 
-            <div class="card-dl-row">
-                <dt>Quantity</dt>
-                <dd><?= htmlspecialchars((string)$item->getQuantity()) ?></dd>
-            </div>
+    if ($status === 'maintenance') {
+        return 'maintenance';
+    }
 
-            <div class="card-dl-row">
-                <dt>Status</dt>
-                <dd><?= htmlspecialchars($item->getStatus()) ?></dd>
-            </div>
-        </dl>
+    return 'unavailable';
+}
+
+
+function drawEquipmentCard(Equipment $item): void {
+    $statusClass = getEquipmentStatusClass($item->getStatus());
+    $image = 'equipment' . $item->getId() . '.png';
+?>
+    <article class="equipment_card">
+        <div class="equipment_card_image">
+            <img
+                src="../assets/equipment/<?= htmlspecialchars($image) ?>"
+                alt="<?= htmlspecialchars($item->getName()) ?>"
+            >
+
+            <span class="equipment_status <?= htmlspecialchars($statusClass) ?>">
+                <?= htmlspecialchars($item->getStatus()) ?>
+            </span>
+        </div>
+
+        <div class="equipment_card_content">
+            <p class="equipment_card_type">
+                <?= htmlspecialchars($item->getType()) ?>
+            </p>
+
+            <h2><?= htmlspecialchars($item->getName()) ?></h2>
+
+            <dl>
+                <div class="card-dl-row">
+                    <dt>Quantity</dt>
+                    <dd><?= htmlspecialchars((string)$item->getQuantity()) ?></dd>
+                </div>
+
+                <div class="card-dl-row">
+                    <dt>Status</dt>
+                    <dd><?= htmlspecialchars($item->getStatus()) ?></dd>
+                </div>
+            </dl>
+        </div>
     </article>
 <?php } ?>
