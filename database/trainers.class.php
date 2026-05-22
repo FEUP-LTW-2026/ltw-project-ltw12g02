@@ -154,5 +154,24 @@ class Trainers {
     }
 
     return $classes;
-}
+    }
+
+    public static function searchTrainers(PDO $db, string $query): array {
+        $stmt = $db->prepare('
+            SELECT *
+            FROM Users
+                 NATURAL JOIN Trainers
+            WHERE (Name LIKE ?
+                  OR Username LIKE ?
+                  OR Email LIKE ? ) AND Role = ?
+            ORDER BY Name ASC
+            LIMIT 20
+        ');
+
+        $search = $query . '%';
+
+        $stmt->execute([$search, $search, $search, 'trainer']);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

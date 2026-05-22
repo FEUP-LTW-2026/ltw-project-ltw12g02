@@ -211,7 +211,7 @@ function drawEditProfileDialog(Users $user): void { ?>
                 <div class="popup-actions">
                     <button 
                         type="button" 
-                        class="btn small popup-cancel"
+                        class="btn small"
                         data-dialog-close
                     >
                         Cancel
@@ -281,7 +281,7 @@ function drawEditTrainerProfileDialog(Trainers $trainer): void { ?>
                 <div class="popup-actions">
                     <button 
                         type="button" 
-                        class="btn small popup-cancel"
+                        class="btn small"
                         data-dialog-close
                     >
                         Cancel

@@ -1,7 +1,7 @@
 <?php
+declare(strict_types = 1);
 
 class Equipment {
-
     private int $id;
     private string $name;
     private string $type;
@@ -42,71 +42,23 @@ class Equipment {
         return $this->status;
     }
 
-    public static function getEquipment(PDO $db, int $id): ?Equipment {
-        $stmt = $db->prepare(
-            'SELECT *
-             FROM Equipment
-             WHERE EquipmentId = ?'
-        );
-
-        $stmt->execute([$id]);
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if (!$row) {
-            return null;
-        }
-
-        return new Equipment(
-            intval($row['EquipmentId']),
-            $row['Name'],
-            $row['Type'],
-            intval($row['Quantity']),
-            $row['AvailabilityStatus']
-        );
-    }
-
     public static function getAllEquipment(PDO $db): array {
-        $stmt = $db->prepare(
-            'SELECT *
-             FROM Equipment
-             ORDER BY Name'
-        );
+        $stmt = $db->prepare('
+            SELECT *
+            FROM Equipment
+            ORDER BY Type, Name
+        ');
 
         $stmt->execute();
 
         $equipment = [];
 
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        while ($row = $stmt->fetch()) {
             $equipment[] = new Equipment(
-                intval($row['EquipmentId']),
+                (int)$row['EquipmentId'],
                 $row['Name'],
                 $row['Type'],
-                intval($row['Quantity']),
-                $row['AvailabilityStatus']
-            );
-        }
-
-        return $equipment;
-    }
-
-    public static function getAvailableEquipment(PDO $db): array {
-        $stmt = $db->prepare(
-            'SELECT *
-             FROM Equipment
-             WHERE AvailabilityStatus = ?
-             ORDER BY Name'
-        );
-
-        $stmt->execute(['available']);
-
-        $equipment = [];
-
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $equipment[] = new Equipment(
-                intval($row['EquipmentId']),
-                $row['Name'],
-                $row['Type'],
-                intval($row['Quantity']),
+                (int)$row['Quantity'],
                 $row['AvailabilityStatus']
             );
         }
@@ -114,3 +66,4 @@ class Equipment {
         return $equipment;
     }
 }
+?>

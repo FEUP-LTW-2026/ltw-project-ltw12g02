@@ -1,0 +1,175 @@
+<?php
+declare(strict_types = 1);
+
+function drawAdminDashboard(string $adminName, array $stats): void { ?>
+    <main class="admin-dashboard">
+
+        <section class="admin-top">
+            <div class="admin-wrap">
+                <?php drawAdminHero($adminName); ?>
+                <?php drawAdminStats($stats); ?>
+            </div>
+        </section>
+
+        <section class="admin-bottom">
+            <div class="admin-wrap">
+                <?php drawAdminManagementCards(); ?>
+                <?php drawAdminQuickActions(); ?>
+            </div>
+        </section>
+
+    </main>
+<?php } ?>
+
+
+<?php
+function drawAdminHero(string $adminName): void { ?>
+    <section class="admin-hero">
+        <div>
+            <p class="admin-label">PowerPIT Admin Console</p>
+            <h1>Welcome back,<br><?= htmlspecialchars($adminName) ?></h1>
+            <p>Manage users, trainers, classes and gym equipment from one control panel.</p>
+        </div>
+
+        <div class="admin-access-card">
+            <span>Access level</span>
+            <strong>ADMIN</strong>
+            <p>Full control enabled</p>
+        </div>
+    </section>
+<?php } ?>
+
+
+<?php
+function drawAdminStats(array $stats): void { ?>
+    <section class="admin-stats">
+        <?php drawAdminStatCard('Users', (int) ($stats['users'] ?? 0), 'fa-users'); ?>
+        <?php drawAdminStatCard('Trainers', (int) ($stats['trainers'] ?? 0), 'fa-id-badge'); ?>
+        <?php drawAdminStatCard('Classes', (int) ($stats['classes'] ?? 0), 'fa-calendar'); ?>
+        <?php drawAdminStatCard('Equipment', (int) ($stats['equipment'] ?? 0), 'fa-th'); ?>
+        <?php drawAdminStatCard('Enrollments', (int) ($stats['enrollments'] ?? 0), 'fa-check-square-o'); ?>
+    </section>
+<?php } ?>
+
+
+<?php
+function drawAdminStatCard(string $label, int $value, string $icon): void { ?>
+    <article class="admin-stat-card admin-dark-card">
+        <div class="admin-card-row">
+            <i class="fa <?= htmlspecialchars($icon) ?>" aria-hidden="true"></i>
+            <span><?= htmlspecialchars($label) ?></span>
+        </div>
+
+        <strong><?= htmlspecialchars((string) $value) ?></strong>
+        <p>Registered in system</p>
+    </article>
+<?php } ?>
+
+
+<?php
+function drawAdminManagementCards(): void { ?>
+    <section class="admin-actions">
+        <header class="admin-section-header">
+            <div>
+                <p class="admin-label">Control Center</p>
+                <h2>Management</h2>
+            </div>
+
+            <p>Choose the area you want to manage.</p>
+        </header>
+
+        <div class="admin-grid">
+            <?php drawAdminCard(
+                'Users',
+                'View accounts, search users and update platform roles.',
+                'admin_users.php',
+                'Manage users',
+                'fa-users',
+                'Accounts'
+            ); ?>
+
+            <?php drawAdminCard(
+                'Trainers',
+                'Add, edit or remove trainer information.',
+                'admin_trainers.php',
+                'Manage trainers',
+                'fa-id-badge',
+                'Staff'
+            ); ?>
+
+            <?php drawAdminCard(
+                'Classes',
+                'Create classes, edit schedules and manage capacity.',
+                'admin_classes.php',
+                'Manage classes',
+                'fa-calendar',
+                'Schedule'
+            ); ?>
+
+            <?php drawAdminCard(
+                'Equipment',
+                'Control equipment quantity and availability.',
+                'admin_equipment.php',
+                'Manage equipment',
+                'fa-th',
+                'Inventory'
+            ); ?>
+        </div>
+    </section>
+<?php } ?>
+
+
+<?php
+function drawAdminCard(
+    string $title,
+    string $description,
+    string $link,
+    string $action,
+    string $icon,
+    string $tag
+): void { ?>
+    <a href="<?= htmlspecialchars($link) ?>" class="admin-card">
+        <div class="admin-card-row">
+            <div class="admin-icon-box">
+                <i class="fa <?= htmlspecialchars($icon) ?>" aria-hidden="true"></i>
+            </div>
+
+            <span class="admin-tag"><?= htmlspecialchars($tag) ?></span>
+        </div>
+
+        <div>
+            <h3><?= htmlspecialchars($title) ?></h3>
+            <p><?= htmlspecialchars($description) ?></p>
+        </div>
+
+        <strong><?= htmlspecialchars($action) ?> →</strong>
+    </a>
+<?php } ?>
+
+
+<?php
+function drawAdminQuickActions(): void { ?>
+    <section class="admin-quick-actions">
+        <div>
+            <p class="admin-label">Fast Access</p>
+            <h2>Quick Actions</h2>
+        </div>
+
+        <div class="quick-actions-row">
+            <a href="admin_add_trainer.php" class="btn light btn-compact btn-icon">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+                Add Trainer
+            </a>
+
+            <a href="admin_add_class.php" class="btn light btn-compact btn-icon">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+                Create Class
+            </a>
+
+            <a href="admin_add_equipment.php" class="btn light btn-compact btn-icon">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+                Add Equipment
+            </a>
+        </div>
+    </section>
+<?php } ?>
