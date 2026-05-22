@@ -1332,6 +1332,19 @@ button {
   border-color: rgba(153, 27, 27, 0.2);
 }
 
+.admin-users-controls-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1rem;
+  align-items: center;
+}
+
+.admin-trainers-header,
+.admin-trainer-row {
+  grid-template-columns: 1.5fr 1.5fr 1.2fr 7rem;
+}
+
+
 /* RESPONSIVE */
 
 @media (max-width: 60rem) {
@@ -1424,6 +1437,14 @@ button {
 
   .admin-user-actions a {
     width: fit-content;
+  }
+
+  .admin-trainers-header {
+    display: none;
+  }
+
+  .admin-trainer-row {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -1600,5 +1621,14 @@ button {
 
   .admin-user-actions a {
     width: 100%;
+  }
+
+  .admin-users-controls-row {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-users-controls-row .btn {
+    width: 100%;
+    justify-content: center;
   }
 }

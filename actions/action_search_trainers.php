@@ -2,13 +2,13 @@
 declare(strict_types = 1);
 
 require_once(__DIR__ . '/../utils/session.php');
-$session = new Session();
-
 require_once(__DIR__ . '/../database/connection.db.php');
 require_once(__DIR__ . '/../database/users.class.php');
-
+require_once(__DIR__ . '/../database/trainers.class.php');
 
 header('Content-Type: application/json');
+
+$session = new Session();
 
 if (!$session->isLoggedIn()) {
     http_response_code(403);
@@ -23,11 +23,9 @@ if (!$session->isLoggedIn()) {
 
 $db = getDatabaseConnection();
 
-$role = Users::getUser($db,$session->getId())->getRole();
+$user = Users::getUser($db, $session->getId());
 
-
-
-if ($role !== 'admin') {
+if ($user === null || $user->getRole() !== 'admin') {
     http_response_code(403);
 
     echo json_encode([
@@ -40,11 +38,11 @@ if ($role !== 'admin') {
 
 $query = trim($_GET['q'] ?? '');
 
-$users = Users::searchUsers($db,$query);
+$trainers = Trainers::searchTrainers($db, $query);
 
 echo json_encode([
     'success' => true,
-    'users' => $users
+    'trainers' => $trainers
 ]);
 
 exit;
