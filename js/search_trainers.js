@@ -50,27 +50,50 @@
         for (const trainer of trainers) {
             const trainerRow = document.createElement('article');
 
-            trainerRow.classList.add('admin-user-row');
-            trainerRow.classList.add('admin-trainer-row');
+            trainerRow.classList.add('admin-user-row', 'admin-trainer-row');
 
-            trainerRow.innerHTML = `
-                <div class="admin-user-main">
-                    <img src="../assets/users/${trainer.ProfileImage ?? 'default.png'}" alt="Trainer profile image">
+            const trainerMain = document.createElement('div');
+            trainerMain.classList.add('admin-user-main');
 
-                    <div>
-                        <strong>${trainer.Name}</strong>
-                        <p>@${trainer.Username}</p>
-                    </div>
-                </div>
+            const image = document.createElement('img');
+            image.src = '../assets/users/' + (trainer.ProfileImage || 'default.png');
+            image.alt = 'Trainer profile image';
 
-                <p class="admin-user-email">${trainer.Email}</p>
+            const trainerInfo = document.createElement('div');
 
-                <span class="admin-user-role">${trainer.Specializations ?? 'Trainer'}</span>
+            const name = document.createElement('strong');
+            name.textContent = trainer.Name;
 
-                <div class="admin-user-actions">
-                    <a href="admin_edit_trainer.php?id=${trainer.TrainerId}">Edit</a>
-                </div>
-            `;
+            const username = document.createElement('p');
+            username.textContent = '@' + trainer.Username;
+
+            trainerInfo.appendChild(name);
+            trainerInfo.appendChild(username);
+
+            trainerMain.appendChild(image);
+            trainerMain.appendChild(trainerInfo);
+
+            const email = document.createElement('p');
+            email.classList.add('admin-user-email');
+            email.textContent = trainer.Email;
+
+            const specializations = document.createElement('span');
+            specializations.classList.add('admin-user-role');
+            specializations.textContent = trainer.Specializations || 'Trainer';
+
+            const actions = document.createElement('div');
+            actions.classList.add('admin-user-actions');
+
+            const editLink = document.createElement('a');
+            editLink.href = 'admin_edit_trainer.php?id=' + encodeURIComponent(trainer.TrainerId);
+            editLink.textContent = 'Edit';
+
+            actions.appendChild(editLink);
+
+            trainerRow.appendChild(trainerMain);
+            trainerRow.appendChild(email);
+            trainerRow.appendChild(specializations);
+            trainerRow.appendChild(actions);
 
             resultsContainer.appendChild(trainerRow);
         }
