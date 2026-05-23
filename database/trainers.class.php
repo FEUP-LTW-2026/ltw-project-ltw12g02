@@ -132,28 +132,55 @@ class Trainers {
     }
 
     public function getAssignedClasses(PDO $db): array {
-    $stmt = $db->prepare('
-        SELECT *
-        FROM Classes
-        WHERE TrainerId = ?
-        ORDER BY ClassDateTime
-    ');
+        $stmt = $db->prepare('
+            SELECT *
+            FROM Classes
+            WHERE TrainerId = ?
+            ORDER BY ClassDateTime
+        ');
 
-    $stmt->execute([$this->trainer_id]);
+        $stmt->execute([$this->trainer_id]);
 
-    $classes = [];
+        $classes = [];
 
-    while ($row = $stmt->fetch()) {
-        $classes[] = new WorkoutClass(
-            (int)$row['ClassId'],
-            (int)$row['TrainerId'],
-            (int)$row['ClassTypeId'],
-            $row['ClassDateTime'],
-            (int)$row['Capacity']
-        );
+        while ($row = $stmt->fetch()) {
+            $classes[] = new WorkoutClass(
+                (int)$row['ClassId'],
+                (int)$row['TrainerId'],
+                (int)$row['ClassTypeId'],
+                $row['ClassDateTime'],
+                (int)$row['Capacity']
+            );
+        }
+
+        return $classes;
     }
 
-    return $classes;
+    public function getReviews(PDO $db): array {
+        $stmt = $db->prepare('
+            SELECT
+                Enrollments.Rating,
+                Enrollments.Review,
+                Classes.ClassDateTime,
+                ClassType.Name AS ClassType,
+                Users.Name,
+                Users.Username,
+                Users.ProfileImage
+            FROM Classes
+            JOIN Enrollments
+                ON Classes.ClassId = Enrollments.ClassId
+            JOIN Users
+                ON Enrollments.UserId = Users.UserId
+            JOIN ClassType
+                ON Classes.ClassTypeId = ClassType.ClassTypeId
+            WHERE Classes.TrainerId = ?
+            AND Enrollments.Rating IS NOT NULL
+            ORDER BY Classes.ClassDateTime DESC
+        ');
+
+        $stmt->execute([$this->trainer_id]);
+
+        return $stmt->fetchAll();
     }
 
     public static function searchTrainers(PDO $db, string $query): array {

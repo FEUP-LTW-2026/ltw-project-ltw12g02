@@ -528,30 +528,46 @@
   color: var(--black);
 }
 
-/* RATING */
+/* RATING STARS */
 
-.rating {
+.rating-input {
   display: flex;
   flex-direction: row-reverse;
   justify-content: flex-end;
+  gap: 0.4rem;
 }
 
-.rating input {
+.rating-input input {
   display: none;
 }
 
-.rating label {
+.rating-input label {
   font-size: 3rem;
   line-height: 2rem;
   color: gray;
   cursor: pointer;
   transition: color 0.2s;
-  padding-right: 0.4rem;
 }
 
-.rating label:hover,
-.rating label:hover ~ label,
-.rating input:checked ~ label {
+.rating-input label:hover,
+.rating-input label:hover ~ label,
+.rating-input input:checked ~ label {
+  color: gold;
+}
+
+.rating-display {
+  display: inline-flex;
+  margin-left: 0.5rem;
+  gap: 0.15rem;
+}
+
+.rating-display .star {
+  font-size: 1.5rem;
+  line-height: 1rem;
+  color: var(--gray);
+}
+
+.star.fill {
   color: gold;
 }
 

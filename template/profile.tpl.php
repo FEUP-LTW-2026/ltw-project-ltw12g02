@@ -8,89 +8,6 @@ require_once(__DIR__ . '/../database/workoutclass.class.php');
 require_once(__DIR__ . '/../database/workoutclasstype.class.php');
 
 
-function getTrainerByUserIdForProfile(PDO $db, int $userId): ?Trainers {
-    $stmt = $db->prepare('
-        SELECT *
-        FROM Trainers
-        WHERE UserId = ?
-    ');
-
-    $stmt->execute([$userId]);
-    $row = $stmt->fetch();
-
-    if ($row === false) {
-        return null;
-    }
-
-    return new Trainers(
-        (int)$row['TrainerId'],
-        (int)$row['UserId'],
-        $row['Bio'],
-        $row['Specializations'],
-        $row['Certifications']
-    );
-}
-
-
-function getAssignedClassesForTrainer(PDO $db, int $trainerId): array {
-    $stmt = $db->prepare('
-        SELECT *
-        FROM Classes
-        WHERE TrainerId = ?
-        ORDER BY ClassDateTime
-    ');
-
-    $stmt->execute([$trainerId]);
-
-    $classes = [];
-
-    while ($row = $stmt->fetch()) {
-        $classes[] = new WorkoutClass(
-            (int)$row['ClassId'],
-            (int)$row['TrainerId'],
-            (int)$row['ClassTypeId'],
-            $row['ClassDateTime'],
-            (int)$row['Capacity']
-        );
-    }
-
-    return $classes;
-}
-
-
-function getMembersByClassIdForProfile(PDO $db, int $classId): array {
-    $stmt = $db->prepare('
-        SELECT Users.*
-        FROM Enrollments
-        JOIN Users ON Users.UserId = Enrollments.UserId
-        WHERE Enrollments.ClassId = ?
-          AND Enrollments.Status = ?
-        ORDER BY Users.Name
-    ');
-
-    $stmt->execute([
-        $classId,
-        'active'
-    ]);
-
-    $members = [];
-
-    while ($row = $stmt->fetch()) {
-        $members[] = new Users(
-            (int)$row['UserId'],
-            $row['Name'],
-            $row['Username'],
-            $row['Email'],
-            $row['PasswordHash'],
-            $row['Role'],
-            $row['ProfileImage']
-        );
-    }
-
-    return $members;
-}
-
-
 function getWorkoutClassDisplayName(PDO $db, WorkoutClass $workoutClass): string {
     if (!method_exists($workoutClass, 'getClassTypeId')) {
         return 'Class #' . $workoutClass->getId();
@@ -112,6 +29,19 @@ function splitTrainerText(?string $text): array {
     }
 
     return array_filter(array_map('trim', explode(',', $text)));
+}
+
+function renderStars(int $rating): string {
+    $html = '<span class="rating-display">';
+
+    for ($i = 1; $i <= 5; $i++) {
+        $filled = $i <= $rating ? 'fill' : '';
+        $html .= "<span class='star $filled'>★</span>";
+    }
+
+    $html .= '</span>';
+
+    return $html;
 }
 
 
@@ -300,7 +230,7 @@ function drawEditTrainerProfileDialog(Trainers $trainer): void { ?>
 
 function drawProfile(PDO $db, Users $user): void {
     if ($user->getRole() === 'trainer') {
-        $trainer = getTrainerByUserIdForProfile($db, $user->getUserId());
+        $trainer = getTrainerByUserId($db, $user->getUserId());
 
         if ($trainer !== null) {
             drawTrainerProfile($db, $user, $trainer, true);
@@ -433,10 +363,11 @@ function drawMemberProfile(PDO $db, Users $user): void {
 
 
 function drawTrainerProfile(PDO $db, Users $user, Trainers $trainer, bool $canEdit): void {
-    $assignedClasses = getAssignedClassesForTrainer($db, $trainer->getTrainerId());
-    $ratings = $trainer->getAverageRatings($db);
-    $rating = $ratings['AverageRating'];
-    $count = $ratings['TotalReviews'];
+    $assignedClasses = $trainer->getAssignedClasses($db);
+    $avgRatings = $trainer->getAverageRatings($db);
+    $avgRating = $avgRatings['AverageRating'];
+    $ratingCount = $avgRatings['TotalReviews'];
+    $reviews = $trainer->getReviews($db);
 ?>
     <main>
         <section class="flex-row light">
@@ -480,13 +411,13 @@ function drawTrainerProfile(PDO $db, Users $user, Trainers $trainer, bool $canEd
                         </p>
 
                         <div class="trainer_review">
-                            <strong><?= htmlspecialchars((string)$rating) ?> / 5</strong>
-                            <span><?php if (is_null($count)) { ?>
+                            <strong><?= htmlspecialchars((string)$avgRating) ?> / 5</strong>
+                            <span><?php if (is_null($ratingCount)) { ?>
                                     There are no reviews yet.
-                                <?php } else if ($count == 1) { ?>
+                                <?php } else if ($ratingCount == 1) { ?>
                                     <?= htmlspecialchars('Based on a member review.') ?>
                                 <?php } else { ?>
-                                    <?= htmlspecialchars('Based on ' . $count . ' member reviews.') ?>
+                                    <?= htmlspecialchars('Based on ' . $ratingCount . ' member reviews.') ?>
                                 <?php } ?></span>
                         </div>
                     </div>
@@ -503,7 +434,12 @@ function drawTrainerProfile(PDO $db, Users $user, Trainers $trainer, bool $canEd
             <?php drawTrainerRosterCard($db, $assignedClasses); ?>
         </section>
 
+        <section class="grid">
+            <?php drawTrainerReviews($db, $reviews, $canEdit); ?>
+        </section>
+
         <?php if ($canEdit) { ?>
+            
             <?php drawEditProfileDialog($user); ?>
             <?php drawEditTrainerProfileDialog($trainer); ?>
         <?php } ?>
@@ -557,7 +493,7 @@ function drawTrainerScheduleCard(PDO $db, array $assignedClasses): void { ?>
             <dl>
                 <?php foreach ($assignedClasses as $workoutClass) { 
                     $timestamp = strtotime($workoutClass->getClassDateTime());
-                    $members = getMembersByClassIdForProfile($db, $workoutClass->getId());
+                    $members = Enrollments::getMembersByClassId($db, $workoutClass->getId());
                 ?>
                     <div class="card-dl-row">
                         <dt><?= htmlspecialchars(getWorkoutClassDisplayName($db, $workoutClass)) ?></dt>
@@ -581,7 +517,7 @@ function drawTrainerRosterCard(PDO $db, array $assignedClasses): void { ?>
             <p>No rosters available yet.</p>
         <?php } else { ?>
             <?php foreach ($assignedClasses as $workoutClass) {
-                $members = getMembersByClassIdForProfile($db, $workoutClass->getId());
+                $members = Enrollments::getMembersByClassId($db, $workoutClass->getId());
                 $timestamp = strtotime($workoutClass->getClassDateTime());
             ?>
                 <section class="trainer_roster_group">
@@ -619,9 +555,8 @@ function drawTrainerRosterCard(PDO $db, array $assignedClasses): void { ?>
         <?php } ?>
     </article>
 <?php }
-?>
 
-<?php function drawReviewDialog(PDO $db,WorkoutClassType $workoutClassType, WorkoutClass $workoutClass): void {
+function drawReviewDialog(PDO $db,WorkoutClassType $workoutClassType, WorkoutClass $workoutClass): void {
     $timestamp = strtotime($workoutClass->getClassDateTime());
 
     $day = date('l', $timestamp);
@@ -682,20 +617,20 @@ function drawTrainerRosterCard(PDO $db, array $assignedClasses): void { ?>
                     Rating:
                     <div class="rating">
 
-                        <input type="radio" name="rating" id="star5" value="5">
-                        <label for="star5">★</label>
+                        <input type="radio" name="rating" id="star5-<?= htmlspecialchars((string)$workoutClass->getId()) ?>" value="5">
+                        <label for="star5-<?= htmlspecialchars((string)$workoutClass->getId()) ?>">★</label>
 
-                        <input type="radio" name="rating" id="star4" value="4">
-                        <label for="star4">★</label>
+                        <input type="radio" name="rating" id="star4-<?= htmlspecialchars((string)$workoutClass->getId()) ?>" value="4">
+                        <label for="star4-<?= htmlspecialchars((string)$workoutClass->getId()) ?>">★</label>
 
-                        <input type="radio" name="rating" id="star3" value="3">
-                        <label for="star3">★</label>
+                        <input type="radio" name="rating" id="star3-<?= htmlspecialchars((string)$workoutClass->getId()) ?>" value="3">
+                        <label for="star3-<?= htmlspecialchars((string)$workoutClass->getId()) ?>">★</label>
 
-                        <input type="radio" name="rating" id="star2" value="2">
-                        <label for="star2">★</label>
+                        <input type="radio" name="rating" id="star2-<?= htmlspecialchars((string)$workoutClass->getId()) ?>" value="2">
+                        <label for="star2-<?= htmlspecialchars((string)$workoutClass->getId()) ?>">★</label>
 
-                        <input type="radio" name="rating" id="star1" value="1">
-                        <label for="star1">★</label>
+                        <input type="radio" name="rating" id="star1-<?= htmlspecialchars((string)$workoutClass->getId()) ?>" value="1">
+                        <label for="star1-<?= htmlspecialchars((string)$workoutClass->getId()) ?>">★</label>
 
                     </div>
                 </label>
@@ -726,4 +661,42 @@ function drawTrainerRosterCard(PDO $db, array $assignedClasses): void { ?>
             </form>
         </section>
     </dialog>
+<?php } 
+function drawTrainerReviews($db, $reviews, $canEdit): void { ?>
+    <article class="card">
+        <h2 class="card-title center">Class Reviews</h2>
+        <?php if (empty($reviews)) { 
+            if ($canEdit) { ?>
+            <p>You do not have any reviews yet.</p>
+            <?php } else { ?>
+            <p>This trainer does not have any reviews yet.</p>
+        <?php }
+        } else { ?>
+
+            <ul class="trainer_roster_members">
+                <?php foreach ($reviews as $review) { ?>
+                    
+                        <li>
+                            <img 
+                                src="../assets/users/<?= htmlspecialchars($review['ProfileImage'] ?? 'default.png') ?>" 
+                                alt="Member profile picture"
+                            >
+
+                            <div>
+                                <strong>
+                                    <?= htmlspecialchars($review['Name']) ?>
+                                    <?= renderStars($review['Rating']) ?>
+                                </strong>
+                                <span>@<?= htmlspecialchars($review['Username']) ?></span>
+                            </div>
+
+                            <span><?= htmlspecialchars($review['ClassType'] . ' Class of ' . date('d M · H:i', strtotime($review['ClassDateTime']))) ?></span>
+
+                            <p><?= htmlspecialchars($review['Review']) ?></p>
+                        </li>
+                    
+                <?php } ?>
+            </ul>
+        <?php } ?>
+    </article>
 <?php } ?>
