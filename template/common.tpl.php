@@ -18,6 +18,7 @@ function generateHead(string $title) {
     <script src="../js/popup.js" defer></script>
     <script src="../js/profile.js" defer></script>
     <script src="../js/booking_class.js" defer></script>
+    <script src="../js/review.js" defer></script>
     <script src="../js/search_users.js" defer></script>
     <script src="../js/search_trainers.js" defer></script>
 </head>

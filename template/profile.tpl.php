@@ -657,8 +657,7 @@ function drawTrainerRosterCard(PDO $db, array $assignedClasses): void { ?>
             </dl>
 
             <form 
-                class="popup-form"
-                id="review-form"
+                class="popup-form review-form"
                 action="../actions/action_review.php" 
                 method="post"
             >

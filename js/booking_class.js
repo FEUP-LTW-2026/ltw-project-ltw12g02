@@ -1,4 +1,4 @@
-const bookingForms = document.querySelectorAll('#booking-form');
+const bookingForms = document.querySelectorAll('.booking-form');
 
 function showBookingResult(card, dialog, title, message) {
     card.classList.add('booking-result-card');

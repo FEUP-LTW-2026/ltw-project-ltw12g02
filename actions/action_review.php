@@ -28,10 +28,10 @@ $rating = intval($_POST['rating']);
 $review = $_POST['review'];
 
 if ($rating < 1 || $rating > 5) {
-        $session->addMessage('error', 'Invalid rating!');
-        header('Location: ../pages/profile.php');
-        exit;
-    }
+    $session->addMessage('error', 'Invalid rating!');
+    header('Location: ../pages/profile.php');
+    exit;
+}
 
 Enrollments::updateReview($db, $userId, $classId, $rating, $review);
 

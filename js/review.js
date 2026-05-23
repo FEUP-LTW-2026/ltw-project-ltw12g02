@@ -1,4 +1,4 @@
-const reviewForms = document.querySelectorAll('#review-form');
+const reviewForms = document.querySelectorAll('.review-form');
 
 function showReviewResult(card, dialog, title, message) {
     card.classList.add('review-result-card');
