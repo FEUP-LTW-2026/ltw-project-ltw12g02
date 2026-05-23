@@ -27,6 +27,7 @@
 
 html {
   scroll-behavior: smooth;
+  min-height: 100%;
 }
 
 body {
@@ -34,10 +35,14 @@ body {
   background: var(--gray-bg);
   color: var(--black);
   line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 main {
   width: 100%;
+  flex: 1;
 }
 
 a {
