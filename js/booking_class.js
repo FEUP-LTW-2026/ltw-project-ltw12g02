@@ -21,12 +21,12 @@ bookingForms.forEach((form) => {
                         <h1>Booked!</h1>
                         <p>Your class booking has been confirmed.</p>
                     </header>
-
                     <div class="popup-actions">
                         <button type="button" class="btn small light popup-ok">
                             Done
                         </button>
                     </div>
+                    
                 `;
             } else if (request.status === 409) {
                 card.innerHTML = `
@@ -35,34 +35,38 @@ bookingForms.forEach((form) => {
                     </button>
 
                     <header class="popup-header">
+                        
                         <p class="profile-member-card-label">PowerPIT Booking</p>
                         <h1>Already booked</h1>
                         <p>You have already booked this class.</p>
+                        
                     </header>
-
                     <div class="popup-actions">
                         <button type="button" class="btn small light popup-ok">
                             Done
                         </button>
                     </div>
+                    
                 `;
             } else {
                 card.innerHTML = `
-                    <button type="button" class="popup-close" aria-label="Close booking dialog">
+                   <button type="button" class="popup-close" aria-label="Close booking dialog">
                         &times;
-                    </button>
+                    </button> 
 
                     <header class="popup-header">
+                        
                         <p class="profile-member-card-label">PowerPIT Booking</p>
                         <h1>Booking failed</h1>
                         <p>Could not complete the booking. Please try again.</p>
+                        
                     </header>
-
                     <div class="popup-actions">
                         <button type="button" class="btn small light popup-ok">
                             Done
                         </button>
                     </div>
+                    
                 `;
             }
 

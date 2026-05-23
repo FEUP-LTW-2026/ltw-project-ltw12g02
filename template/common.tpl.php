@@ -38,7 +38,7 @@ function generateHeader(Session $session) { ?>
                 <img src="../html/PowerPIT.png" alt="logo" width="100" height="50">
             </div>
             <ul>
-                <li><a href="index.php#aboutus"><i class="fa fa-id-card" aria-hidden="true"></i> About&nbsp;us</a></li>
+                <li><a href="index.php"><i class="fa fa-id-card" aria-hidden="true"></i> About&nbsp;us</a></li>
                 <li><a href="classes.php"><i class="fa fa-users" aria-hidden="true"></i> Classes</a></li>
                 <li><a href="trainers.php"><i class="fa fa-id-badge" aria-hidden="true"></i> Trainers</a></li>
                 <li><a href="equipment.php"><i class="fa fa-th" aria-hidden="true"></i> Equipment</a></li>

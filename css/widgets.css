@@ -289,9 +289,6 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-}
-
-.popup-header {
   grid-column: 1;
   grid-row: 1 / span 2;
 }
@@ -506,6 +503,33 @@
   color: var(--black);
 }
 
+/* RATING */
+
+.rating {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+}
+
+.rating input {
+  display: none;
+}
+
+.rating label {
+  font-size: 3rem;
+  line-height: 2rem;
+  color: gray;
+  cursor: pointer;
+  transition: color 0.2s;
+  padding-right: 0.4rem;
+}
+
+.rating label:hover,
+.rating label:hover ~ label,
+.rating input:checked ~ label {
+  color: gold;
+}
+
 /* ADMIN */
 
 .admin-users-page {
@@ -683,7 +707,7 @@
     grid-column: 1;
   }
 
-  .edit-profile-form {
+  .popup-form {
     max-height: calc(90vh - 12rem);
     padding: 2rem 2rem 0;
   }
@@ -722,7 +746,7 @@
     padding: 1.4rem;
   }
 
-  .edit-profile-form {
+  .popup-form {
     max-height: calc(90vh - 12rem);
     padding: 2rem 1.5rem 0;
   }

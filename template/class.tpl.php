@@ -185,42 +185,7 @@ function drawBookingDialog(PDO $db,WorkoutClassType $workoutClassType, WorkoutCl
                 <p>Check the details before confirming your booking.</p>
             </header>
 
-            <dl>
-                <div class="card-dl-row">
-                    <dt>Class</dt>
-                    <dd><?= htmlspecialchars($workoutClassType->getName()) ?></dd>
-                </div>
-
-                <div class="card-dl-row">
-                    <dt>Day</dt>
-                    <dd><?= htmlspecialchars($day) ?></dd>
-                </div>
-
-                <div class="card-dl-row">
-                    <dt>Date</dt>
-                    <dd><?= htmlspecialchars($date) ?></dd>
-                </div>
-
-                <div class="card-dl-row">
-                    <dt>Time</dt>
-                    <dd><?= htmlspecialchars($time) ?></dd>
-                </div>
-
-                <div class="card-dl-row">
-                    <dt>Trainer</dt>
-                    <dd><?= htmlspecialchars((string)$workoutClass->getTrainerName($db)) ?></dd>
-                </div>
-
-                <div class="card-dl-row">
-                    <dt>Duration</dt>
-                    <dd><?= htmlspecialchars((string)$workoutClassType->getDuration()) ?> minutes</dd>
-                </div>
-
-                <div class="card-dl-row">
-                    <dt>Capacity</dt>
-                    <dd><?= htmlspecialchars((string)$workoutClass->getCapacity()) ?></dd>
-                </div>
-            </dl>
+            
 
             <form 
                 class="popup-form" 
@@ -233,6 +198,43 @@ function drawBookingDialog(PDO $db,WorkoutClassType $workoutClassType, WorkoutCl
                     name="class_id" 
                     value="<?= htmlspecialchars((string)$workoutClass->getId()) ?>"
                 >
+
+                <dl>
+                    <div class="card-dl-row">
+                        <dt>Class</dt>
+                        <dd><?= htmlspecialchars($workoutClassType->getName()) ?></dd>
+                    </div>
+
+                    <div class="card-dl-row">
+                        <dt>Day</dt>
+                        <dd><?= htmlspecialchars($day) ?></dd>
+                    </div>
+
+                    <div class="card-dl-row">
+                        <dt>Date</dt>
+                        <dd><?= htmlspecialchars($date) ?></dd>
+                    </div>
+
+                    <div class="card-dl-row">
+                        <dt>Time</dt>
+                        <dd><?= htmlspecialchars($time) ?></dd>
+                    </div>
+
+                    <div class="card-dl-row">
+                        <dt>Trainer</dt>
+                        <dd><?= htmlspecialchars((string)$workoutClass->getTrainerName($db)) ?></dd>
+                    </div>
+
+                    <div class="card-dl-row">
+                        <dt>Duration</dt>
+                        <dd><?= htmlspecialchars((string)$workoutClassType->getDuration()) ?> minutes</dd>
+                    </div>
+
+                    <div class="card-dl-row">
+                        <dt>Capacity</dt>
+                        <dd><?= htmlspecialchars((string)$workoutClass->getCapacity()) ?></dd>
+                    </div>
+                </dl>
 
                 <div class="popup-actions">
                     <button 

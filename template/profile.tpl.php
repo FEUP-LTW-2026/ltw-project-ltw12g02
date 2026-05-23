@@ -398,7 +398,7 @@ function drawMemberProfile(PDO $db, Users $user): void {
                 <h2 class="card-title center">Classes History</h2>
 
                 <?php if (empty($classHistory)) { ?>
-                    <p>You do not have any booked classes yet.</p>
+                    <p>You have not attended any classes yet.</p>
                 <?php } else { ?>
                     <dl>
                         <?php foreach ($classHistory as $workoutClass) {
@@ -637,23 +637,7 @@ function drawTrainerRosterCard(PDO $db, array $assignedClasses): void { ?>
                 <p>Rate this class and give us your feedback.</p>
             </header>
 
-            <dl>
-                <h2>Info</h2>
-                <div class="card-dl-row">
-                    <dt>Class</dt>
-                    <dd><?= htmlspecialchars($workoutClassType->getName()) ?></dd>
-                </div>
-
-                <div class="card-dl-row">
-                    <dt>Date</dt>
-                    <dd><?= htmlspecialchars($date)?>,<?= htmlspecialchars($time) ?></dd>
-                </div>
-
-                <div class="card-dl-row">
-                    <dt>Trainer</dt>
-                    <dd><?= htmlspecialchars((string)$workoutClass->getTrainerName($db)) ?></dd>
-                </div>
-            </dl>
+            
 
             <form 
                 class="popup-form"
@@ -666,10 +650,29 @@ function drawTrainerRosterCard(PDO $db, array $assignedClasses): void { ?>
                     name="class_id" 
                     value="<?= htmlspecialchars((string)$workoutClass->getId()) ?>"
                 >
+                
+                <dl>
+                    <h2>Info</h2>
+                    <div class="card-dl-row">
+                        <dt>Class</dt>
+                        <dd><?= htmlspecialchars($workoutClassType->getName()) ?></dd>
+                    </div>
+
+                    <div class="card-dl-row">
+                        <dt>Date</dt>
+                        <dd><?= htmlspecialchars($date)?> · <?=htmlspecialchars($time) ?></dd>
+                    </div>
+
+                    <div class="card-dl-row">
+                        <dt>Trainer</dt>
+                        <dd><?= htmlspecialchars((string)$workoutClass->getTrainerName($db)) ?></dd>
+                    </div>
+                </dl>
+
                 <h2>Review</h2>
 
                 <label>
-                    Rating
+                    Rating:
                     <div class="rating">
 
                         <input type="radio" name="rating" id="star5" value="5">
@@ -691,7 +694,7 @@ function drawTrainerRosterCard(PDO $db, array $assignedClasses): void { ?>
                 </label>
 
                 <label>
-                    Review
+                    Review:
                     <textarea 
                         name="review"
                         placeholder="Tell us your opinion!"
