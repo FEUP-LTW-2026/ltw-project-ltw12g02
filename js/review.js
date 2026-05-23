@@ -1,4 +1,4 @@
-const bookingForms = document.querySelectorAll('#review-form');
+const reviewForms = document.querySelectorAll('#review-form');
 
 function showReviewResult(card, dialog, title, message) {
     card.classList.add('review-result-card');
@@ -30,7 +30,7 @@ function showReviewResult(card, dialog, title, message) {
     });
 }
 
-bookingForms.forEach((form) => {
+reviewForms.forEach((form) => {
     form.addEventListener('submit', (event) => {
         event.preventDefault();
 
@@ -50,14 +50,14 @@ bookingForms.forEach((form) => {
                     'We appreciate your feedback.'
                 );
             } else if (request.status === 409) {
-                showBookingResult(
+                showReviewResult(
                     card,
                     dialog,
                     'Already reviewed',
                     'You have already reviewed this class.'
                 );
             } else {
-                showBookingResult(
+                showReviewResult(
                     card,
                     dialog,
                     'Review failed',

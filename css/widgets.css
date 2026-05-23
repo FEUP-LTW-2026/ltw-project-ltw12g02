@@ -304,16 +304,15 @@
   grid-row: 1 / span 2;
 }
 
+#edit-profile-dialog .popup-header {
+  grid-row: 1;
+}
+
 .popup-header .profile-member-card-label {
   color: var(--lime);
   margin-bottom: 0.9rem;
 }
 
-.popup-header h1 {
-  margin: 0.4rem 0;
-  font-size: 2.4rem;
-  color: var(--black);
-}
 .popup-header h1 {
   margin: 0 0 0.9rem 0;
   color: var(--white);
@@ -322,7 +321,7 @@
   text-transform: uppercase;
 }
 
-.popup-header p:last-child{
+.popup-header p:last-child {
   margin: 0;
   color: rgba(255, 255, 255, 0.76);
   max-width: 14rem;
@@ -378,15 +377,15 @@
 
 /* CLOSE BUTTON */
 
-.popup-header {
-  margin: 0;
-  padding: 2.3rem;
-  text-align: left;
-  background:
-    linear-gradient(135deg, rgba(5, 5, 5, 0.94), rgba(5, 5, 5, 0.76)),
-    var(--hero-bg);
-  background-size: cover;
-  background-position: center;
+.popup-close{
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 2.2rem;
+  height: 2.2rem;
+  border: none;
+  border-radius: 50%;
+  background: var(--black);
   color: var(--white);
   font-size: 1.5rem;
   font-weight: 800;

@@ -134,7 +134,8 @@ function drawEditProfileDialog(Users $user): void { ?>
             </header>
 
             <form 
-                class="popup-form" 
+                class="popup-form"
+                id="edit-profile-form
                 action="../actions/action_edit_profile.php" 
                 method="post"
                 enctype="multipart/form-data"
@@ -637,7 +638,23 @@ function drawTrainerRosterCard(PDO $db, array $assignedClasses): void { ?>
                 <p>Rate this class and give us your feedback.</p>
             </header>
 
-            
+            <dl>
+                <h2>Info</h2>
+                <div class="card-dl-row">
+                    <dt>Class</dt>
+                    <dd><?= htmlspecialchars($workoutClassType->getName()) ?></dd>
+                </div>
+
+                <div class="card-dl-row">
+                    <dt>Date</dt>
+                    <dd><?= htmlspecialchars($date)?> · <?=htmlspecialchars($time) ?></dd>
+                </div>
+
+                <div class="card-dl-row">
+                    <dt>Trainer</dt>
+                    <dd><?= htmlspecialchars((string)$workoutClass->getTrainerName($db)) ?></dd>
+                </div>
+            </dl>
 
             <form 
                 class="popup-form"
@@ -650,24 +667,6 @@ function drawTrainerRosterCard(PDO $db, array $assignedClasses): void { ?>
                     name="class_id" 
                     value="<?= htmlspecialchars((string)$workoutClass->getId()) ?>"
                 >
-                
-                <dl>
-                    <h2>Info</h2>
-                    <div class="card-dl-row">
-                        <dt>Class</dt>
-                        <dd><?= htmlspecialchars($workoutClassType->getName()) ?></dd>
-                    </div>
-
-                    <div class="card-dl-row">
-                        <dt>Date</dt>
-                        <dd><?= htmlspecialchars($date)?> · <?=htmlspecialchars($time) ?></dd>
-                    </div>
-
-                    <div class="card-dl-row">
-                        <dt>Trainer</dt>
-                        <dd><?= htmlspecialchars((string)$workoutClass->getTrainerName($db)) ?></dd>
-                    </div>
-                </dl>
 
                 <h2>Review</h2>
 
