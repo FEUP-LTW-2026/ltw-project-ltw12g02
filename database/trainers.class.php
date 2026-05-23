@@ -174,4 +174,21 @@ class Trainers {
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function getAverageRatings(PDO $db): array {
+        $stmt = $db->prepare('
+            SELECT 
+                COALESCE(ROUND(AVG(Enrollments.Rating), 1), 0) AS AverageRating,
+                COUNT(Enrollments.Rating) AS TotalReviews
+            FROM Classes
+            JOIN Enrollments
+                ON Classes.ClassId = Enrollments.ClassId
+            WHERE Classes.TrainerId = ?
+            AND Enrollments.Rating IS NOT NULL;
+        ');
+
+        $stmt->execute([$this->trainer_id]);
+
+        return $stmt->fetch();
+    }
 }

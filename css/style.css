@@ -614,7 +614,7 @@ button {
   max-width: 48rem;
 }
 
-.trainer_fake_review {
+.trainer_review {
   padding: 0.8rem 1rem;
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.1);
@@ -622,14 +622,14 @@ button {
   min-width: 9rem;
 }
 
-.trainer_fake_review strong {
+.trainer_review strong {
   display: block;
   color: var(--lime);
   font-size: 1.4rem;
   line-height: 1;
 }
 
-.trainer_fake_review span {
+.trainer_review span {
   display: block;
   margin-top: 0.3rem;
   color: rgba(255, 255, 255, 0.75);

@@ -434,6 +434,9 @@ function drawMemberProfile(PDO $db, Users $user): void {
 
 function drawTrainerProfile(PDO $db, Users $user, Trainers $trainer, bool $canEdit): void {
     $assignedClasses = getAssignedClassesForTrainer($db, $trainer->getTrainerId());
+    $ratings = $trainer->getAverageRatings($db);
+    $rating = $ratings['AverageRating'];
+    $count = $ratings['TotalReviews'];
 ?>
     <main>
         <section class="flex-row light">
@@ -476,9 +479,15 @@ function drawTrainerProfile(PDO $db, Users $user, Trainers $trainer, bool $canEd
                             <?= htmlspecialchars($trainer->getBio() ?? 'No trainer bio added yet.') ?>
                         </p>
 
-                        <div class="trainer_fake_review">
-                            <strong>4.8 / 5</strong>
-                            <span>Based on member reviews</span>
+                        <div class="trainer_review">
+                            <strong><?= htmlspecialchars((string)$rating) ?> / 5</strong>
+                            <span><?php if (is_null($count)) { ?>
+                                    There are no reviews yet.
+                                <?php } else if ($count == 1) { ?>
+                                    <?= htmlspecialchars('Based on a member review.') ?>
+                                <?php } else { ?>
+                                    <?= htmlspecialchars('Based on ' . $count . ' member reviews.') ?>
+                                <?php } ?></span>
                         </div>
                     </div>
                 </div>
