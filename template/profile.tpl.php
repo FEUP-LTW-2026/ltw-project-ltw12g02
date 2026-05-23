@@ -615,7 +615,7 @@ function drawReviewDialog(PDO $db,WorkoutClassType $workoutClassType, WorkoutCla
 
                 <label>
                     Rating:
-                    <div class="rating">
+                    <div class="rating-input">
 
                         <input type="radio" name="rating" id="star5-<?= htmlspecialchars((string)$workoutClass->getId()) ?>" value="5">
                         <label for="star5-<?= htmlspecialchars((string)$workoutClass->getId()) ?>">★</label>
