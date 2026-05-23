@@ -89,6 +89,14 @@
   border-radius: 22px;
 }
 
+.profile-member-card-content > div {
+  min-width: 0;
+}
+
+.profile-member-card-content h1 {
+  overflow-wrap: anywhere;
+}
+
 .profile-member-card-label {
   margin: 0;
   font-size: 0.8rem;
@@ -103,9 +111,13 @@
   color: rgba(255, 255, 255, 0.85);
 }
 
-.profile-member-card-content .profile-edit-btn {
+.profile-member-card-content .btn.small.profile-edit-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   justify-self: end;
   align-self: center;
+  white-space: nowrap;
 }
 
 /* CARD WRAP */
@@ -169,7 +181,6 @@
   color: white;
   pointer-events: none;
   cursor: not-allowed;
-  grid-template-rows: 1fr;
 }
 
 .btn-compact {
@@ -394,6 +405,15 @@
 /* POPUP ACTIONS / BUTTONS */
 
 .popup-actions {
+  background: var(--white);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Actions inside forms */
+.popup-form .popup-actions {
   position: sticky;
   bottom: 0;
   z-index: 3;
@@ -401,13 +421,19 @@
   margin: 1rem -2.3rem 0;
   padding: 1rem 2.3rem;
 
-  background: var(--white);
   border-top: 1px solid var(--border);
+}
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
+/* Actions directly inside popup-card, used by booking result */
+.popup-card > .popup-actions {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+
+  min-height: 15.5rem;
+  margin: 0;
+  padding: 2.3rem;
+
+  border-top: none;
 }
 
 .popup-actions button {
@@ -673,6 +699,26 @@
 /* RESPONSIVE */
 
 @media (max-width: 60rem) {
+  .profile-member-card-content {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+    gap: 1rem;
+  }
+
+  .profile-member-card-content img {
+    width: 10rem;
+    height: 10rem;
+  }
+
+  .profile-member-card-content .btn.small.profile-edit-btn {
+    justify-self: center;
+    align-self: center;
+    width: fit-content;
+    max-width: 100%;
+    white-space: normal;
+  }
+
   .admin-users-header {
     display: none;
   }
@@ -703,8 +749,15 @@
   }
 
   .popup-card > dl,
-  .popup-form {
+  .popup-form
+  .popup-card > .popup-actions {
     grid-column: 1;
+  }
+
+  .popup-card > .popup-actions {
+    grid-row: auto;
+    min-height: 8rem;
+    padding: 2rem;
   }
 
   .popup-form {
@@ -712,13 +765,32 @@
     padding: 2rem 2rem 0;
   }
 
-  .popup-actions {
+  .popup-form .popup-actions {
     margin: 1rem -2rem 0;
     padding: 1rem 2rem;
   }
 }
 
 @media (max-width: 30rem) {
+  .profile-member-card-content {
+    gap: 1rem;
+  }
+
+  .profile-member-card-content img {
+    width: 9rem;
+    height: 9rem;
+  }
+
+  .profile-member-card-content h1 {
+    font-size: 2rem;
+  }
+
+  .profile-member-card-content .btn.small.profile-edit-btn {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+
   .card-dl-row {
     flex-direction: column;
     align-items: flex-start;
@@ -746,6 +818,24 @@
     padding: 1.4rem;
   }
 
+  .popup-card > .popup-actions {
+    padding: 1.5rem;
+    flex-direction: row;
+  }
+
+  .popup-card > .popup-actions .btn {
+    width: auto;
+  }
+
+  .popup-card > .popup-actions {
+    padding: 1.5rem;
+    flex-direction: row;
+  }
+
+  .popup-card > .popup-actions .btn {
+    width: auto;
+  }
+
   .popup-form {
     max-height: calc(90vh - 12rem);
     padding: 2rem 1.5rem 0;
@@ -755,7 +845,7 @@
     font-size: 1.8rem;
   }
 
-  .popup-actions {
+  .popup-form .popup-actions {
     margin: 1rem -1.5rem 0;
     padding: 1rem 1.5rem;
     flex-direction: row;

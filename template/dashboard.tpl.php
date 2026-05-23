@@ -14,7 +14,6 @@ function drawAdminDashboard(string $adminName, array $stats): void { ?>
         <section class="admin-bottom">
             <div class="admin-wrap">
                 <?php drawAdminManagementCards(); ?>
-                <?php drawAdminQuickActions(); ?>
             </div>
         </section>
 
@@ -144,32 +143,4 @@ function drawAdminCard(
 
         <strong><?= htmlspecialchars($action) ?> →</strong>
     </a>
-<?php } ?>
-
-
-<?php
-function drawAdminQuickActions(): void { ?>
-    <section class="admin-quick-actions">
-        <div>
-            <p class="admin-label">Fast Access</p>
-            <h2>Quick Actions</h2>
-        </div>
-
-        <div class="quick-actions-row">
-            <a href="admin_add_trainer.php" class="btn light btn-compact btn-icon">
-                <i class="fa fa-plus" aria-hidden="true"></i>
-                Add Trainer
-            </a>
-
-            <a href="admin_add_class.php" class="btn light btn-compact btn-icon">
-                <i class="fa fa-plus" aria-hidden="true"></i>
-                Create Class
-            </a>
-
-            <a href="admin_add_equipment.php" class="btn light btn-compact btn-icon">
-                <i class="fa fa-plus" aria-hidden="true"></i>
-                Add Equipment
-            </a>
-        </div>
-    </section>
 <?php } ?>

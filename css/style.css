@@ -1053,7 +1053,6 @@ button {
 .admin-hero,
 .admin-stat-card,
 .admin-card,
-.admin-quick-actions,
 .admin-users-hero,
 .admin-user-row,
 .empty-search-message,
@@ -1196,8 +1195,7 @@ button {
   margin-bottom: 1.2rem;
 }
 
-.admin-section-header h2,
-.admin-quick-actions h2 {
+.admin-section-header h2 {
   color: var(--black);
   font-size: 2rem;
   line-height: 1;
@@ -1260,29 +1258,6 @@ button {
 .admin-card:hover strong {
   color: var(--black);
   font-size: 0.92rem;
-}
-
-/* ADMIN QUICK ACTIONS */
-
-.admin-quick-actions {
-  padding: 1.4rem 1.5rem;
-  background: var(--black);
-  color: var(--white);
-  border: 1px solid rgba(183, 255, 0, 0.18);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1.5rem;
-}
-
-.admin-quick-actions h2 {
-  color: var(--white);
-}
-
-.quick-actions-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.8rem;
 }
 
 /* ADMIN USERS PAGE */
@@ -1444,6 +1419,63 @@ button {
   border-color: rgba(153, 27, 27, 0.2);
 }
 
+/* ADMIN TRAINERS CONTROLS */
+
+.admin-users-controls-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) max-content;
+  gap: 0.9rem;
+  align-items: center;
+}
+
+.admin-users-controls-row input {
+  min-width: 0;
+}
+
+.admin-users-controls-row .btn {
+  justify-self: end;
+  white-space: nowrap;
+  min-height: 3.35rem;
+}
+
+
+/* ADMIN TRAINERS TABLE */
+
+.admin-trainers-header,
+.admin-trainer-row {
+  grid-template-columns:
+    minmax(14rem, 1.3fr)
+    minmax(18rem, 1.4fr)
+    minmax(12rem, 1fr)
+    5rem;
+}
+
+.admin-user-main,
+.admin-user-main > div,
+.admin-user-email,
+.admin-user-role {
+  min-width: 0;
+}
+
+.admin-user-email {
+  overflow-wrap: anywhere;
+}
+
+.admin-user-role {
+  display: inline-block;
+  width: fit-content;
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  line-height: 1.25;
+  text-transform: none;
+}
+
+.admin-user-actions {
+  justify-self: end;
+}
+
 /* RESPONSIVE */
 
 @media (max-width: 60rem) {
@@ -1515,8 +1547,7 @@ button {
     width: 100%;
   }
 
-  .admin-section-header,
-  .admin-quick-actions {
+  .admin-section-header {
     align-items: flex-start;
     flex-direction: column;
   }
