@@ -354,5 +354,75 @@ class Users {
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+public function changeRole(string $role, PDO $db): void {
+    $allowedRoles = ['member', 'trainer', 'admin'];
+
+    if (!in_array($role, $allowedRoles, true)) {
+        throw new InvalidArgumentException('Invalid role.');
+    }
+
+    $oldRole = $this->role;
+
+    $stmt = $db->prepare('
+        UPDATE Users 
+        SET Role = ? 
+        WHERE UserId = ?
+    ');
+
+    $stmt->execute([
+        $role,
+        $this->user_id
+    ]);
+
+    $this->role = $role;
+
+    if ($oldRole !== 'trainer' && $role === 'trainer') {
+        Trainers::createTrainer($this->user_id, $db);
+    }
+
+    if ($oldRole === 'trainer' && $role !== 'trainer') {
+        Trainers::deleteTrainer($this->user_id, $db);
+    }
 }
+
+public function deleteUser(PDO $db): void {
+    try {
+        $db->beginTransaction();
+
+        $stmt = $db->prepare('
+            DELETE FROM Enrollments
+            WHERE UserId = ?
+        ');
+
+        $stmt->execute([$this->user_id]);
+
+        $stmt = $db->prepare('
+            DELETE FROM Trainers
+            WHERE UserId = ?
+        ');
+
+        $stmt->execute([$this->user_id]);
+
+        $stmt = $db->prepare('
+            DELETE FROM Users
+            WHERE UserId = ?
+        ');
+
+        $stmt->execute([$this->user_id]);
+
+        $db->commit();
+
+    } catch (PDOException $e) {
+        if ($db->inTransaction()) {
+            $db->rollBack();
+        }
+
+        throw $e;
+    }
+}
+
+}
+
+
 ?>

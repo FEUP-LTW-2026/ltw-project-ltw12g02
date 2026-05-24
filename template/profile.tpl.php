@@ -230,7 +230,7 @@ function drawEditTrainerProfileDialog(Trainers $trainer): void { ?>
 
 function drawProfile(PDO $db, Users $user): void {
     if ($user->getRole() === 'trainer') {
-        $trainer = getTrainerByUserId($db, $user->getUserId());
+        $trainer = Trainers::getTrainerByUserId($db, $user->getUserId());
 
         if ($trainer !== null) {
             drawTrainerProfile($db, $user, $trainer, true);
