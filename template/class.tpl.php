@@ -5,7 +5,7 @@ require_once(__DIR__ . '/../database/workoutclasstype.class.php');
 require_once(__DIR__ . '/../database/workoutclass.class.php');
 
 function drawClassPage(WorkoutClassType $workoutClassType, PDO $db): void { 
-    $workoutClasses = $workoutClassType->getWorkoutClasses($db);
+    $workoutClasses = $workoutClassType->getNextClasses($db);
 ?>
     <main>
         <?php drawClassHeader($workoutClassType); ?>
