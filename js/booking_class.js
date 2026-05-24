@@ -49,6 +49,13 @@ bookingForms.forEach((form) => {
                     'Booked!',
                     'Your class booking has been confirmed.'
                 );
+            } else if (request.status === 401) {
+                showBookingResult(
+                    card,
+                    dialog,
+                    'Login required',
+                    'You need to be logged in to book this class.'
+                );
             } else if (request.status === 409) {
                 showBookingResult(
                     card,
@@ -67,6 +74,7 @@ bookingForms.forEach((form) => {
         });
 
         request.open('POST', form.action, true);
+        request.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 
         const data = new FormData(form);
         request.send(data);

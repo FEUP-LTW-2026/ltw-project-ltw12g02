@@ -711,6 +711,48 @@
   background: #fee2e2;
 }
 
+.admin-edit-user-card,
+.admin-edit-user-section {
+  margin-top: 1.5rem;
+}
+
+.admin-edit-user-card:first-of-type {
+  margin-top: 0;
+}
+
+.admin-edit-user-profile {
+  display: grid;
+  grid-template-columns: 7rem 1fr auto;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.admin-edit-user-avatar {
+  width: 7rem;
+  height: 7rem;
+  object-fit: cover;
+  border-radius: 50%;
+  background: var(--gray-bg);
+}
+
+.admin-edit-user-main-info {
+  min-width: 0;
+}
+
+.admin-edit-user-main-info strong {
+  display: block;
+  color: var(--black);
+  font-size: 1.4rem;
+  line-height: 1.1;
+}
+
+.admin-edit-user-main-info p {
+  margin-top: 0.25rem;
+  color: var(--gray-text);
+}
+
+
 /* RESPONSIVE */
 
 @media (max-width: 60rem) {
@@ -783,6 +825,17 @@
   .popup-form .popup-actions {
     margin: 1rem -2rem 0;
     padding: 1rem 2rem;
+  }
+
+    .admin-edit-user-profile {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .admin-edit-user-avatar {
+    width: 8rem;
+    height: 8rem;
   }
 }
 
@@ -878,4 +931,6 @@
     width: 8.5rem;
     height: 8.5rem;
   }
+
+  
 }

@@ -21,6 +21,7 @@ function generateHead(string $title) {
     <script src="../js/review.js" defer></script>
     <script src="../js/search_users.js" defer></script>
     <script src="../js/search_trainers.js" defer></script>
+    <script src="../js/admin_confirm.js" defer></script>
 </head>
 <body>  
 <?php } 
