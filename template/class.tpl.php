@@ -119,6 +119,13 @@ function drawAvailableClasses(PDO $db,WorkoutClassType $workoutClassType): void 
 
         <select name="trainer">
             <option value="">All trainers</option>
+            <?php foreach (Trainers::getAllTrainers($db) as $trainer) { ?>
+
+                <option value="<?= $trainer->getTrainerId() ?>">
+                    <?= htmlspecialchars($trainer->getName($db)) ?>
+                </option>
+
+            <?php } ?>
         </select>
 
         <input type="date" name="date" min="<?= date('Y-m-d') ?>">
