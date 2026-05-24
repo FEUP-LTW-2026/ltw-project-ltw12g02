@@ -385,5 +385,44 @@ public function changeRole(string $role, PDO $db): void {
         Trainers::deleteTrainer($this->user_id, $db);
     }
 }
+
+public function deleteUser(PDO $db): void {
+    try {
+        $db->beginTransaction();
+
+        $stmt = $db->prepare('
+            DELETE FROM Enrollments
+            WHERE UserId = ?
+        ');
+
+        $stmt->execute([$this->user_id]);
+
+        $stmt = $db->prepare('
+            DELETE FROM Trainers
+            WHERE UserId = ?
+        ');
+
+        $stmt->execute([$this->user_id]);
+
+        $stmt = $db->prepare('
+            DELETE FROM Users
+            WHERE UserId = ?
+        ');
+
+        $stmt->execute([$this->user_id]);
+
+        $db->commit();
+
+    } catch (PDOException $e) {
+        if ($db->inTransaction()) {
+            $db->rollBack();
+        }
+
+        throw $e;
+    }
 }
+
+}
+
+
 ?>
