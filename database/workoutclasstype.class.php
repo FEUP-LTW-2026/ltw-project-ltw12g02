@@ -85,31 +85,6 @@ class WorkoutClassType {
         return $classes;
     }
 
-    public function getNextClasses(PDO $db): array {
-        $stmt = $db->prepare('
-            SELECT *
-            FROM Classes
-            WHERE ClassTypeId = ? AND ClassDateTime > datetime()
-            ORDER BY ClassDateTime
-        ');
-
-        $stmt->execute([$this->id]);
-
-        $classes = [];
-
-        while ($row = $stmt->fetch()) {
-            $classes[] = new WorkoutClass(
-                (int)$row['ClassId'],
-                (int)$row['TrainerId'],
-                (int)$row['ClassTypeId'],
-                $row['ClassDateTime'],
-                (int)$row['Capacity']
-            );
-        }
-
-        return $classes;
-    }
-
     public function getImagePath(): string {
         return '../assets/class' . $this->id . '.png';
     }

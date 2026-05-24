@@ -4,15 +4,13 @@ declare(strict_types = 1);
 require_once(__DIR__ . '/../database/workoutclasstype.class.php');
 require_once(__DIR__ . '/../database/workoutclass.class.php');
 
-function drawClassPage(WorkoutClassType $workoutClassType, PDO $db): void { 
-    $workoutClasses = $workoutClassType->getNextClasses($db);
-?>
+function drawClassPage(WorkoutClassType $workoutClassType, PDO $db): void { ?>
     <main>
         <?php drawClassHeader($workoutClassType); ?>
         <?php drawClassAbout($db,$workoutClassType); ?>
         <?php drawClassImage(); ?>
         <?php drawAvailableClassesIntro($workoutClassType); ?>
-        <?php drawAvailableClasses($db,$workoutClassType, $workoutClasses); ?>
+        <?php drawAvailableClasses($db,$workoutClassType); ?>
     </main>
 <?php } ?>
 
@@ -110,7 +108,33 @@ function drawAvailableClassesIntro(WorkoutClassType $workoutClassType): void { ?
 
 
 <?php
-function drawAvailableClasses(PDO $db,WorkoutClassType $workoutClassType, array $workoutClasses): void { ?>
+function drawAvailableClasses(PDO $db,WorkoutClassType $workoutClassType): void { ?>
+    <form class="filter-form">
+
+        <input 
+            type="hidden" 
+            name="id" 
+            value="<?= htmlspecialchars((string)$workoutClassType->getId()) ?>"
+        >
+
+        <select name="trainer">
+            <option value="">All trainers</option>
+        </select>
+
+        <input type="date" name="date" min="<?= date('Y-m-d') ?>">
+
+        <input type="time" name="time">
+
+    </form>
+    <section id="available-classes" class="grid">
+        <p>
+            Loading classes...
+        </p>
+    </section>
+<?php } ?>
+
+<?php
+function drawAvailableClassesOLD(PDO $db,WorkoutClassType $workoutClassType): void { ?>
     <section id="available-classes" class="grid">
         <?php if (empty($workoutClasses)) { ?>
             <article class="card">

@@ -169,7 +169,7 @@ class Users {
             SELECT Classes.*
             FROM Classes
             JOIN Enrollments ON Enrollments.ClassId = Classes.ClassId
-            WHERE Enrollments.UserId = ? AND Classes.ClassDateTime > datetime()
+            WHERE Enrollments.UserId = ? AND Classes.ClassDateTime >= datetime()
             ORDER BY Classes.ClassDateTime
         ');
 
