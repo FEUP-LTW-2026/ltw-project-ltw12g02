@@ -81,7 +81,7 @@ button {
   background-size: cover;
   background-position: center;
   color: var(--white);
-  
+
 }
 
 .highlight-text {
@@ -1783,7 +1783,7 @@ button {
     font-size: 2.7rem;
   }
 
-  
+
   .site-header {
     display: flex;
   }
