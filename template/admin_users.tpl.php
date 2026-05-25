@@ -8,7 +8,6 @@ function drawAdminSearchUserPage(): void { ?>
         <?php drawAdminSearchUserResults(); ?>
     </main>
 
-    <script src="../js/admin_search_user.js" defer></script>
 <?php } ?>
 
 
