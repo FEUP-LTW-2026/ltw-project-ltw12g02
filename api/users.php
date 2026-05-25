@@ -16,14 +16,25 @@ if (!$session->isLoggedIn()) {
     ], 401);
 }
 
-if ($session->getRole() !== 'admin') {
+$db = getDatabaseConnection();
+
+$currentUser = Users::getUser($db, (int)$session->getId());
+
+if ($currentUser === null) {
+    sendJson([
+        'success' => false,
+        'message' => 'Invalid session.'
+    ], 401);
+}
+
+$role = $currentUser->getRole();
+
+if ($role !== 'admin') {
     sendJson([
         'success' => false,
         'message' => 'Only admins can access users.'
     ], 403);
 }
-
-$db = getDatabaseConnection();
 
 $method = $_SERVER['REQUEST_METHOD'];
 
@@ -160,7 +171,7 @@ switch ($method) {
         $username = trim((string)($input['username'] ?? $user->getUserName()));
         $email = trim((string)($input['email'] ?? $user->getEmail()));
         $password = array_key_exists('password', $input) ? (string)$input['password'] : null;
-        $role = array_key_exists('role', $input) ? trim((string)$input['role']) : $user->getRole();
+        $newRole = array_key_exists('role', $input) ? trim((string)$input['role']) : $user->getRole();
 
         if ($name === '' || $username === '' || $email === '') {
             sendJson([
@@ -183,7 +194,7 @@ switch ($method) {
             ], 400);
         }
 
-        if (!in_array($role, $allowedRoles, true)) {
+        if (!in_array($newRole, $allowedRoles, true)) {
             sendJson([
                 'success' => false,
                 'message' => 'Invalid role.'
@@ -197,14 +208,12 @@ switch ($method) {
             ], 409);
         }
 
-        if ($user->getUserId() === $session->getId() && $role !== 'admin') {
+        if ($user->getUserId() === $session->getId() && $newRole !== 'admin') {
             sendJson([
                 'success' => false,
                 'message' => 'You cannot remove your own admin role.'
             ], 400);
         }
-
-        $oldRole = $user->getRole();
 
         $user->updateUser(
             $db,
@@ -212,7 +221,7 @@ switch ($method) {
             $username,
             $email,
             $password,
-            $role
+            $newRole
         );
 
         sendJson([
