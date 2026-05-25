@@ -5,10 +5,16 @@ require_once(__DIR__ . '/../database/users.class.php');
 require_once(__DIR__ . '/../database/trainers.class.php');
 require_once(__DIR__ . '/../database/workoutclass.class.php');
 
+require_once(__DIR__ . '/../database/workoutclasstype.class.php');
+require_once(__DIR__ . '/admin_classes.tpl.php');
+
 function drawAdminEditTrainerPage(Trainers $trainer, Users $user, PDO $db): void {
     $assignedClasses = $trainer->getAssignedClasses($db);
     $reviews = $trainer->getReviews($db);
     $ratings = $trainer->getAverageRatings($db);
+
+    $classTypes = WorkoutClassType::getAllWorkoutClassTypes($db);
+    $allTrainers = Trainers::getAllTrainers($db);
     ?>
 
     <main class="admin-users-page">
@@ -213,6 +219,18 @@ function drawAdminEditTrainerPage(Trainers $trainer, Users $user, PDO $db): void
 
             <?php drawAdminEditTrainerClasses($assignedClasses); ?>
 
+            <?php foreach ($assignedClasses as $class) { ?>
+                <?php drawAdminClassFormDialog(
+                    'admin-class-edit-dialog-' . $class->getId(),
+                    'Edit Class',
+                    'update',
+                    $classTypes,
+                    $allTrainers,
+                    $db,
+                    $class
+                ); ?>
+            <?php } ?>
+
         </section>
 
         <section class="card trainer_roster_card admin-edit-user-section">
@@ -297,9 +315,12 @@ function drawAdminEditTrainerClasses(array $classes): void { ?>
                     </span>
 
                     <div class="admin-user-actions">
-                        <a href="../pages/admin_edit_class.php?id=<?= htmlspecialchars((string) $class->getId()) ?>">
+                        <button
+                            type="button"
+                            data-dialog-target="admin-class-edit-dialog-<?= htmlspecialchars((string) $class->getId()) ?>"
+                        >
                             Edit
-                        </a>
+                        </button>
                     </div>
                 </li>
             <?php } ?>
