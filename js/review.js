@@ -1,5 +1,3 @@
-const reviewForms = document.querySelectorAll('.review-form');
-
 function showReviewResult(card, dialog, title, message) {
     card.classList.add('review-result-card');
 
@@ -30,15 +28,16 @@ function showReviewResult(card, dialog, title, message) {
     });
 }
 
-reviewForms.forEach((form) => {
-    form.addEventListener('submit', (event) => {
-        event.preventDefault();
+document.addEventListener('submit', (event) => {
+    const reviewForm = event.target.closest('.review-form');
 
+    if (reviewForm) {
+        event.preventDefault();
         const request = new XMLHttpRequest();
 
         request.addEventListener('load', () => {
-            const dialog = form.closest('dialog');
-            const card = form.closest('.popup-card');
+            const dialog = reviewForm.closest('dialog');
+            const card = reviewForm.closest('.popup-card');
 
             if (!dialog || !card) return;
 
@@ -66,9 +65,9 @@ reviewForms.forEach((form) => {
             }
         });
 
-        request.open('POST', form.action, true);
+        request.open('POST', reviewForm.action, true);
 
         const data = new FormData(form);
         request.send(data);
-    });
+    }  
 });
