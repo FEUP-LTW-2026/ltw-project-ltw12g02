@@ -32,6 +32,7 @@ function splitTrainerText(?string $text): array {
     return array_filter(array_map('trim', explode(',', $text)));
 }
 
+
 function renderStars(int $rating): string {
     $html = '<span class="rating-display">';
 
@@ -66,7 +67,7 @@ function drawEditProfileDialog(Users $user): void { ?>
 
             <form 
                 class="popup-form"
-                id="edit-profile-form
+                id="edit-profile-form"
                 action="../actions/action_edit_profile.php" 
                 method="post"
                 enctype="multipart/form-data"
@@ -318,19 +319,25 @@ function drawMemberProfile(PDO $db, Users $user): void {
                         <?php foreach ($nextClasses as $workoutClass) { 
                             $dialogId = 'withdraw-dialog-' . $workoutClass->getId();
                             $classType = WorkoutClassType::getWorkoutClassType($db, $workoutClass->getClassTypeId());
-                            drawWithdrawDialog($db, $classType, $workoutClass);
-                            ?>
+
+                            if ($classType !== null) {
+                                drawWithdrawDialog($db, $classType, $workoutClass);
+                            }
+                        ?>
                             <div class="card-dl-row">
                                 <dt><?= htmlspecialchars(getWorkoutClassDisplayName($db, $workoutClass)) ?></dt>
                                 <dd>
                                     <?= htmlspecialchars(date('d M · H:i', strtotime($workoutClass->getClassDateTime()))) ?>
-                                    <button 
-                                        type="button" 
-                                        class="btn small light profile-edit-btn"
-                                        data-dialog-target="<?=htmlspecialchars($dialogId)?>"
-                                    >
-                                        Withdraw
-                                    </button>
+
+                                    <?php if ($classType !== null) { ?>
+                                        <button 
+                                            type="button" 
+                                            class="btn small light profile-edit-btn"
+                                            data-dialog-target="<?= htmlspecialchars($dialogId) ?>"
+                                        >
+                                            Withdraw
+                                        </button>
+                                    <?php } ?>
                                 </dd>
                             </div>
                         <?php } ?>
@@ -350,20 +357,26 @@ function drawMemberProfile(PDO $db, Users $user): void {
                         <?php foreach ($classHistory as $workoutClass) {
                             $dialogId = 'review-dialog-' . $workoutClass->getId();
                             $classType = WorkoutClassType::getWorkoutClassType($db, $workoutClass->getClassTypeId());
-                            drawReviewDialog($db, $classType, $workoutClass);
-                            ?>
+
+                            if ($classType !== null) {
+                                drawReviewDialog($db, $classType, $workoutClass);
+                            }
+                        ?>
                             <div class="card-dl-row">
                                 <dt><?= htmlspecialchars(getWorkoutClassDisplayName($db, $workoutClass)) ?></dt>
                             
                                 <dd>
                                     <?= htmlspecialchars(date('d M · H:i', strtotime($workoutClass->getClassDateTime()))) ?>
-                                    <button 
-                                        type="button" 
-                                        class="btn small light profile-edit-btn"
-                                        data-dialog-target="<?=htmlspecialchars($dialogId)?>"
-                                    >
-                                        Review
-                                    </button>
+
+                                    <?php if ($classType !== null) { ?>
+                                        <button 
+                                            type="button" 
+                                            class="btn small light profile-edit-btn"
+                                            data-dialog-target="<?= htmlspecialchars($dialogId) ?>"
+                                        >
+                                            Review
+                                        </button>
+                                    <?php } ?>
                                 </dd>
                             </div>
                         <?php } ?>
@@ -372,7 +385,7 @@ function drawMemberProfile(PDO $db, Users $user): void {
             </article>
         </section>
 
-        <?php drawEditProfileDialog($user);?>
+        <?php drawEditProfileDialog($user); ?>
     </main>
 <?php }
 
@@ -427,13 +440,15 @@ function drawTrainerProfile(PDO $db, Users $user, Trainers $trainer, bool $canEd
 
                         <div class="trainer_review">
                             <strong><?= htmlspecialchars((string)$avgRating) ?> / 5</strong>
-                            <span><?php if (is_null($ratingCount)) { ?>
+                            <span>
+                                <?php if (is_null($ratingCount)) { ?>
                                     There are no reviews yet.
-                                <?php } else if ($ratingCount == 1) { ?>
-                                    <?= htmlspecialchars('Based on a member review.') ?>
+                                <?php } else if ((int)$ratingCount === 1) { ?>
+                                    Based on a member review.
                                 <?php } else { ?>
                                     <?= htmlspecialchars('Based on ' . $ratingCount . ' member reviews.') ?>
-                                <?php } ?></span>
+                                <?php } ?>
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -450,11 +465,10 @@ function drawTrainerProfile(PDO $db, Users $user, Trainers $trainer, bool $canEd
         </section>
 
         <section class="grid">
-            <?php drawTrainerReviews($db, $reviews, $canEdit); ?>
+            <?php drawTrainerReviews($reviews, $canEdit); ?>
         </section>
 
         <?php if ($canEdit) { ?>
-            
             <?php drawEditProfileDialog($user); ?>
             <?php drawEditTrainerProfileDialog($trainer); ?>
         <?php } ?>
@@ -571,10 +585,10 @@ function drawTrainerRosterCard(PDO $db, array $assignedClasses): void { ?>
     </article>
 <?php }
 
-function drawReviewDialog(PDO $db,WorkoutClassType $workoutClassType, WorkoutClass $workoutClass): void {
+
+function drawReviewDialog(PDO $db, WorkoutClassType $workoutClassType, WorkoutClass $workoutClass): void {
     $timestamp = strtotime($workoutClass->getClassDateTime());
 
-    $day = date('l', $timestamp);
     $date = date('d M Y', $timestamp);
     $time = date('H:i', $timestamp);
 
@@ -592,13 +606,14 @@ function drawReviewDialog(PDO $db,WorkoutClassType $workoutClassType, WorkoutCla
             </button>
 
             <header class="popup-header">
-                <p class="profile-member-card-label"><?= htmlspecialchars($workoutClassType->getName())?> Class</p>
+                <p class="profile-member-card-label"><?= htmlspecialchars($workoutClassType->getName()) ?> Class</p>
                 <h1>Review Class</h1>
                 <p>Rate this class and give us your feedback.</p>
             </header>
 
             <dl>
                 <h2>Info</h2>
+
                 <div class="card-dl-row">
                     <dt>Class</dt>
                     <dd><?= htmlspecialchars($workoutClassType->getName()) ?></dd>
@@ -606,7 +621,7 @@ function drawReviewDialog(PDO $db,WorkoutClassType $workoutClassType, WorkoutCla
 
                 <div class="card-dl-row">
                     <dt>Date</dt>
-                    <dd><?= htmlspecialchars($date)?> · <?=htmlspecialchars($time) ?></dd>
+                    <dd><?= htmlspecialchars($date) ?> · <?= htmlspecialchars($time) ?></dd>
                 </div>
 
                 <div class="card-dl-row">
@@ -658,8 +673,6 @@ function drawReviewDialog(PDO $db,WorkoutClassType $workoutClassType, WorkoutCla
                     ></textarea>
                 </label>
 
-                
-
                 <div class="popup-actions">
                     <button 
                         type="button" 
@@ -676,46 +689,48 @@ function drawReviewDialog(PDO $db,WorkoutClassType $workoutClassType, WorkoutCla
             </form>
         </section>
     </dialog>
-<?php } 
+<?php }
 
-function drawTrainerReviews($db, $reviews, $canEdit): void { ?>
+
+function drawTrainerReviews(array $reviews, bool $canEdit): void { ?>
     <article class="card">
         <h2 class="card-title center">Class Reviews</h2>
-        <?php if (empty($reviews)) { 
-            if ($canEdit) { ?>
-            <p>You do not have any reviews yet.</p>
-            <?php } else { ?>
-            <p>This trainer does not have any reviews yet.</p>
-        <?php }
-        } else { ?>
 
+        <?php if (empty($reviews)) { ?>
+            <?php if ($canEdit) { ?>
+                <p>You do not have any reviews yet.</p>
+            <?php } else { ?>
+                <p>This trainer does not have any reviews yet.</p>
+            <?php } ?>
+        <?php } else { ?>
             <ul class="trainer_roster_members">
                 <?php foreach ($reviews as $review) { ?>
-                    
-                        <li>
-                            <img 
-                                src="../assets/users/<?= htmlspecialchars($review['ProfileImage'] ?? 'default.png') ?>" 
-                                alt="Member profile picture"
-                            >
+                    <li>
+                        <img 
+                            src="../assets/users/<?= htmlspecialchars($review['ProfileImage'] ?? 'default.png') ?>" 
+                            alt="Member profile picture"
+                        >
 
-                            <div>
-                                <strong>
-                                    <?= htmlspecialchars($review['Name']) ?>
-                                    <?= renderStars($review['Rating']) ?>
-                                </strong>
-                                <span>@<?= htmlspecialchars($review['Username']) ?></span>
-                            </div>
+                        <div>
+                            <strong>
+                                <?= htmlspecialchars($review['Name']) ?>
+                                <?= renderStars((int)$review['Rating']) ?>
+                            </strong>
+                            <span>@<?= htmlspecialchars($review['Username']) ?></span>
+                        </div>
 
-                            <span><?= htmlspecialchars($review['ClassType'] . ' Class of ' . date('d M · H:i', strtotime($review['ClassDateTime']))) ?></span>
+                        <span>
+                            <?= htmlspecialchars($review['ClassType'] . ' Class of ' . date('d M · H:i', strtotime($review['ClassDateTime']))) ?>
+                        </span>
 
-                            <p><?= htmlspecialchars($review['Review']) ?></p>
-                        </li>
-                    
+                        <p><?= htmlspecialchars((string)($review['Review'] ?? '')) ?></p>
+                    </li>
                 <?php } ?>
             </ul>
         <?php } ?>
     </article>
 <?php }
+
 
 function drawEquipmentReservationsCard(array $equipmentReservations): void { ?>
     <article class="card">
@@ -742,6 +757,8 @@ function drawEquipmentReservationsCard(array $equipmentReservations): void { ?>
                         </dt>
 
                         <dd>
+                            <?= htmlspecialchars($date) ?> · <?= htmlspecialchars($startTime) ?> - <?= htmlspecialchars($endTime) ?>
+
                             <form
                                 class="equipment_reservation_cancel_form"
                                 action="../actions/action_cancel_equipment_reservation.php"
@@ -760,17 +777,16 @@ function drawEquipmentReservationsCard(array $equipmentReservations): void { ?>
                                     Cancel
                                 </button>
                             </form>
-
-                            <?= htmlspecialchars($date) ?> · <?= htmlspecialchars($startTime) ?> - <?= htmlspecialchars($endTime) ?>
                         </dd>
                     </div>
                 <?php } ?>
             </dl>
         <?php } ?>
     </article>
-<?php } ?>
+<?php }
 
-function drawWithdrawDialog(PDO $db,WorkoutClassType $workoutClassType, WorkoutClass $workoutClass): void {
+
+function drawWithdrawDialog(PDO $db, WorkoutClassType $workoutClassType, WorkoutClass $workoutClass): void {
     $timestamp = strtotime($workoutClass->getClassDateTime());
 
     $day = date('l', $timestamp);
@@ -793,8 +809,10 @@ function drawWithdrawDialog(PDO $db,WorkoutClassType $workoutClassType, WorkoutC
             <header class="popup-header">
                 <p class="profile-member-card-label">PowerPIT Withdrawal</p>
                 <h1>Withdraw from class</h1>
-                <p>Check the details before confirming your withdrawal.
-                    You can always enroll again if there are spots remaining.</p>
+                <p>
+                    Check the details before confirming your withdrawal.
+                    You can always enroll again if there are spots remaining.
+                </p>
             </header>
 
             <dl>
@@ -862,4 +880,3 @@ function drawWithdrawDialog(PDO $db,WorkoutClassType $workoutClassType, WorkoutC
         </section>
     </dialog>
 <?php } ?>
->>>>>>> 4b26b43df9f0d9d4fc050de1350d5bdff84d6346
