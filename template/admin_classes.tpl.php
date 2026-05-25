@@ -9,81 +9,10 @@ function drawAdminClassesPage(
     PDO $db
 ): void { ?>
     <main class="admin-users-page admin-classes-page">
-
-        <section class="admin-users-hero">
-            <p class="admin-label">Schedule Center</p>
-
-            <h1>Manage Classes</h1>
-
-            <p>
-                Create classes, assign trainers, edit schedules and manage capacity.
-            </p>
-
-            <div class="admin-class-toolbar">
-                <button
-                    type="button"
-                    class="btn small light"
-                    data-dialog-target="admin-class-create-dialog"
-                >
-                    Add class
-                </button>
-
-                <a href="admin.php" class="btn small">
-                    Back to dashboard
-                </a>
-            </div>
-        </section>
-
-        <section class="admin-class-filters">
-            <a
-                href="admin_classes.php?filter=all"
-                class="<?= $filter === 'all' ? 'active' : '' ?>"
-            >
-                All classes
-            </a>
-
-            <a
-                href="admin_classes.php?filter=upcoming"
-                class="<?= $filter === 'upcoming' ? 'active' : '' ?>"
-            >
-                Upcoming
-            </a>
-
-            <a
-                href="admin_classes.php?filter=past"
-                class="<?= $filter === 'past' ? 'active' : '' ?>"
-            >
-                Past
-            </a>
-        </section>
-
-        <?php if (empty($classTypes) || empty($trainers)) { ?>
-            <article class="empty-search-message">
-                You need at least one class type and one trainer before creating classes.
-            </article>
-        <?php } ?>
-
-        <section class="admin-users-results">
-            <div class="admin-users-header admin-classes-header">
-                <span>Class</span>
-                <span>Schedule</span>
-                <span>Trainer</span>
-                <span>Capacity</span>
-                <span></span>
-            </div>
-
-            <div class="user-search-results">
-                <?php if (empty($classes)) { ?>
-                    <article class="empty-search-message">
-                        No classes found.
-                    </article>
-                <?php } else { ?>
-                    <?php foreach ($classes as $class) { ?>
-                        <?php drawAdminClassRow($class, $db); ?>
-                    <?php } ?>
-                <?php } ?>
-            </div>
-        </section>
+        <?php drawAdminClassesHero(); ?>
+        <?php drawAdminClassesControls($trainers, $filter, $db); ?>
+        <?php drawAdminClassFilters($filter); ?>
+        <?php drawAdminClassesResults($classes, $db); ?>
 
         <?php drawAdminClassFormDialog(
             'admin-class-create-dialog',
@@ -107,8 +36,104 @@ function drawAdminClassesPage(
 
             <?php drawAdminClassDeleteDialog($class, $db); ?>
         <?php } ?>
-
     </main>
+
+    <script src="../js/filter_classes.js" defer></script>
+<?php } ?>
+
+
+<?php
+function drawAdminClassesHero(): void { ?>
+    <section class="admin-users-hero">
+        <p class="admin-label">PowerPit Admin</p>
+        <h1>Manage Classes</h1>
+        <p>Create classes, assign trainers, edit schedules and manage capacity.</p>
+    </section>
+<?php } ?>
+
+
+<?php
+function drawAdminClassesControls(array $trainers, string $filter, PDO $db): void { ?>
+    <section class="admin-users-controls admin-users-controls-row">
+        <form class="filter-form admin-class-filter-form">
+            <input type="hidden" name="admin" value="1">
+            <input type="hidden" name="filter" value="<?= htmlspecialchars($filter) ?>">
+
+            <select name="trainer">
+                <option value="">All trainers</option>
+
+                <?php foreach ($trainers as $trainer) { ?>
+                    <option value="<?= htmlspecialchars((string) $trainer->getTrainerId()) ?>">
+                        <?= htmlspecialchars($trainer->getName($db)) ?>
+                    </option>
+                <?php } ?>
+            </select>
+
+            <input type="date" name="date">
+
+            <input type="time" name="time">
+        </form>
+
+        <button
+            type="button"
+            class="btn light btn-compact btn-icon"
+            data-dialog-target="admin-class-create-dialog"
+        >
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            Add class
+        </button>
+    </section>
+<?php } ?>
+
+
+<?php
+function drawAdminClassFilters(string $filter): void { ?>
+    <nav class="admin-class-filters" aria-label="Class filters">
+        <a
+            href="admin_classes.php?filter=all"
+            class="admin-user-role <?= $filter === 'all' ? 'active' : '' ?>"
+        >
+            All classes
+        </a>
+
+        <a
+            href="admin_classes.php?filter=upcoming"
+            class="admin-user-role <?= $filter === 'upcoming' ? 'active' : '' ?>"
+        >
+            Upcoming
+        </a>
+
+        <a
+            href="admin_classes.php?filter=past"
+            class="admin-user-role <?= $filter === 'past' ? 'active' : '' ?>"
+        >
+            Past
+        </a>
+    </nav>
+<?php } ?>
+
+
+<?php
+function drawAdminClassesResults(array $classes, PDO $db): void { ?>
+    <section class="admin-users-results">
+        <div class="admin-users-header admin-class-row-layout">
+            <span>Class</span>
+            <span>Schedule</span>
+            <span>Trainer</span>
+            <span>Bookings</span>
+            <span>Actions</span>
+        </div>
+
+        <div id="available-classes" class="user-search-results">
+            <?php if (empty($classes)) { ?>
+                <p class="empty-search-message">No classes found.</p>
+            <?php } ?>
+
+            <?php foreach ($classes as $class) { ?>
+                <?php drawAdminClassRow($class, $db); ?>
+            <?php } ?>
+        </div>
+    </section>
 <?php } ?>
 
 
@@ -119,11 +144,15 @@ function drawAdminClassRow(WorkoutClass $class, PDO $db): void {
     $classTypeName = $classType !== null ? $classType->getName() : 'Unknown class';
     $duration = $classType !== null ? $classType->getDuration() : 0;
 
+    $enrollments = WorkoutClass::getEnrollmentCount($db, $class->getId());
     $capacity = $class->getCapacity();
-    $isFull = $class->isFull($db);
+
+    $date = formatAdminDate($class->getClassDateTime());
+    $time = formatAdminTime($class->getClassDateTime());
+    $trainerName = $class->getTrainerName($db);
 ?>
-    <article class="admin-user-row admin-class-row">
-        <div class="admin-class-main">
+    <article class="admin-user-row admin-class-row-layout">
+        <div class="admin-user-main">
             <div class="admin-icon-box">
                 <i class="fa fa-calendar" aria-hidden="true"></i>
             </div>
@@ -134,22 +163,21 @@ function drawAdminClassRow(WorkoutClass $class, PDO $db): void {
             </div>
         </div>
 
-        <div class="admin-class-date">
-            <strong><?= htmlspecialchars(formatAdminDate($class->getClassDateTime())) ?></strong>
-            <p><?= htmlspecialchars(formatAdminTime($class->getClassDateTime())) ?></p>
+        <div class="admin-user-email">
+            <strong><?= htmlspecialchars($date) ?></strong>
+            <p><?= htmlspecialchars($time) ?></p>
         </div>
 
         <p class="admin-user-email">
-            <?= htmlspecialchars($class->getTrainerName($db)) ?>
+            <?= htmlspecialchars($trainerName) ?>
         </p>
 
-        <span class="admin-user-role admin-class-capacity">
-            <?= $isFull ? 'Full' : 'Available' ?>
-            /
-            <?= htmlspecialchars((string) $capacity) ?>
+        <span class="admin-user-role">
+            <?= htmlspecialchars((string) $enrollments) ?>/<?= htmlspecialchars((string) $capacity) ?>
+            booked
         </span>
 
-        <div class="admin-user-actions admin-class-actions">
+        <div class="admin-user-actions">
             <button
                 type="button"
                 data-dialog-target="admin-class-edit-dialog-<?= htmlspecialchars((string) $class->getId()) ?>"
@@ -159,7 +187,7 @@ function drawAdminClassRow(WorkoutClass $class, PDO $db): void {
 
             <button
                 type="button"
-                class="admin-class-delete-btn"
+                class="admin-action-secondary"
                 data-dialog-target="admin-class-delete-dialog-<?= htmlspecialchars((string) $class->getId()) ?>"
             >
                 Delete
@@ -202,7 +230,7 @@ function drawAdminClassFormDialog(
             </header>
 
             <form
-                class="popup-form edit-profile-form"
+                class="popup-form"
                 action="../actions/action_admin_class.php"
                 method="post"
             >
@@ -296,6 +324,8 @@ function drawAdminClassFormDialog(
 function drawAdminClassDeleteDialog(WorkoutClass $class, PDO $db): void {
     $classType = WorkoutClassType::getWorkoutClassType($db, $class->getClassTypeId());
     $classTypeName = $classType !== null ? $classType->getName() : 'Unknown class';
+
+    $enrollments = WorkoutClass::getEnrollmentCount($db, $class->getId());
 ?>
     <dialog
         id="admin-class-delete-dialog-<?= htmlspecialchars((string) $class->getId()) ?>"
@@ -318,7 +348,7 @@ function drawAdminClassDeleteDialog(WorkoutClass $class, PDO $db): void {
             </header>
 
             <form
-                class="popup-form edit-profile-form"
+                class="popup-form"
                 action="../actions/action_admin_class.php"
                 method="post"
             >
@@ -330,15 +360,25 @@ function drawAdminClassDeleteDialog(WorkoutClass $class, PDO $db): void {
                     value="<?= htmlspecialchars((string) $class->getId()) ?>"
                 >
 
-                <div class="admin-class-delete-summary">
-                    <strong><?= htmlspecialchars($classTypeName) ?></strong>
-                    <p><?= htmlspecialchars($class->getTrainerName($db)) ?></p>
-                    <p>
-                        <?= htmlspecialchars(formatAdminDate($class->getClassDateTime())) ?>
-                        at
-                        <?= htmlspecialchars(formatAdminTime($class->getClassDateTime())) ?>
-                    </p>
-                </div>
+                <article class="card">
+                    <p class="profile-member-card-label">Class selected</p>
+                    <h1><?= htmlspecialchars($classTypeName) ?></h1>
+
+                    <div class="card-wrap">
+                        <p><?= htmlspecialchars($class->getTrainerName($db)) ?></p>
+
+                        <p>
+                            <?= htmlspecialchars(formatAdminDate($class->getClassDateTime())) ?>
+                            at
+                            <?= htmlspecialchars(formatAdminTime($class->getClassDateTime())) ?>
+                        </p>
+
+                        <p>
+                            <?= htmlspecialchars((string) $enrollments) ?>/<?= htmlspecialchars((string) $class->getCapacity()) ?>
+                            booked
+                        </p>
+                    </div>
+                </article>
 
                 <div class="popup-actions">
                     <button

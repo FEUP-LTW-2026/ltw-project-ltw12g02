@@ -1481,6 +1481,100 @@ button {
   justify-self: end;
 }
 
+/* ADMIN CLASSES LAYOUT */
+
+.admin-classes-page .admin-users-controls-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) max-content;
+  gap: 0.9rem;
+  align-items: center;
+  margin-bottom: 1.4rem;
+}
+
+.admin-classes-page .admin-class-filter-form {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 0.8fr;
+  gap: 0.8rem;
+  min-width: 0;
+}
+
+.admin-classes-page .admin-class-filter-form select,
+.admin-classes-page .admin-class-filter-form input {
+  width: 100%;
+  min-height: 3.35rem;
+  padding: 0 1.2rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--white);
+  color: var(--black);
+  font-size: 1rem;
+  box-shadow: var(--shadow);
+}
+
+.admin-classes-page .admin-class-filter-form select {
+  cursor: pointer;
+}
+
+.admin-classes-page .admin-class-filter-form select:focus,
+.admin-classes-page .admin-class-filter-form input:focus {
+  outline: none;
+  border-color: var(--lime);
+}
+
+.admin-class-filters {
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+}
+
+.admin-class-filters .admin-user-role {
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.admin-class-filters .admin-user-role.active,
+.admin-class-filters .admin-user-role:hover {
+  background: var(--black);
+  color: var(--lime);
+}
+
+.admin-class-row-layout {
+  grid-template-columns:
+    minmax(13rem, 1.4fr)
+    minmax(10rem, 0.9fr)
+    minmax(12rem, 1fr)
+    minmax(10rem, 0.8fr)
+    max-content;
+}
+
+.admin-class-row-layout .admin-user-email strong {
+  display: block;
+  color: var(--black);
+  font-size: 0.95rem;
+}
+
+.admin-class-row-layout .admin-user-email p {
+  margin: 0.2rem 0 0;
+  color: var(--gray-text);
+  font-size: 0.9rem;
+}
+
+.admin-classes-page .popup-form select {
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--white);
+  color: var(--black);
+  font-size: 1rem;
+}
+
+.admin-classes-page .popup-form select:focus {
+  outline: none;
+  border-color: var(--lime);
+}
+
 /* RESPONSIVE */
 
 @media (max-width: 60rem) {
@@ -1599,6 +1693,15 @@ button {
 
   .equipment_card_image {
     height: 12rem;
+  }
+
+  .admin-classes-page .admin-users-controls-row,
+  .admin-classes-page .admin-class-filter-form {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-class-row-layout {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -1825,5 +1928,15 @@ button {
     align-items: flex-start;
     flex-direction: column;
     gap: 0.35rem;
+  }
+
+  .admin-class-filters,
+  .admin-class-filters .admin-user-role {
+    width: 100%;
+  }
+
+  .admin-class-filters {
+    flex-direction: column;
+    align-items: stretch;
   }
 }

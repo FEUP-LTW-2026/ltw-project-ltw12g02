@@ -124,7 +124,7 @@ class WorkoutClass {
         return $classes;
     }
 
-    public function isFull(PDO $db): bool {
+    public static function getEnrollmentCount(PDO $db, int $classId): int {
         $stmt = $db->prepare('
             SELECT COUNT(*) AS EnrollmentCount
             FROM Enrollments
@@ -132,10 +132,14 @@ class WorkoutClass {
             AND Status = "active"
         ');
 
-        $stmt->execute([$this->id]);
+        $stmt->execute([$classId]);
         $row = $stmt->fetch();
 
-        return (int)$row['EnrollmentCount'] >= $this->capacity;
+        return (int) $row['EnrollmentCount'];
+    }
+
+    public static function isFull(PDO $db, int $classId, int $capacity): bool {
+        return WorkoutClass::getEnrollmentCount($db, $classId) >= $capacity;
     }
 
     public function getTrainerName(PDO $db) : string{
@@ -256,7 +260,7 @@ class WorkoutClass {
         $stmt->execute([$trainer_id, $class_type_id, $class_datetime, $capacity, $this->id]);
     }
 
-    function normalizeClassDateTime(string $dateTime): ?string {
+    public static function normalizeClassDateTime(string $dateTime): ?string {
         if ($dateTime === '') {
             return null;
         }
@@ -280,5 +284,4 @@ class WorkoutClass {
 
         $stmt->execute([$id]);
     }
-
 }

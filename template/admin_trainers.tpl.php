@@ -7,8 +7,6 @@ function drawAdminTrainersPage(array $trainers): void { ?>
         <?php drawAdminTrainersControls(); ?>
         <?php drawAdminTrainersResults($trainers); ?>
     </main>
-
-    <script src="../js/search_trainers.js" defer></script>
 <?php } ?>
 
 
