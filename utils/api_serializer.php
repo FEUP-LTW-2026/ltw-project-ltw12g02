@@ -61,6 +61,16 @@ function workoutClassTypeToJson(WorkoutClassType $type): array {
     ];
 }
 
+function workoutClassTypesToJson(array $types): array {
+    $result = [];
+
+    foreach ($types as $type) {
+        $result[] = workoutClassTypeToJson($type);
+    }
+
+    return $result;
+}
+
 function workoutClassToJson(WorkoutClass $class, PDO $db): array {
     $classType = WorkoutClassType::getWorkoutClassType($db, $class->getClassTypeId());
     $trainer = Trainers::getTrainer($db, $class->getTrainerId());
