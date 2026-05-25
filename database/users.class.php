@@ -88,6 +88,32 @@ class Users {
         );
     }
 
+    public static function getAllUsers(PDO $db): array {
+    $stmt = $db->prepare('
+        SELECT *
+        FROM Users
+        ORDER BY UserId ASC
+    ');
+
+    $stmt->execute();
+
+    $users = [];
+
+    while ($row = $stmt->fetch()) {
+        $users[] = new Users(
+            (int)$row['UserId'],
+            $row['Name'],
+            $row['Username'],
+            $row['Email'],
+            $row['PasswordHash'],
+            $row['Role'],
+            $row['ProfileImage']
+        );
+    }
+
+    return $users;
+}
+
     public function getEnrollments(PDO $db): array {
         $stmt = $db->prepare('
             SELECT *
