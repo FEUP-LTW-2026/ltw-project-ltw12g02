@@ -474,6 +474,66 @@ public static function searchTrainerCandidates(PDO $db, string $query): array {
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
+public function updateUser(
+    PDO $db,
+    string $name,
+    string $username,
+    string $email,
+    ?string $password,
+    string $role
+): void {
+    $allowedRoles = ['member', 'trainer', 'admin'];
+
+    if (!in_array($role, $allowedRoles, true)) {
+        throw new InvalidArgumentException('Invalid role.');
+    }
+
+    try {
+        $db->beginTransaction();
+
+        $passwordHash = $this->passwordHash;
+
+        if ($password !== null && $password !== '') {
+            $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+        }
+
+        $stmt = $db->prepare('
+            UPDATE Users
+            SET Name = ?,
+                Username = ?,
+                Email = ?,
+                PasswordHash = ?
+            WHERE UserId = ?
+        ');
+
+        $stmt->execute([
+            $name,
+            $username,
+            $email,
+            $passwordHash,
+            $this->user_id
+        ]);
+
+        $this->name = $name;
+        $this->user_name = $username;
+        $this->email = $email;
+        $this->passwordHash = $passwordHash;
+
+        if ($role !== $this->role) {
+            $this->changeRole($role, $db);
+        }
+
+        $db->commit();
+
+    } catch (Throwable $e) {
+        if ($db->inTransaction()) {
+            $db->rollBack();
+        }
+
+        throw $e;
+    }
+}
+
 }
 
 
