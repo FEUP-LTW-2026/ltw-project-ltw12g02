@@ -68,6 +68,62 @@ class WorkoutClass {
         );
     }
 
+    public static function getFilteredClasses(
+        PDO $db,
+        String $classTypeId,
+        ?string $trainerId,
+        ?string $date,
+        ?string $time
+    ): array {
+
+        $sql = '
+            SELECT *
+            FROM Classes
+            WHERE ClassDateTime >= datetime() AND ClassTypeId = ?
+        ';
+
+        $params = [];
+        $params[] = $classTypeId;
+
+        if (!empty($trainerId)) {
+            $sql .= ' AND TrainerId = ?';
+            $params[] = $trainerId;
+        }
+
+        if (!empty($date)) {
+            $sql .= ' AND DATE(ClassDateTime) = ?';
+            $params[] = $date;
+        }
+
+        if (!empty($time)) {
+            $sql .= ' AND TIME(ClassDateTime) >= ?';
+            $params[] = $time;
+        }
+
+        $sql .= '
+            ORDER BY ClassDateTime ASC
+        ';
+
+        $stmt = $db->prepare($sql);
+
+        $stmt->execute($params);
+
+        $classes = [];
+
+        while ($row = $stmt->fetch()) {
+
+            $classes[] = new WorkoutClass(
+                $row['ClassId'],
+                $row['TrainerId'],
+                $row['ClassTypeId'],
+                $row['ClassDateTime'],
+                $row['Capacity']
+            );
+        }
+
+        return $classes;
+    }
+
     public function isFull(PDO $db): bool {
         $stmt = $db->prepare('
             SELECT COUNT(*) AS EnrollmentCount

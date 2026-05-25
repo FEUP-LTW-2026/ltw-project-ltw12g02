@@ -317,6 +317,13 @@ function drawMemberProfile(PDO $db, Users $user): void {
                             <div class="card-dl-row">
                                 <dt><?= htmlspecialchars(getWorkoutClassDisplayName($db, $workoutClass)) ?></dt>
                                 <dd>
+                                    <button 
+                                        type="button" 
+                                        class="btn small light profile-edit-btn"
+                                        data-dialog-target=""
+                                    >
+                                        Cancel
+                                    </button>
                                     <?= htmlspecialchars(date('d M · H:i', strtotime($workoutClass->getClassDateTime()))) ?>
                                 </dd>
                             </div>
