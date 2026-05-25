@@ -5,6 +5,7 @@ require_once(__DIR__ . '/../database/users.class.php');
 require_once(__DIR__ . '/../database/trainers.class.php');
 require_once(__DIR__ . '/../database/workoutclass.class.php');
 require_once(__DIR__ . '/../database/workoutclasstype.class.php');
+require_once(__DIR__ . '/../database/equipment.class.php');
 
 function userToJson(Users $user): array {
     return [
@@ -49,8 +50,6 @@ function trainersToJson(array $trainers, PDO $db): array {
 
     return $result;
 }
-
-
 
 function workoutClassTypeToJson(WorkoutClassType $type): array {
     return [
@@ -101,3 +100,24 @@ function workoutClassesToJson(array $classes, PDO $db): array {
 
     return $result;
 }
+
+function equipmentToJson(Equipment $equipment): array {
+    return [
+        'id' => $equipment->getId(),
+        'name' => $equipment->getName(),
+        'type' => $equipment->getType(),
+        'quantity' => $equipment->getQuantity(),
+        'status' => $equipment->getStatus()
+    ];
+}
+
+function equipmentListToJson(array $equipmentList): array {
+    $result = [];
+
+    foreach ($equipmentList as $equipment) {
+        $result[] = equipmentToJson($equipment);
+    }
+
+    return $result;
+}
+?>
