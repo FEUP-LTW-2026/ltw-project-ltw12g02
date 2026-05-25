@@ -99,4 +99,130 @@ class WorkoutClass {
         $stmt->execute([$trainerId,$classTypeId,$date,$capacity]);
 
     }
+
+    public static function getAllWorkoutClasses(PDO $db): array {
+        $stmt = $db->prepare('
+            SELECT *
+            FROM Classes
+            ORDER BY datetime(ClassDateTime) ASC
+        ');
+
+        $stmt->execute();
+
+        $classes = [];
+
+        while ($row = $stmt->fetch()) {
+            $classes[] = new WorkoutClass(
+                (int) $row['ClassId'],
+                (int) $row['TrainerId'],
+                (int) $row['ClassTypeId'],
+                (string) $row['ClassDateTime'],
+                (int) $row['Capacity']
+            );
+        }
+
+        return $classes;
+    }
+
+    public static function getUpcomingWorkoutClasses(PDO $db): array {
+        $stmt = $db->prepare('
+            SELECT *
+            FROM Classes
+            WHERE datetime(ClassDateTime) >= datetime("now", "localtime")
+            ORDER BY datetime(ClassDateTime) ASC
+        ');
+
+        $stmt->execute();
+
+        $classes = [];
+
+        while ($row = $stmt->fetch()) {
+            $classes[] = new WorkoutClass(
+                (int) $row['ClassId'],
+                (int) $row['TrainerId'],
+                (int) $row['ClassTypeId'],
+                (string) $row['ClassDateTime'],
+                (int) $row['Capacity']
+            );
+        }
+
+        return $classes;
+    }
+
+    public static function getPastWorkoutClasses(PDO $db): array {
+        $stmt = $db->prepare('
+            SELECT *
+            FROM Classes
+            WHERE datetime(ClassDateTime) < datetime("now", "localtime")
+            ORDER BY datetime(ClassDateTime) DESC
+        ');
+
+        $stmt->execute();
+
+        $classes = [];
+
+        while ($row = $stmt->fetch()) {
+            $classes[] = new WorkoutClass(
+                (int) $row['ClassId'],
+                (int) $row['TrainerId'],
+                (int) $row['ClassTypeId'],
+                (string) $row['ClassDateTime'],
+                (int) $row['Capacity']
+            );
+        }
+
+        return $classes;
+    }
+
+    public static function createClass(PDO $db, int $trainer_id, int $class_type_id, string $class_datetime, int $capacity): void {
+
+        WorkoutClass::addWorkoutClassToDb(
+            $db,
+            $trainer_id,
+            $class_type_id,
+            $class_datetime,
+            $capacity
+        );
+
+    }
+
+    public function updateClass(PDO $db, int $trainer_id, int $class_type_id, string $class_datetime, int $capacity): void {
+        
+        $stmt = $db->prepare('
+            UPDATE Classes
+            SET TrainerId = ?,
+                ClassTypeId = ?,
+                ClassDateTime = ?,
+                Capacity = ?
+            WHERE ClassId = ?
+        ');
+
+        $stmt->execute([$trainer_id, $class_type_id, $class_datetime, $capacity, $this->id]);
+    }
+
+    function normalizeClassDateTime(string $dateTime): ?string {
+        if ($dateTime === '') {
+            return null;
+        }
+
+        $dateTime = str_replace('T', ' ', $dateTime);
+
+        $timestamp = strtotime($dateTime);
+
+        if ($timestamp === false) {
+            return null;
+        }
+
+        return date('Y-m-d H:i:s', $timestamp);
+    }
+
+    public static function deleteClass(PDO $db, int $id): void {
+        $stmt = $db->prepare('
+            DELETE FROM Classes
+            WHERE ClassId = ?
+        ');
+
+        $stmt->execute([$id]);
+    }
+
 }
