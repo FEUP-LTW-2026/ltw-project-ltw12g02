@@ -108,6 +108,21 @@
   color: var(--lime);
 }
 
+.powerpit_form textarea {
+  width: 100%;
+  min-height: 8rem;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  background: var(--white);
+  color: var(--black);
+  font-size: 1rem;
+  resize: vertical;
+}
+
+.powerpit_form textarea:focus {
+  outline: none;
+  border-color: var(--lime);
+}
 
 
 @media (max-width: 60rem) {

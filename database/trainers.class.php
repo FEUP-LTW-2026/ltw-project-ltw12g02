@@ -218,4 +218,52 @@ class Trainers {
 
         return $stmt->fetch();
     }
+
+    public static function createTrainer(int $userId, PDO $db) : void {
+
+        $stmt = $db->prepare('
+            INSERT INTO Trainers (UserId, Bio, Specializations,Certifications)
+            VALUES (?, ?, ? ,?)
+        ');
+
+        $bio = 'Hi! I am a trainer at PowerPit';
+
+
+
+        $stmt->execute([$userId,$bio,'','']);
+
+    }
+
+    public static function deleteTrainer(int $userId, PDO $db) : void {
+
+        $stmt = $db->prepare('
+            DELETE FROM Trainers 
+            WHERE UserId = ?
+        ');
+
+        $stmt->execute([$userId]);
+
+    
+    }
+
+   public function updateTrainer(PDO $db,string $bio,string $specializations, string $certifications): void {
+        $stmt = $db->prepare('
+            UPDATE Trainers
+            SET Bio = ?,
+                Specializations = ?,
+                Certifications = ?
+            WHERE TrainerId = ?
+        ');
+
+        $stmt->execute([
+            $bio,
+            $specializations,
+            $certifications,
+            $this->trainer_id
+        ]);
+
+        $this->bio = $bio;
+        $this->specializations = $specializations;
+        $this->certifications = $certifications;
+    }
 }
