@@ -103,7 +103,10 @@ function drawEquipmentCard(Equipment $item): void {
     $statusClass = getEquipmentStatusClass($item->getStatus());
     $image = 'equipment' . $item->getId() . '.png';
 ?>
-    <article class="equipment_gallery_card">
+    <a
+        class="equipment_gallery_card"
+        href="../pages/equipment_details.php?id=<?= htmlspecialchars((string)$item->getId()) ?>"
+    >
         <img
             src="../assets/equipment/<?= htmlspecialchars($image) ?>"
             alt="<?= htmlspecialchars($item->getName()) ?>"
@@ -121,5 +124,5 @@ function drawEquipmentCard(Equipment $item): void {
 
             <strong><?= htmlspecialchars((string)$item->getQuantity()) ?> units</strong>
         </div>
-    </article>
+    </a>
 <?php } ?>

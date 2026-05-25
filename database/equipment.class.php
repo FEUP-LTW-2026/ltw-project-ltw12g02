@@ -65,5 +65,29 @@ class Equipment {
 
         return $equipment;
     }
+
+    public static function getEquipment(PDO $db, int $id): ?Equipment {
+        $stmt = $db->prepare('
+            SELECT *
+            FROM Equipment
+            WHERE EquipmentId = ?
+        ');
+
+        $stmt->execute([$id]);
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($row === false) {
+            return null;
+        }
+
+        return new Equipment(
+            (int)$row['EquipmentId'],
+            $row['Name'],
+            $row['Type'],
+            (int)$row['Quantity'],
+            $row['AvailabilityStatus']
+        );
+    }
 }
 ?>
