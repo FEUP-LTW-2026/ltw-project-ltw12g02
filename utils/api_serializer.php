@@ -6,6 +6,7 @@ require_once(__DIR__ . '/../database/trainers.class.php');
 require_once(__DIR__ . '/../database/workoutclass.class.php');
 require_once(__DIR__ . '/../database/workoutclasstype.class.php');
 require_once(__DIR__ . '/../database/equipment.class.php');
+require_once(__DIR__ . '/../database/equipmentreservation.class.php');
 
 function userToJson(Users $user): array {
     return [
@@ -116,6 +117,32 @@ function equipmentListToJson(array $equipmentList): array {
 
     foreach ($equipmentList as $equipment) {
         $result[] = equipmentToJson($equipment);
+    }
+
+    return $result;
+}
+
+function equipmentReservationToJson(array $reservation): array {
+    return [
+        'id' => (int)$reservation['EquipmentReservationId'],
+        'userId' => (int)$reservation['UserId'],
+        'equipmentId' => (int)$reservation['EquipmentId'],
+        'reservationDateTime' => $reservation['ReservationDateTime'],
+        'duration' => (int)$reservation['Duration'],
+        'status' => $reservation['Status'],
+        'endDateTime' => $reservation['EndDateTime'] ?? null,
+        'equipment' => [
+            'name' => $reservation['Name'] ?? null,
+            'type' => $reservation['Type'] ?? null
+        ]
+    ];
+}
+
+function equipmentReservationsToJson(array $reservations): array {
+    $result = [];
+
+    foreach ($reservations as $reservation) {
+        $result[] = equipmentReservationToJson($reservation);
     }
 
     return $result;
