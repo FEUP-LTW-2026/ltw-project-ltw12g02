@@ -422,6 +422,32 @@ public function deleteUser(PDO $db): void {
     }
 }
 
+public static function searchTrainerCandidates(PDO $db, string $query): array {
+    $stmt = $db->prepare('
+        SELECT UserId, Name, Username, Email, Role, ProfileImage
+        FROM Users
+        WHERE Role = ?
+          AND (
+              Name LIKE ?
+              OR Username LIKE ?
+              OR Email LIKE ?
+          )
+        ORDER BY Name ASC
+        LIMIT 20
+    ');
+
+    $search = $query . '%';
+
+    $stmt->execute([
+        'member',
+        $search,
+        $search,
+        $search
+    ]);
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
 }
 
 

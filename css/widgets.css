@@ -698,6 +698,26 @@
   background: #374151;
 }
 
+.admin-user-actions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  padding: 0.5rem 0.9rem;
+  border: none;
+  border-radius: 999px;
+  background: var(--black);
+  color: var(--white);
+  font-size: 0.85rem;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.admin-user-actions button:hover {
+  background: var(--lime);
+  color: var(--black);
+}
+
 .empty-search-message,
 .error-message {
   background: #f9fafb;
