@@ -3,6 +3,8 @@ declare(strict_types = 1);
 
 require_once(__DIR__ . '/../database/users.class.php');
 require_once(__DIR__ . '/../database/trainers.class.php');
+require_once(__DIR__ . '/../database/workoutclass.class.php');
+require_once(__DIR__ . '/../database/workoutclasstype.class.php');
 
 function userToJson(Users $user): array {
     return [
@@ -43,6 +45,48 @@ function trainersToJson(array $trainers, PDO $db): array {
 
     foreach ($trainers as $trainer) {
         $result[] = trainerToJson($trainer, $db);
+    }
+
+    return $result;
+}
+
+
+
+function workoutClassTypeToJson(WorkoutClassType $type): array {
+    return [
+        'id' => $type->getId(),
+        'name' => $type->getName(),
+        'description' => $type->getDescription(),
+        'duration' => $type->getDuration()
+    ];
+}
+
+function workoutClassToJson(WorkoutClass $class, PDO $db): array {
+    $classType = WorkoutClassType::getWorkoutClassType($db, $class->getClassTypeId());
+    $trainer = Trainers::getTrainer($db, $class->getTrainerId());
+
+    $enrollmentCount = WorkoutClass::getEnrollmentCount($db, $class->getId());
+
+    return [
+        'id' => $class->getId(),
+        'trainerId' => $class->getTrainerId(),
+        'classTypeId' => $class->getClassTypeId(),
+        'classDateTime' => $class->getClassDateTime(),
+        'capacity' => $class->getCapacity(),
+        'enrollmentCount' => $enrollmentCount,
+        'availableSlots' => max(0, $class->getCapacity() - $enrollmentCount),
+        'isFull' => WorkoutClass::isFull($db, $class->getId(), $class->getCapacity()),
+        'trainerName' => $class->getTrainerName($db),
+        'trainer' => $trainer !== null ? trainerToJson($trainer, $db) : null,
+        'classType' => $classType !== null ? workoutClassTypeToJson($classType) : null
+    ];
+}
+
+function workoutClassesToJson(array $classes, PDO $db): array {
+    $result = [];
+
+    foreach ($classes as $class) {
+        $result[] = workoutClassToJson($class, $db);
     }
 
     return $result;
