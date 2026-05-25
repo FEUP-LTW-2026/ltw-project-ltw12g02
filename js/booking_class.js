@@ -1,5 +1,3 @@
-const bookingForms = document.querySelectorAll('.booking-form');
-
 function showBookingResult(card, dialog, title, message) {
     card.classList.add('booking-result-card');
 
@@ -30,15 +28,16 @@ function showBookingResult(card, dialog, title, message) {
     });
 }
 
-bookingForms.forEach((form) => {
-    form.addEventListener('submit', (event) => {
+document.addEventListener('submit', (event) => {
+    const bookingForm = event.target.closest('.booking-form');
+    
+    if (bookingForm) {
         event.preventDefault();
-
         const request = new XMLHttpRequest();
 
         request.addEventListener('load', () => {
-            const dialog = form.closest('dialog');
-            const card = form.closest('.popup-card');
+            const dialog = bookingForm.closest('dialog');
+            const card = bookingForm.closest('.popup-card');
 
             if (!dialog || !card) return;
 
@@ -73,10 +72,11 @@ bookingForms.forEach((form) => {
             }
         });
 
-        request.open('POST', form.action, true);
+        request.open('POST', bookingForm.action, true);
         request.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 
         const data = new FormData(form);
         request.send(data);
-    });
+    }
+    
 });
