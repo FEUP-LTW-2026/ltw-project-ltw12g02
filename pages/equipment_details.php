@@ -6,6 +6,7 @@ require_once(__DIR__ . '/../template/common.tpl.php');
 require_once(__DIR__ . '/../template/equipment_details.tpl.php');
 require_once(__DIR__ . '/../database/connection.db.php');
 require_once(__DIR__ . '/../database/equipment.class.php');
+require_once(__DIR__ . '/../database/equipmentreservation.class.php');
 
 $session = new Session();
 
@@ -28,7 +29,7 @@ drawMessages($session->getMessages());
 if ($equipment === null) {
     drawEquipmentNotFoundPage();
 } else {
-    drawEquipmentDetailsPage($equipment);
+    drawEquipmentDetailsPage($equipment, $session, $equipment->getQuantity());
 }
 
 generateFooter();

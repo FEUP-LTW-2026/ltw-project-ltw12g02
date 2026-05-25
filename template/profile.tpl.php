@@ -6,6 +6,7 @@ require_once(__DIR__ . '/../database/trainers.class.php');
 require_once(__DIR__ . '/../database/enrollments.class.php');
 require_once(__DIR__ . '/../database/workoutclass.class.php');
 require_once(__DIR__ . '/../database/workoutclasstype.class.php');
+require_once(__DIR__ . '/../database/equipmentreservation.class.php');
 
 
 function getWorkoutClassDisplayName(PDO $db, WorkoutClass $workoutClass): string {
@@ -245,6 +246,7 @@ function drawProfile(PDO $db, Users $user): void {
 function drawMemberProfile(PDO $db, Users $user): void {
     $nextClasses = $user->getWorkoutNextClasses($db);
     $classHistory = $user->getWorkoutClassHistory($db);
+    $equipmentReservations = EquipmentReservation::getUserUpcomingReservations($db, $user->getUserId());
 ?>
     <main>
         <section class="flex-row light">
@@ -331,6 +333,8 @@ function drawMemberProfile(PDO $db, Users $user): void {
                     </dl>
                 <?php } ?>
             </article>
+
+            <?php drawEquipmentReservationsCard($equipmentReservations); ?>
 
             <article class="card">
                 <h2 class="card-title center">Classes History</h2>
@@ -669,6 +673,7 @@ function drawReviewDialog(PDO $db,WorkoutClassType $workoutClassType, WorkoutCla
         </section>
     </dialog>
 <?php } 
+
 function drawTrainerReviews($db, $reviews, $canEdit): void { ?>
     <article class="card">
         <h2 class="card-title center">Class Reviews</h2>
@@ -704,6 +709,59 @@ function drawTrainerReviews($db, $reviews, $canEdit): void { ?>
                     
                 <?php } ?>
             </ul>
+        <?php } ?>
+    </article>
+<?php }
+
+function drawEquipmentReservationsCard(array $equipmentReservations): void { ?>
+    <article class="card">
+        <h2 class="card-title center">Equipment Reservations</h2>
+
+        <?php if (empty($equipmentReservations)) { ?>
+            <p>You do not have any equipment reservations yet.</p>
+        <?php } else { ?>
+            <dl>
+                <?php foreach ($equipmentReservations as $reservation) {
+                    $startTimestamp = strtotime($reservation['ReservationDateTime']);
+                    $endTimestamp = strtotime($reservation['EndDateTime']);
+
+                    $date = date('d M', $startTimestamp);
+                    $startTime = date('H:i', $startTimestamp);
+                    $endTime = date('H:i', $endTimestamp);
+                ?>
+                    <div class="card-dl-row">
+                        <dt>
+                            <?= htmlspecialchars($reservation['Name']) ?>
+                            <span class="equipment_reservation_meta">
+                                <?= htmlspecialchars($reservation['Type']) ?>
+                            </span>
+                        </dt>
+
+                        <dd>
+                            <form
+                                class="equipment_reservation_cancel_form"
+                                action="../actions/action_cancel_equipment_reservation.php"
+                                method="post"
+                            >
+                                <input
+                                    type="hidden"
+                                    name="reservation_id"
+                                    value="<?= htmlspecialchars((string)$reservation['EquipmentReservationId']) ?>"
+                                >
+
+                                <button
+                                    type="submit"
+                                    class="btn small light profile-edit-btn"
+                                >
+                                    Cancel
+                                </button>
+                            </form>
+
+                            <?= htmlspecialchars($date) ?> · <?= htmlspecialchars($startTime) ?> - <?= htmlspecialchars($endTime) ?>
+                        </dd>
+                    </div>
+                <?php } ?>
+            </dl>
         <?php } ?>
     </article>
 <?php } ?>

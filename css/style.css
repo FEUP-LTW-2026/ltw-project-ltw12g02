@@ -1757,6 +1757,25 @@ button {
   color: var(--gray-text);
 }
 
+/* EQUIPMENT RESERVATIONS IN PROFILE */
+
+.equipment_reservation_meta {
+  display: block;
+  margin-top: 0.25rem;
+  color: var(--gray-text);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.equipment_reservation_cancel_form {
+  display: inline-block;
+  margin-right: 0.5rem;
+}
+
+.equipment_reservation_cancel_form button {
+  cursor: pointer;
+}
+
 /* RESPONSIVE */
 
 @media (max-width: 60rem) {
