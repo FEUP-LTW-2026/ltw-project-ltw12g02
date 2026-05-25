@@ -89,5 +89,26 @@ class Equipment {
             $row['AvailabilityStatus']
         );
     }
+
+    public static function decreaseQuantity(PDO $db, int $equipmentId): void {
+        $stmt = $db->prepare('
+            UPDATE Equipment
+            SET Quantity = Quantity - 1
+            WHERE EquipmentId = ?
+            AND Quantity > 0
+        ');
+
+        $stmt->execute([$equipmentId]);
+    }
+
+    public static function increaseQuantity(PDO $db, int $equipmentId): void {
+        $stmt = $db->prepare('
+            UPDATE Equipment
+            SET Quantity = Quantity + 1
+            WHERE EquipmentId = ?
+        ');
+
+        $stmt->execute([$equipmentId]);
+    }
 }
 ?>

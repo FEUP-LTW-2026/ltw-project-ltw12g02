@@ -1,7 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('dialog').forEach((dialog) => {
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) {
+        dialog.close();
+      }
+    });
+  });
 
   document.addEventListener('click', (event) => {
-
     const openButton = event.target.closest('[data-dialog-target]');
     const closeButton = event.target.closest('[data-dialog-close]');
 
@@ -15,19 +21,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (closeButton) {
-        const dialog = closeButton.closest('dialog');
+      const dialog = closeButton.closest('dialog');
 
-        if (dialog) {
-          dialog.close();
-        }
+      if (dialog) {
+        dialog.close();
+      }
     }
-
-    document.querySelectorAll('dialog').forEach((dialog) => {
-      dialog.addEventListener('click', (event) => {
-        if (event.target === dialog) {
-          dialog.close();
-        }
-      });
-    });
   });
 });

@@ -124,6 +124,19 @@
   border-color: var(--lime);
 }
 
+/* FILTER FORM */
+
+.filter-form {
+  display: flex;
+  margin-left: 2rem;
+  gap: 1rem;
+}
+
+.filter-form * {
+  border: none;
+  background-color: transparent;
+}
+
 
 @media (max-width: 60rem) {
 

@@ -1,5 +1,3 @@
-// javascript/filter_classes.js
-
 const form = document.querySelector('.filter-form');
 
 const container = document.querySelector('#available-classes');
