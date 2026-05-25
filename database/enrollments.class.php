@@ -1,4 +1,7 @@
 <?php
+declare(strict_types = 1);
+
+require_once(__DIR__ . '/workoutclass.class.php');
 
 class Enrollments {
 
@@ -8,22 +11,24 @@ class Enrollments {
     private string $enrollment_date;
     private string $enrollment_status;
     private int $rating;
-    private int $review;
+    private string $review;
 
     public function __construct(
         int $enrollment_id,
         int $user_id,
         int $class_id,
         string $enrollment_date,
-        string $enrollment_status
+        string $enrollment_status,
+        int $rating = -1,
+        string $review = ""
     ) {
         $this->enrollment_id = $enrollment_id;
         $this->user_id = $user_id;
         $this->class_id = $class_id;
         $this->enrollment_date = $enrollment_date;
         $this->enrollment_status = $enrollment_status;
-        $this->rating = -1;
-        $this->review = "";
+        $this->rating = $rating;
+        $this->review = $review;
     }
 
     public function get_enrollment_id(): int {
@@ -78,68 +83,167 @@ class Enrollments {
             (int)$row['ClassId'],
             $row['EnrollmentDate'],
             $row['Status'],
-            (int)$row['Rating'],
-            $row['Review']
+            $row['Rating'] !== null ? (int)$row['Rating'] : -1,
+            $row['Review'] ?? ''
         );
+    }
+
+    public static function getUserEnrollments(PDO $db, int $userId): array {
+        $stmt = $db->prepare('
+            SELECT *
+            FROM Enrollments
+            WHERE UserId = ?
+            ORDER BY EnrollmentDate DESC
+        ');
+
+        $stmt->execute([$userId]);
+
+        $enrollments = [];
+
+        while ($row = $stmt->fetch()) {
+            $enrollments[] = new Enrollments(
+                (int)$row['EnrollmentId'],
+                (int)$row['UserId'],
+                (int)$row['ClassId'],
+                $row['EnrollmentDate'],
+                $row['Status'],
+                $row['Rating'] !== null ? (int)$row['Rating'] : -1,
+                $row['Review'] ?? ''
+            );
+        }
+
+        return $enrollments;
+    }
+
+    public static function userHasActiveEnrollment(PDO $db, int $userId, int $classId): bool {
+        $stmt = $db->prepare('
+            SELECT EnrollmentId
+            FROM Enrollments
+            WHERE UserId = ?
+              AND ClassId = ?
+              AND Status = ?
+        ');
+
+        $stmt->execute([
+            $userId,
+            $classId,
+            'active'
+        ]);
+
+        return $stmt->fetch() !== false;
     }
 
     public static function addEnrollmentToDb(PDO $db, int $userId, int $classId): void {
-    $stmt = $db->prepare('
-        INSERT INTO Enrollments (UserId, ClassId, EnrollmentDate, Status)
-        VALUES (?, ?, datetime("now"), ?)
-    ');
+        $stmt = $db->prepare('
+            INSERT INTO Enrollments (UserId, ClassId, EnrollmentDate, Status)
+            VALUES (?, ?, datetime("now"), ?)
+        ');
 
-    $stmt->execute([
-        $userId,
-        $classId,
-        'active'
-    ]);
+        $stmt->execute([
+            $userId,
+            $classId,
+            'active'
+        ]);
+    }
+
+    public static function createEnrollment(PDO $db, int $userId, int $classId): ?Enrollments {
+        $class = WorkoutClass::getWorkoutClass($db, $classId);
+
+        if ($class === null) {
+            return null;
+        }
+
+        if (strtotime($class->getClassDateTime()) < time()) {
+            return null;
+        }
+
+        if (WorkoutClass::isFull($db, $classId, $class->getCapacity())) {
+            return null;
+        }
+
+        if (Enrollments::userHasActiveEnrollment($db, $userId, $classId)) {
+            return null;
+        }
+
+        Enrollments::addEnrollmentToDb($db, $userId, $classId);
+
+        $id = (int)$db->lastInsertId();
+
+        return Enrollments::getEnrollment($db, $id);
+    }
+
+    public function cancelEnrollment(PDO $db): bool {
+        if (!$this->is_active()) {
+            return false;
+        }
+
+        $stmt = $db->prepare('
+            UPDATE Enrollments
+            SET Status = ?
+            WHERE EnrollmentId = ?
+              AND Status = ?
+        ');
+
+        $stmt->execute([
+            'cancelled',
+            $this->enrollment_id,
+            'active'
+        ]);
+
+        if ($stmt->rowCount() === 0) {
+            return false;
+        }
+
+        $this->enrollment_status = 'cancelled';
+
+        return true;
     }
 
     public static function getMembersByClassId(PDO $db, int $classId): array {
-    $stmt = $db->prepare('
-        SELECT Users.*
-        FROM Enrollments
-        JOIN Users ON Users.UserId = Enrollments.UserId
-        WHERE Enrollments.ClassId = ?
-          AND Enrollments.Status = ?
-        ORDER BY Users.Name
-    ');
+        $stmt = $db->prepare('
+            SELECT Users.*
+            FROM Enrollments
+            JOIN Users ON Users.UserId = Enrollments.UserId
+            WHERE Enrollments.ClassId = ?
+              AND Enrollments.Status = ?
+            ORDER BY Users.Name
+        ');
 
-    $stmt->execute([
-        $classId,
-        'active'
-    ]);
+        $stmt->execute([
+            $classId,
+            'active'
+        ]);
 
-    $members = [];
+        $members = [];
 
-    while ($row = $stmt->fetch()) {
-        $members[] = new Users(
-            (int)$row['UserId'],
-            $row['Name'],
-            $row['Username'],
-            $row['Email'],
-            $row['PasswordHash'],
-            $row['Role'],
-            $row['ProfileImage']
-        );
-    }
+        while ($row = $stmt->fetch()) {
+            $members[] = new Users(
+                (int)$row['UserId'],
+                $row['Name'],
+                $row['Username'],
+                $row['Email'],
+                $row['PasswordHash'],
+                $row['Role'],
+                $row['ProfileImage']
+            );
+        }
 
-    return $members;
+        return $members;
     }
 
     public static function updateReview(
         PDO $db,
-        int $userId, 
+        int $userId,
         int $classId,
         int $rating,
-        string $review,
+        string $review
     ): void {
         $stmt = $db->prepare('
-            UPDATE ENROLLMENTS
+            UPDATE Enrollments
             SET Rating = ?,
                 Review = ?
-            WHERE UserId = ? AND ClassId = ?
+            WHERE UserId = ?
+              AND ClassId = ?
         ');
 
         $stmt->execute([
@@ -150,3 +254,4 @@ class Enrollments {
         ]);
     }
 }
+?>

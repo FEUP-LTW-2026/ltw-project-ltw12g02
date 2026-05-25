@@ -7,6 +7,7 @@ require_once(__DIR__ . '/../database/workoutclass.class.php');
 require_once(__DIR__ . '/../database/workoutclasstype.class.php');
 require_once(__DIR__ . '/../database/equipment.class.php');
 require_once(__DIR__ . '/../database/equipmentreservation.class.php');
+require_once(__DIR__ . '/../database/enrollments.class.php');
 
 function userToJson(Users $user): array {
     return [
@@ -143,6 +144,31 @@ function equipmentReservationsToJson(array $reservations): array {
 
     foreach ($reservations as $reservation) {
         $result[] = equipmentReservationToJson($reservation);
+    }
+
+    return $result;
+}
+
+function enrollmentToJson(Enrollments $enrollment, PDO $db): array {
+    $class = WorkoutClass::getWorkoutClass($db, $enrollment->get_class_id());
+
+    return [
+        'id' => $enrollment->get_enrollment_id(),
+        'userId' => $enrollment->get_user_id(),
+        'classId' => $enrollment->get_class_id(),
+        'enrollmentDate' => $enrollment->get_enrollment_date(),
+        'status' => $enrollment->get_enrollment_status(),
+        'rating' => $enrollment->get_rating(),
+        'review' => $enrollment->get_review(),
+        'class' => $class !== null ? workoutClassToJson($class, $db) : null
+    ];
+}
+
+function enrollmentsToJson(array $enrollments, PDO $db): array {
+    $result = [];
+
+    foreach ($enrollments as $enrollment) {
+        $result[] = enrollmentToJson($enrollment, $db);
     }
 
     return $result;
