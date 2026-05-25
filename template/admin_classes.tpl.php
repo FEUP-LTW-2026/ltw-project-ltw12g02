@@ -53,7 +53,10 @@ function drawAdminClassesHero(): void { ?>
 
 
 <?php
-function drawAdminClassesControls(array $trainers, string $filter, PDO $db): void { ?>
+function drawAdminClassesControls(array $trainers, string $filter, PDO $db): void {
+    $dateMin = $filter === 'upcoming' ? date('Y-m-d') : '';
+    $dateMax = $filter === 'past' ? date('Y-m-d') : '';
+?>
     <section class="admin-users-controls admin-users-controls-row">
         <form class="filter-form admin-class-filter-form">
             <input type="hidden" name="admin" value="1">
@@ -69,9 +72,17 @@ function drawAdminClassesControls(array $trainers, string $filter, PDO $db): voi
                 <?php } ?>
             </select>
 
-            <input type="date" name="date">
+            <input
+                type="date"
+                name="date"
+                <?= $dateMin !== '' ? 'min="' . htmlspecialchars($dateMin) . '"' : '' ?>
+                <?= $dateMax !== '' ? 'max="' . htmlspecialchars($dateMax) . '"' : '' ?>
+            >
 
-            <input type="time" name="time">
+            <input
+                type="time"
+                name="time"
+            >
         </form>
 
         <button
@@ -211,6 +222,7 @@ function drawAdminClassFormDialog(
     $selectedTrainerId = $class !== null ? $class->getTrainerId() : 0;
     $capacity = $class !== null ? $class->getCapacity() : 1;
     $classDateTime = $class !== null ? formatAdminDateTimeInput($class->getClassDateTime()) : '';
+    $minimumDateTime = date('Y-m-d\TH:i');
 ?>
     <dialog id="<?= htmlspecialchars($dialogId) ?>" class="popup-dialog">
         <section class="card popup-card">
@@ -288,6 +300,7 @@ function drawAdminClassFormDialog(
                     type="datetime-local"
                     name="class_datetime"
                     value="<?= htmlspecialchars($classDateTime) ?>"
+                    min="<?= htmlspecialchars($minimumDateTime) ?>"
                     required
                 >
 

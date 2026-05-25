@@ -60,30 +60,29 @@ class WorkoutClass {
         }
 
         return new WorkoutClass(
-            (int)$row['ClassId'],
-            (int)$row['TrainerId'],
-            (int)$row['ClassTypeId'],
-            $row['ClassDateTime'],
-            (int)$row['Capacity']
+            (int) $row['ClassId'],
+            (int) $row['TrainerId'],
+            (int) $row['ClassTypeId'],
+            (string) $row['ClassDateTime'],
+            (int) $row['Capacity']
         );
     }
 
     public static function getFilteredClasses(
         PDO $db,
-        String $classTypeId,
+        string $classTypeId,
         ?string $trainerId,
         ?string $date,
         ?string $time
     ): array {
-
         $sql = '
             SELECT *
             FROM Classes
-            WHERE ClassDateTime >= datetime() AND ClassTypeId = ?
+            WHERE ClassDateTime >= datetime()
+            AND ClassTypeId = ?
         ';
 
-        $params = [];
-        $params[] = $classTypeId;
+        $params = [$classTypeId];
 
         if (!empty($trainerId)) {
             $sql .= ' AND TrainerId = ?';
@@ -105,59 +104,21 @@ class WorkoutClass {
         ';
 
         $stmt = $db->prepare($sql);
-
         $stmt->execute($params);
 
         $classes = [];
 
         while ($row = $stmt->fetch()) {
-
             $classes[] = new WorkoutClass(
-                $row['ClassId'],
-                $row['TrainerId'],
-                $row['ClassTypeId'],
-                $row['ClassDateTime'],
-                $row['Capacity']
+                (int) $row['ClassId'],
+                (int) $row['TrainerId'],
+                (int) $row['ClassTypeId'],
+                (string) $row['ClassDateTime'],
+                (int) $row['Capacity']
             );
         }
 
         return $classes;
-    }
-
-    public static function getEnrollmentCount(PDO $db, int $classId): int {
-        $stmt = $db->prepare('
-            SELECT COUNT(*) AS EnrollmentCount
-            FROM Enrollments
-            WHERE ClassId = ?
-            AND Status = "active"
-        ');
-
-        $stmt->execute([$classId]);
-        $row = $stmt->fetch();
-
-        return (int) $row['EnrollmentCount'];
-    }
-
-    public static function isFull(PDO $db, int $classId, int $capacity): bool {
-        return WorkoutClass::getEnrollmentCount($db, $classId) >= $capacity;
-    }
-
-    public function getTrainerName(PDO $db) : string{
-
-        return Trainers::getTrainer($db,$this->trainerId)->getName($db);
-
-
-    }
-
-    public static function addWorkoutClassToDb(PDO $db, int $trainerId,int $classTypeId,string $date, int $capacity) : void{
-
-        $stmt = $db->prepare('
-        INSERT INTO Classes (TrainerId,ClassTypeId,ClassDateTime,Capacity)
-        VALUES (?,?,?,?)
-        ');
-
-        $stmt->execute([$trainerId,$classTypeId,$date,$capacity]);
-
     }
 
     public static function getAllWorkoutClasses(PDO $db): array {
@@ -234,30 +195,32 @@ class WorkoutClass {
         return $classes;
     }
 
-    public static function createClass(PDO $db, int $trainer_id, int $class_type_id, string $class_datetime, int $capacity): void {
-
-        WorkoutClass::addWorkoutClassToDb(
-            $db,
-            $trainer_id,
-            $class_type_id,
-            $class_datetime,
-            $capacity
-        );
-
-    }
-
-    public function updateClass(PDO $db, int $trainer_id, int $class_type_id, string $class_datetime, int $capacity): void {
-        
+    public static function getEnrollmentCount(PDO $db, int $classId): int {
         $stmt = $db->prepare('
-            UPDATE Classes
-            SET TrainerId = ?,
-                ClassTypeId = ?,
-                ClassDateTime = ?,
-                Capacity = ?
+            SELECT COUNT(*) AS EnrollmentCount
+            FROM Enrollments
             WHERE ClassId = ?
+            AND Status = "active"
         ');
 
-        $stmt->execute([$trainer_id, $class_type_id, $class_datetime, $capacity, $this->id]);
+        $stmt->execute([$classId]);
+        $row = $stmt->fetch();
+
+        return (int) $row['EnrollmentCount'];
+    }
+
+    public static function isFull(PDO $db, int $classId, int $capacity): bool {
+        return WorkoutClass::getEnrollmentCount($db, $classId) >= $capacity;
+    }
+
+    public function getTrainerName(PDO $db): string {
+        $trainer = Trainers::getTrainer($db, $this->trainerId);
+
+        if ($trainer === null) {
+            return 'Unknown trainer';
+        }
+
+        return $trainer->getName($db);
     }
 
     public static function normalizeClassDateTime(string $dateTime): ?string {
@@ -266,7 +229,6 @@ class WorkoutClass {
         }
 
         $dateTime = str_replace('T', ' ', $dateTime);
-
         $timestamp = strtotime($dateTime);
 
         if ($timestamp === false) {
@@ -276,7 +238,123 @@ class WorkoutClass {
         return date('Y-m-d H:i:s', $timestamp);
     }
 
+    private static function validateClassData(
+        PDO $db,
+        int $trainerId,
+        int $classTypeId,
+        string $classDateTime,
+        int $capacity
+    ): string {
+        if ($trainerId <= 0 || $classTypeId <= 0) {
+            throw new InvalidArgumentException('Invalid trainer or class type.');
+        }
+
+        if ($capacity < 1) {
+            throw new InvalidArgumentException('Capacity must be at least 1.');
+        }
+
+        $classDateTime = WorkoutClass::normalizeClassDateTime($classDateTime);
+
+        if ($classDateTime === null) {
+            throw new InvalidArgumentException('Invalid class date.');
+        }
+
+        if (strtotime($classDateTime) < time()) {
+            throw new InvalidArgumentException('Class date must be in the future.');
+        }
+
+        if (Trainers::getTrainer($db, $trainerId) === null) {
+            throw new InvalidArgumentException('Trainer not found.');
+        }
+
+        if (WorkoutClassType::getWorkoutClassType($db, $classTypeId) === null) {
+            throw new InvalidArgumentException('Class type not found.');
+        }
+
+        return $classDateTime;
+    }
+
+    public static function addWorkoutClassToDb(
+        PDO $db,
+        int $trainerId,
+        int $classTypeId,
+        string $date,
+        int $capacity
+    ): void {
+        $stmt = $db->prepare('
+            INSERT INTO Classes (TrainerId, ClassTypeId, ClassDateTime, Capacity)
+            VALUES (?, ?, ?, ?)
+        ');
+
+        $stmt->execute([$trainerId, $classTypeId, $date, $capacity]);
+    }
+
+    public static function createClass(
+        PDO $db,
+        int $trainerId,
+        int $classTypeId,
+        string $classDateTime,
+        int $capacity
+    ): void {
+        $classDateTime = WorkoutClass::validateClassData(
+            $db,
+            $trainerId,
+            $classTypeId,
+            $classDateTime,
+            $capacity
+        );
+
+        WorkoutClass::addWorkoutClassToDb(
+            $db,
+            $trainerId,
+            $classTypeId,
+            $classDateTime,
+            $capacity
+        );
+    }
+
+    public function updateClass(
+        PDO $db,
+        int $trainerId,
+        int $classTypeId,
+        string $classDateTime,
+        int $capacity
+    ): void {
+        $classDateTime = WorkoutClass::validateClassData(
+            $db,
+            $trainerId,
+            $classTypeId,
+            $classDateTime,
+            $capacity
+        );
+
+        $stmt = $db->prepare('
+            UPDATE Classes
+            SET TrainerId = ?,
+                ClassTypeId = ?,
+                ClassDateTime = ?,
+                Capacity = ?
+            WHERE ClassId = ?
+        ');
+
+        $stmt->execute([
+            $trainerId,
+            $classTypeId,
+            $classDateTime,
+            $capacity,
+            $this->id
+        ]);
+    }
+
     public static function deleteClass(PDO $db, int $id): void {
+        if ($id <= 0) {
+            throw new InvalidArgumentException('Invalid class.');
+        }
+
+        if (WorkoutClass::getWorkoutClass($db, $id) === null) {
+            throw new InvalidArgumentException('Class not found.');
+        }
+
         $stmt = $db->prepare('
             DELETE FROM Classes
             WHERE ClassId = ?
@@ -285,3 +363,4 @@ class WorkoutClass {
         $stmt->execute([$id]);
     }
 }
+?>
