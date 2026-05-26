@@ -229,6 +229,86 @@ function drawEditTrainerProfileDialog(Trainers $trainer): void { ?>
 <?php }
 
 
+function drawPersonalClassRequestDialog(Trainers $trainer, Users $trainerUser): void {
+    $trainerId = method_exists($trainer, 'getId') ? $trainer->getId() : $trainer->getTrainerId();
+?>
+    <dialog id="personal-class-request-dialog" class="popup-dialog">
+        <section class="card popup-card">
+            <button 
+                type="button" 
+                class="popup-close" 
+                data-dialog-close
+                aria-label="Close personal class request dialog"
+            >
+                &times;
+            </button>
+
+            <header class="popup-header">
+                <p class="profile-member-card-label">PowerPIT Personal Class</p>
+                <h1>Request Personal Class</h1>
+                <p>
+                    Send a request to <?= htmlspecialchars($trainerUser->getName()) ?>.
+                    The trainer will accept or reject it later.
+                </p>
+            </header>
+
+            <form 
+                class="popup-form"
+                action="../actions/action_create_personal_class.php"
+                method="post"
+            >
+                <input 
+                    type="hidden"
+                    name="trainer_id"
+                    value="<?= htmlspecialchars((string)$trainerId) ?>"
+                >
+
+                <label>
+                    Date and Time
+                    <input 
+                        type="datetime-local"
+                        name="start_date_time"
+                        required
+                    >
+                </label>
+
+                <label>
+                    Duration
+                    <select name="duration_minutes" required>
+                        <option value="30">30 minutes</option>
+                        <option value="45">45 minutes</option>
+                        <option value="60" selected>60 minutes</option>
+                        <option value="90">90 minutes</option>
+                    </select>
+                </label>
+
+                <label>
+                    Message
+                    <textarea 
+                        name="request_message"
+                        placeholder="Tell the trainer what you want to work on..."
+                    ></textarea>
+                </label>
+
+                <div class="popup-actions">
+                    <button 
+                        type="button" 
+                        class="btn small"
+                        data-dialog-close
+                    >
+                        Cancel
+                    </button>
+
+                    <button type="submit" class="btn small light">
+                        Send Request
+                    </button>
+                </div>
+            </form>
+        </section>
+    </dialog>
+<?php }
+
+
 function drawProfile(PDO $db, Users $user): void {
     if ($user->getRole() === 'trainer') {
         $trainer = Trainers::getTrainerByUserId($db, $user->getUserId());
@@ -417,6 +497,14 @@ function drawTrainerProfile(PDO $db, Users $user, Trainers $trainer, bool $canEd
                             >
                                 Edit Profile
                             </button>
+                        <?php } else { ?>
+                            <button 
+                                type="button" 
+                                class="btn small light profile-edit-btn"
+                                data-dialog-target="personal-class-request-dialog"
+                            >
+                                Request Personal Class
+                            </button>
                         <?php } ?>
                     </div>
 
@@ -444,11 +532,11 @@ function drawTrainerProfile(PDO $db, Users $user, Trainers $trainer, bool $canEd
             <?php drawTrainerPublicCard($trainer, $canEdit); ?>
             <?php drawTrainerScheduleCard($db, $assignedClasses); ?>
         </section>
-
+        <?php if ($canEdit){ ?>
         <section class="grid">
             <?php drawTrainerRosterCard($db, $assignedClasses); ?>
         </section>
-
+        <?php } ?>
         <section class="grid">
             <?php drawTrainerReviews($db, $reviews, $canEdit); ?>
         </section>
@@ -457,6 +545,8 @@ function drawTrainerProfile(PDO $db, Users $user, Trainers $trainer, bool $canEd
 
             <?php drawEditProfileDialog($user); ?>
             <?php drawEditTrainerProfileDialog($trainer); ?>
+        <?php } else { ?>
+            <?php drawPersonalClassRequestDialog($trainer, $user); ?>
         <?php } ?>
     </main>
 <?php }
@@ -860,4 +950,4 @@ function drawWithdrawDialog(PDO $db,WorkoutClassType $workoutClassType, WorkoutC
             </form>
         </section>
     </dialog>
-<?php } ?>
+<?php } 
