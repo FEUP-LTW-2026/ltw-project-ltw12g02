@@ -103,14 +103,23 @@ function generateHeader(Session $session) { ?>
 
 function generateFooter() { ?>
 <footer class="main-footer">
-    <p>Copyright &copy; All rights reserved</p>
-    <p>Rua njdfbajlfhak 00, 4000-000 Cidade | email@powerpit.com | +555 900 000 000</p>
-    <p>Our transactions are made in euros (&euro;).</p>
+    <div class="footer-text">
+        <p>Copyright &copy; All rights reserved</p>
+        <p>Rua njdfbajlfhak 00, 4000-000 Cidade | email@powerpit.com | +555 900 000 000</p>
+        <p>Our transactions are made in euros (&euro;).</p>
+    </div>
+    <button 
+        type="button" 
+        class="btn small light profile-edit-btn"
+        data-dialog-target="complaint-dialog"
+    >
+        Send a Complaint
+    </button>
 </footer>
-
+<?php drawComplaintDialog(); ?>
 </body>
 </html>
-<?php } 
+<?php }
 
 
 
@@ -148,4 +157,64 @@ function generateTemplates(): void { ?>
             </button>
         </div>
 </template>
+<?php }
+
+function drawComplaintDialog(): void { ?>
+    <dialog id="complaint-dialog" class="popup-dialog">
+        <section class="card popup-card">
+            <button 
+                type="button" 
+                class="popup-close" 
+                data-dialog-close
+                aria-label="Close complaint dialog"
+            >
+                &times;
+            </button>
+
+            <header class="popup-header">
+                <p class="profile-member-card-label">PowerPIT Support</p>
+                <h1>Send a Complaint</h1>
+                <p>Report an issue and we'll respond as soon as we can!</p>
+            </header>
+
+            <form 
+                class="popup-form issue-form"
+                action="../actions/action_complaint.php" 
+                method="post"
+            >
+                <label>
+                    Reason:
+                    <select name="reason">
+                        <option value="equipment malfunction">Equipment Malfunction</option>
+                        <option value="class cancellation">Class Cancellation</option>
+                        <option value="other">Other</option>
+                    </select>
+                </label>
+
+                <label>
+                    Tell us what's wrong:
+                    <textarea 
+                        name="details"
+                        placeholder="Explain with detail so we can solve the issue as quickly as possible"
+                    ></textarea>
+                </label>
+
+
+
+                <div class="popup-actions">
+                    <button 
+                        type="button" 
+                        class="btn small"
+                        data-dialog-close
+                    >
+                        Cancel
+                    </button>
+
+                    <button type="submit" class="btn small light">
+                        Confirm Complaint
+                    </button>
+                </div>
+            </form>
+        </section>
+    </dialog>
 <?php } ?>

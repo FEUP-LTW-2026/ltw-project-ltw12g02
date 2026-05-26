@@ -8,6 +8,7 @@ require_once(__DIR__ . '/../database/workoutclass.class.php');
 require_once(__DIR__ . '/../database/workoutclasstype.class.php');
 require_once(__DIR__ . '/../database/equipmentreservation.class.php');
 require_once(__DIR__ . '/../database/personalclass.class.php');
+require_once(__DIR__ . '/../database/complaints.class.php');
 
 
 function getWorkoutClassDisplayName(PDO $db, WorkoutClass $workoutClass): string {
@@ -329,6 +330,7 @@ function drawMemberProfile(PDO $db, Users $user): void {
     $classHistory = $user->getWorkoutClassHistory($db);
     $equipmentReservations = EquipmentReservation::getUserUpcomingReservations($db, $user->getUserId());
     $personalClasses = PersonalClass::getUserPersonalClasses($db, $user->getUserId());
+    $complaints = Complaints::getUserComplaints($db, $user->getUserId());
 ?>
     <main>
         <section class="flex-row light">
@@ -390,71 +392,15 @@ function drawMemberProfile(PDO $db, Users $user): void {
                 </dl>
             </article>
 
-            <article class="card">
-                <h2 class="card-title center">Next Classes</h2>
-
-                <?php if (empty($nextClasses)) { ?>
-                    <p>You do not have any booked classes yet.</p>
-                <?php } else { ?>
-                    <dl id="next-classes-container">
-                        <?php foreach ($nextClasses as $workoutClass) { 
-                            $dialogId = 'withdraw-dialog-' . $workoutClass->getId();
-                            $classType = WorkoutClassType::getWorkoutClassType($db, $workoutClass->getClassTypeId());
-                            
-                            ?>
-                            <div class="card-dl-row">
-                                <?php drawWithdrawDialog($db, $classType, $workoutClass); ?>
-                                <dt><?= htmlspecialchars(getWorkoutClassDisplayName($db, $workoutClass)) ?></dt>
-                                <dd>
-                                    <?= htmlspecialchars(date('d M · H:i', strtotime($workoutClass->getClassDateTime()))) ?>
-                                    <button 
-                                        type="button" 
-                                        class="btn small light profile-edit-btn"
-                                        data-dialog-target="<?=htmlspecialchars($dialogId)?>"
-                                    >
-                                        Withdraw
-                                    </button>
-                                </dd>
-                            </div>
-                        <?php } ?>
-                    </dl>
-                <?php } ?>
-            </article>
+            <?php drawNextClassesCard($db, $nextClasses); ?>
 
             <?php drawEquipmentReservationsCard($equipmentReservations); ?>
 
             <?php drawPersonalClassesCard($db, $personalClasses); ?>
 
-            <article class="card">
-                <h2 class="card-title center">Classes History</h2>
+            <?php drawClassHistoryCard($db, $classHistory); ?>
 
-                <?php if (empty($classHistory)) { ?>
-                    <p>You have not attended any classes yet.</p>
-                <?php } else { ?>
-                    <dl>
-                        <?php foreach ($classHistory as $workoutClass) {
-                            $dialogId = 'review-dialog-' . $workoutClass->getId();
-                            $classType = WorkoutClassType::getWorkoutClassType($db, $workoutClass->getClassTypeId());
-                            drawReviewDialog($db, $classType, $workoutClass);
-                            ?>
-                            <div class="card-dl-row">
-                                <dt><?= htmlspecialchars(getWorkoutClassDisplayName($db, $workoutClass)) ?></dt>
-
-                                <dd>
-                                    <?= htmlspecialchars(date('d M · H:i', strtotime($workoutClass->getClassDateTime()))) ?>
-                                    <button 
-                                        type="button" 
-                                        class="btn small light profile-edit-btn"
-                                        data-dialog-target="<?=htmlspecialchars($dialogId)?>"
-                                    >
-                                        Review
-                                    </button>
-                                </dd>
-                            </div>
-                        <?php } ?>
-                    </dl>
-                <?php } ?>
-            </article>
+            <?php drawComplaintsCard($db, $complaints); ?>
         </section>
 
         <?php drawEditProfileDialog($user);?>
@@ -1014,4 +960,155 @@ function drawPersonalClassesCard(PDO $db, array $personalClasses): void { ?>
             </dl>
         <?php } ?>
     </article>
+<?php }
+
+function drawNextClassesCard(PDO $db, array $nextClasses): void { ?>
+     <article class="card">
+        <h2 class="card-title center">Next Classes</h2>
+
+        <?php if (empty($nextClasses)) { ?>
+            <p>You do not have any booked classes yet.</p>
+        <?php } else { ?>
+            <dl id="next-classes-container">
+                <?php foreach ($nextClasses as $workoutClass) { 
+                    $dialogId = 'withdraw-dialog-' . $workoutClass->getId();
+                    $classType = WorkoutClassType::getWorkoutClassType($db, $workoutClass->getClassTypeId());
+                    drawWithdrawDialog($db, $classType, $workoutClass);       
+                ?>
+                    <div class="card-dl-row">
+                        <dt><?= htmlspecialchars(getWorkoutClassDisplayName($db, $workoutClass)) ?></dt>
+                        <dd>
+                            <?= htmlspecialchars(date('d M · H:i', strtotime($workoutClass->getClassDateTime()))) ?>
+                            <button 
+                                type="button" 
+                                class="btn small light profile-edit-btn"
+                                data-dialog-target="<?=htmlspecialchars($dialogId)?>"
+                            >
+                                Withdraw
+                            </button>
+                        </dd>
+                    </div>
+                 <?php } ?>
+            </dl>
+        <?php } ?>
+    </article>
+<?php }
+
+function drawClassHistoryCard(PDO $db, array $classHistory): void { ?>
+    <article class="card">
+        <h2 class="card-title center">Classes History</h2>
+
+        <?php if (empty($classHistory)) { ?>
+            <p>You have not attended any classes yet.</p>
+        <?php } else { ?>
+            <dl>
+                <?php foreach ($classHistory as $workoutClass) {
+                    $dialogId = 'review-dialog-' . $workoutClass->getId();
+                    $classType = WorkoutClassType::getWorkoutClassType($db, $workoutClass->getClassTypeId());
+                    drawReviewDialog($db, $classType, $workoutClass);
+                ?>
+                    <div class="card-dl-row">
+                        <dt><?= htmlspecialchars(getWorkoutClassDisplayName($db, $workoutClass)) ?></dt>
+
+                        <dd>
+                            <?= htmlspecialchars(date('d M · H:i', strtotime($workoutClass->getClassDateTime()))) ?>
+                            <button 
+                                type="button" 
+                                class="btn small light profile-edit-btn"
+                                data-dialog-target="<?=htmlspecialchars($dialogId)?>"
+                            >
+                                Review
+                            </button>
+                        </dd>
+                    </div>
+                <?php } ?>
+            </dl>
+        <?php } ?>
+    </article>
+<?php }
+
+function drawComplaintsCard(PDO $db, array $complaints): void { ?>
+    <article class="card">
+        <h2 class="card-title center">Complaints</h2>
+
+        <?php if (empty($complaints)) { ?>
+            <p>You have not sent any complaints yet.</p>
+        <?php } else { ?>
+            <dl>
+                <?php foreach ($complaints as $complaint) {
+                    $dialogId = 'check-complaint-dialog-' . $complaint->get_complaint_id();
+                    drawCheckComplaintDialog($db, $complaint);
+                ?>
+                    <div class="card-dl-row">
+                        <dt><?= htmlspecialchars($complaint->get_reason()) ?></dt>
+
+                        <dd>
+                            response:
+                            <?php if ($complaint->get_response() == "") { ?>
+                                <i class="fa fa-times-circle-o" aria-hidden="true"></i>
+                            <?php } else { ?>
+                                <i class="fa fa-check-circle-o" aria-hidden="true"></i>
+                            <?php } ?>
+                            <button 
+                                type="button" 
+                                class="btn small light profile-edit-btn"
+                                data-dialog-target="<?=htmlspecialchars($dialogId)?>"
+                            >
+                                Check
+                            </button>
+                        </dd>
+                    </div>
+                <?php } ?>
+            </dl>
+        <?php } ?>
+    </article>
+<?php }
+
+function drawCheckComplaintDialog(PDO $db, Complaints $complaint): void { 
+    $dialogId = 'check-complaint-dialog-' . $complaint->get_complaint_id();
+?>
+    <dialog id="<?= htmlspecialchars($dialogId) ?>" class="popup-dialog">
+        <section class="card popup-card">
+            <button 
+                type="button" 
+                class="popup-close" 
+                data-dialog-close
+                aria-label="Close check complaint dialog"
+            >
+                &times;
+            </button>
+
+            <header class="popup-header">
+                <p class="profile-member-card-label">PowerPIT Complaint</p>
+                <h1>Your Complaint</h1>
+                <p>If your complaint doesn't have a response yet, wait patiently and we will answer you when we can.</p>
+            </header>
+
+            <form class="popup-form check-complaint-form">
+                <label>
+                    Reason: <?=htmlspecialchars($complaint->get_reason())?> 
+                </label>
+
+                <label>
+                    Complaint:
+                        <textarea readonly><?=htmlspecialchars($complaint->get_details())?></textarea>
+                </label>
+
+                <label>
+                    Response:
+                        <textarea readonly placeholder="We will respond to your complaint as soon as possible."><?=htmlspecialchars($complaint->get_response())?></textarea>
+                </label>
+
+                <div class="popup-actions">
+                    <button 
+                        type="button" 
+                        class="btn small"
+                        data-dialog-close
+                    >
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </section>
+    </dialog>
 <?php }

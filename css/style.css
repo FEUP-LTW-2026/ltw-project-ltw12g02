@@ -335,11 +335,24 @@ button {
 /* FOOTER */
 
 .main-footer {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   background-color: var(--black);
   color: gray;
   text-align: center;
   padding: 1em;
   margin-bottom: 0%;
+}
+
+.footer-text {
+  grid-column: 2;
+}
+
+.main-footer button {
+  grid-column: 3;
+  justify-self: end;
+  margin-top: 1.5rem;
+  margin-right: 1.5rem;
 }
 
 /* CLASSES PAGE */

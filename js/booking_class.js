@@ -12,19 +12,19 @@ function showBookingResult(card, dialog, title, message) {
 
     card.innerHTML = '';
     card.appendChild(clone);
-
-    document.addEventListener('click', (event) => {
-        const closeButton = event.target.closest('.popup-close, .popup-ok');
-
-        if (!closeButton) return;
-
-        const dialog = closeButton.closest('dialog');
-
-        if (dialog) {
-            dialog.close();
-        }
-    });
 }
+
+document.addEventListener('click', (event) => {
+    const closeButton = event.target.closest('.popup-close, .popup-ok');
+
+    if (!closeButton) return;
+
+    const dialog = closeButton.closest('dialog');
+
+    if (dialog) {
+        dialog.close();
+    }
+});
 
 document.addEventListener('submit', (event) => {
     const bookingForm = event.target.closest('.booking-form');

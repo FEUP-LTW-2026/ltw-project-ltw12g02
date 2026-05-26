@@ -12,19 +12,19 @@ function showWithdrawResult(card, dialog, title, message) {
 
     card.innerHTML = '';
     card.appendChild(clone);
-
-    document.addEventListener('click', (event) => {
-        const closeButton = event.target.closest('.popup-close, .popup-ok');
-
-        if (!closeButton) return;
-
-        const dialog = closeButton.closest('dialog');
-
-        if (dialog) {
-            dialog.close();
-        }
-    });
 }
+
+document.addEventListener('click', (event) => {
+    const closeButton = event.target.closest('.popup-close, .popup-ok');
+
+    if (!closeButton) return;
+
+    const dialog = closeButton.closest('dialog');
+
+    if (dialog) {
+        dialog.close();
+    }
+});
 
 document.addEventListener('submit', (event) => {
     const withdrawForm = event.target.closest('.withdraw-form');
@@ -43,15 +43,15 @@ document.addEventListener('submit', (event) => {
                 showWithdrawResult(
                     card,
                     dialog,
-                    'Withdrawn!',
+                    'Withdrawn!  ',
                     'Your class withdrawal has been confirmed.'
                 );
-
-                const enrollmentCard = dialog.closest('.card-dl-row');
-                if(enrollmentCard) enrollmentCard.remove();
-
+                
                 const container = document.querySelector('#next-classes-container');
-                if (container.querySelectorAll('dl').length == 0) container.innerHTML = '<p>You do not have any booked classes yet.</p>';
+                const enrollmentCard = container.querySelector('.card-dl-row');
+                if(enrollmentCard) enrollmentCard.remove();
+                if (!container.querySelector('.card-dl-row')) container.innerHTML = '<p>You do not have any booked classes yet.</p>'; 
+                
             } else if (request.status === 401) {
                 showWithdrawResult(
                     card,

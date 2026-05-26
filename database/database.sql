@@ -93,6 +93,17 @@ CREATE TABLE EquipmentReservations(
    FOREIGN KEY (EquipmentId) REFERENCES Equipment (EquipmentId) ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
+CREATE TABLE Complaints(
+   ComplaintId INTEGER PRIMARY KEY AUTOINCREMENT,
+   UserId INTEGER NOT NULL,
+   Reason NVARCHAR(100) NOT NULL,
+   Details NVARCHAR(500) NOT NULL,
+   ComplaintDate DATETIME NOT NULL,
+   Response NVARCHAR(500),
+
+   FOREIGN KEY (UserId) REFERENCES Users (UserId) ON DELETE NO ACTION ON UPDATE NO ACTION
+)
+
 /*******************************************************************************
    Create Foreign Key Indexes
 ********************************************************************************/
@@ -108,6 +119,8 @@ CREATE INDEX IF NOT EXISTS IFK_EnrollmentsClassId ON Enrollments (ClassId);
 CREATE INDEX IF NOT EXISTS IFK_EquipmentReservationsUserId ON EquipmentReservations (UserId);
 CREATE INDEX IF NOT EXISTS IFK_EquipmentReservationsEquipmentId ON EquipmentReservations (EquipmentId);
 CREATE INDEX IF NOT EXISTS IDX_EquipmentReservationsTime ON EquipmentReservations (EquipmentId, ReservationDateTime);
+
+CREATE INDEX IF NOT EXISTS IFK_ComplaintsUserId ON Complaints (UserId);
 
 /*******************************************************************************
    Populate Tables
