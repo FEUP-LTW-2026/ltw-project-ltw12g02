@@ -1,21 +1,28 @@
-const button = document.querySelector(".message_close")
-const message = document.querySelector(".message_area")
-
-function close_message(){
-
-    const message = button.closest(".message")
-    if (message){
-        message.remove()
-    }
-
-
+function messageRemove(message) {
+    message.classList.add('closing');
+    setTimeout(() => {
+        message.remove();
+    }, 300);
 }
 
 
+document.addEventListener('click', (event) => {
+    const button = event.target.closest('.message_close');
 
-button.addEventListener("click", close_message)
+    if (!button) return;
 
-setTimeout(()=>{
-    message.remove();
-},3000)
+    const message = button.closest('.message');
+
+    if (message) {
+        messageRemove(message);
+    }
+});
+
+document.querySelectorAll('.message')
+    .forEach((message) => {
+        setTimeout(() => {
+            messageRemove(message);
+        }, 3000);
+    }
+);
 

@@ -25,6 +25,7 @@ if ($workoutClassType === null) {
 
 generateHead('PowerPit - ' . $workoutClassType->getName());
 generateHeader($session);
+generateTemplates();
 
 drawClassPage($workoutClassType, $db);
 

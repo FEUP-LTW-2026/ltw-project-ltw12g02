@@ -32,6 +32,7 @@ $messages = $session->getMessages();
 
 generateHead('PowerPIT - Profile');
 generateHeader($session);
+generateTemplates();
 
 drawMessages($messages);
 drawProfile($db, $user);

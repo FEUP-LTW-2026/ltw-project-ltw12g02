@@ -128,4 +128,24 @@ function drawMessages(array $messages): void { ?>
             <?php } ?>
         </div>
     <?php } ?>
+<?php } 
+
+function generateTemplates(): void { ?>
+<template id="result-card">
+    <button type="button" class="popup-close">
+            &times;
+        </button>
+
+        <header class="popup-header">
+            <p class="profile-member-card-label result-topic"></p>
+            <h1 class="result-title"></h1>
+            <p class="result-message"></p>
+        </header>
+
+        <div class="popup-actions">
+            <button type="button" class="btn small light popup-ok">
+                Done
+            </button>
+        </div>
+</template>
 <?php } ?>

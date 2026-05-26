@@ -1,30 +1,28 @@
 function showWithdrawResult(card, dialog, title, message) {
     card.classList.add('withdraw-result-card');
 
-    card.innerHTML = `
-        <button type="button" class="popup-close" aria-label="Close withdraw dialog">
-            &times;
-        </button>
+    const template = document.querySelector('#result-card');
 
-        <header class="popup-header">
-            <p class="profile-member-card-label">PowerPIT Withdrawal</p>
-            <h1>${title}</h1>
-            <p>${message}</p>
-        </header>
+    const clone = template.content.cloneNode(true);
 
-        <div class="popup-actions">
-            <button type="button" class="btn small light popup-ok">
-                Done
-            </button>
-        </div>
-    `;
+    clone.querySelector('.popup-close').setAttribute('aria-label','Close withdrawal dialog');
+    clone.querySelector('.result-topic').textContent = 'PowerPIT Withdrawal';
+    clone.querySelector('.result-title').textContent = title;
+    clone.querySelector('.result-message').textContent = message;
 
-    card.querySelector('.popup-close').addEventListener('click', () => {
-        dialog.close();
-    });
+    card.innerHTML = '';
+    card.appendChild(clone);
 
-    card.querySelector('.popup-ok').addEventListener('click', () => {
-        dialog.close();
+    document.addEventListener('click', (event) => {
+        const closeButton = event.target.closest('.popup-close, .popup-ok');
+
+        if (!closeButton) return;
+
+        const dialog = closeButton.closest('dialog');
+
+        if (dialog) {
+            dialog.close();
+        }
     });
 }
 
