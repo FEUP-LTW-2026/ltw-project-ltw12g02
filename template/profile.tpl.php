@@ -7,6 +7,7 @@ require_once(__DIR__ . '/../database/enrollments.class.php');
 require_once(__DIR__ . '/../database/workoutclass.class.php');
 require_once(__DIR__ . '/../database/workoutclasstype.class.php');
 require_once(__DIR__ . '/../database/equipmentreservation.class.php');
+require_once(__DIR__ . '/../database/personalclass.class.php');
 
 
 function getWorkoutClassDisplayName(PDO $db, WorkoutClass $workoutClass): string {
@@ -327,6 +328,7 @@ function drawMemberProfile(PDO $db, Users $user): void {
     $nextClasses = $user->getWorkoutNextClasses($db);
     $classHistory = $user->getWorkoutClassHistory($db);
     $equipmentReservations = EquipmentReservation::getUserUpcomingReservations($db, $user->getUserId());
+    $personalClasses = PersonalClass::getUserPersonalClasses($db, $user->getUserId());
 ?>
     <main>
         <section class="flex-row light">
@@ -420,6 +422,8 @@ function drawMemberProfile(PDO $db, Users $user): void {
 
             <?php drawEquipmentReservationsCard($equipmentReservations); ?>
 
+            <?php drawPersonalClassesCard($db, $personalClasses); ?>
+
             <article class="card">
                 <h2 class="card-title center">Classes History</h2>
 
@@ -458,11 +462,12 @@ function drawMemberProfile(PDO $db, Users $user): void {
 
 
 function drawTrainerProfile(PDO $db, Users $user, Trainers $trainer, bool $canEdit): void {
-    $assignedClasses = $trainer->getAssignedClasses($db);
+     $assignedClasses = $trainer->getAssignedClasses($db);
     $avgRatings = $trainer->getAverageRatings($db);
     $avgRating = $avgRatings['AverageRating'];
     $ratingCount = $avgRatings['TotalReviews'];
     $reviews = $trainer->getReviews($db);
+    $personalClasses = $canEdit ? PersonalClass::getUserPersonalClasses($db, $user->getUserId()) : [];
 ?>
     <main>
         <section class="flex-row light">
@@ -532,6 +537,11 @@ function drawTrainerProfile(PDO $db, Users $user, Trainers $trainer, bool $canEd
             <?php drawTrainerPublicCard($trainer, $canEdit); ?>
             <?php drawTrainerScheduleCard($db, $assignedClasses); ?>
         </section>
+        <?php if ($canEdit) { ?>
+        <section class="grid">
+            <?php drawPersonalClassesCard($db, $personalClasses); ?>
+        </section>
+        <?php } ?>
         <?php if ($canEdit){ ?>
         <section class="grid">
             <?php drawTrainerRosterCard($db, $assignedClasses); ?>
@@ -859,6 +869,7 @@ function drawEquipmentReservationsCard(array $equipmentReservations): void { ?>
         <?php } ?>
     </article>
 <?php }
+
 function drawWithdrawDialog(PDO $db,WorkoutClassType $workoutClassType, WorkoutClass $workoutClass): void {
     $timestamp = strtotime($workoutClass->getClassDateTime());
 
@@ -951,3 +962,55 @@ function drawWithdrawDialog(PDO $db,WorkoutClassType $workoutClassType, WorkoutC
         </section>
     </dialog>
 <?php } 
+
+function drawPersonalClassesCard(PDO $db, array $personalClasses): void { ?>
+    <article class="card">
+        <h2 class="card-title center">Personal Classes</h2>
+
+        <?php if (empty($personalClasses)) { ?>
+            <p>You do not have any personal class requests yet.</p>
+        <?php } else { ?>
+            <dl>
+                <?php foreach ($personalClasses as $personalClass) {
+                    $trainer = Trainers::getTrainer($db, $personalClass->getTrainerId());
+                    $trainerName = $trainer === null ? 'Unknown trainer' : $trainer->getName($db);
+
+                    $timestamp = strtotime($personalClass->getStartDateTime());
+                    $date = date('d M', $timestamp);
+                    $time = date('H:i', $timestamp);
+
+                    $status = $personalClass->getStatus();
+                    $trainerResponse = $personalClass->getTrainerResponse();
+                ?>
+                    <div class="card-dl-row">
+                        <dt>
+                            <?= htmlspecialchars($trainerName) ?>
+                            <span class="equipment_reservation_meta">
+                                <?= htmlspecialchars(ucfirst($status)) ?>
+                            </span>
+                        </dt>
+
+                        <dd>
+                            <?= htmlspecialchars($date) ?> · <?= htmlspecialchars($time) ?>
+                            · <?= htmlspecialchars((string)$personalClass->getDurationMinutes()) ?> min
+
+                            <?php if ($status === 'pending') { ?>
+                                <br>
+                                <span>Waiting for trainer response.</span>
+                            <?php } else if ($trainerResponse !== null && trim($trainerResponse) !== '') { ?>
+                                <br>
+                                <span>Trainer response: <?= htmlspecialchars($trainerResponse) ?></span>
+                            <?php } else if ($status === 'accepted') { ?>
+                                <br>
+                                <span>Accepted by trainer.</span>
+                            <?php } else if ($status === 'rejected') { ?>
+                                <br>
+                                <span>Rejected by trainer.</span>
+                            <?php } ?>
+                        </dd>
+                    </div>
+                <?php } ?>
+            </dl>
+        <?php } ?>
+    </article>
+<?php }
