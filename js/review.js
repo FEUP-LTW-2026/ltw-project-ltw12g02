@@ -67,7 +67,7 @@ document.addEventListener('submit', (event) => {
 
         request.open('POST', reviewForm.action, true);
 
-        const data = new FormData(form);
+        const data = new FormData(reviewForm);
         request.send(data);
     }  
 });

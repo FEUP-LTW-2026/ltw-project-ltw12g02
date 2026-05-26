@@ -146,6 +146,20 @@ class Enrollments {
         ]);
     }
 
+    public static function removeEnrollmentFromDb(PDO $db, int $userId, int $classId): bool {
+        $stmt = $db->prepare('
+            DELETE FROM Enrollments
+            WHERE UserId = ? AND ClassId = ?
+        ');
+
+        $stmt->execute([
+            $userId,
+            $classId
+        ]);
+
+        return $stmt->rowCount() > 0;
+    }
+
     public static function createEnrollment(PDO $db, int $userId, int $classId): ?Enrollments {
         $class = WorkoutClass::getWorkoutClass($db, $classId);
 

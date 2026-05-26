@@ -315,18 +315,22 @@ function drawMemberProfile(PDO $db, Users $user): void {
                     <p>You do not have any booked classes yet.</p>
                 <?php } else { ?>
                     <dl>
-                        <?php foreach ($nextClasses as $workoutClass) { ?>
+                        <?php foreach ($nextClasses as $workoutClass) { 
+                            $dialogId = 'withdraw-dialog-' . $workoutClass->getId();
+                            $classType = WorkoutClassType::getWorkoutClassType($db, $workoutClass->getClassTypeId());
+                            drawWithdrawDialog($db, $classType, $workoutClass);
+                            ?>
                             <div class="card-dl-row">
                                 <dt><?= htmlspecialchars(getWorkoutClassDisplayName($db, $workoutClass)) ?></dt>
                                 <dd>
+                                    <?= htmlspecialchars(date('d M · H:i', strtotime($workoutClass->getClassDateTime()))) ?>
                                     <button 
                                         type="button" 
                                         class="btn small light profile-edit-btn"
-                                        data-dialog-target=""
+                                        data-dialog-target="<?=htmlspecialchars($dialogId)?>"
                                     >
-                                        Cancel
+                                        Withdraw
                                     </button>
-                                    <?= htmlspecialchars(date('d M · H:i', strtotime($workoutClass->getClassDateTime()))) ?>
                                 </dd>
                             </div>
                         <?php } ?>
@@ -344,14 +348,15 @@ function drawMemberProfile(PDO $db, Users $user): void {
                 <?php } else { ?>
                     <dl>
                         <?php foreach ($classHistory as $workoutClass) {
-                             $dialogId = 'review-dialog-' . $workoutClass->getId();
-                             $classType = WorkoutClassType::getWorkoutClassType($db, $workoutClass->getClassTypeId());
-                             drawReviewDialog($db, $classType, $workoutClass);
-                             ?>
+                            $dialogId = 'review-dialog-' . $workoutClass->getId();
+                            $classType = WorkoutClassType::getWorkoutClassType($db, $workoutClass->getClassTypeId());
+                            drawReviewDialog($db, $classType, $workoutClass);
+                            ?>
                             <div class="card-dl-row">
                                 <dt><?= htmlspecialchars(getWorkoutClassDisplayName($db, $workoutClass)) ?></dt>
 
                                 <dd>
+                                    <?= htmlspecialchars(date('d M · H:i', strtotime($workoutClass->getClassDateTime()))) ?>
                                     <button 
                                         type="button" 
                                         class="btn small light profile-edit-btn"
@@ -359,7 +364,6 @@ function drawMemberProfile(PDO $db, Users $user): void {
                                     >
                                         Review
                                     </button>
-                                    <?= htmlspecialchars(date('d M · H:i', strtotime($workoutClass->getClassDateTime()))) ?>
                                 </dd>
                             </div>
                         <?php } ?>
@@ -582,7 +586,7 @@ function drawReviewDialog(PDO $db,WorkoutClassType $workoutClassType, WorkoutCla
                 type="button" 
                 class="popup-close" 
                 data-dialog-close
-                aria-label="Close booking dialog"
+                aria-label="Close review dialog"
             >
                 &times;
             </button>
@@ -764,4 +768,96 @@ function drawEquipmentReservationsCard(array $equipmentReservations): void { ?>
             </dl>
         <?php } ?>
     </article>
+<?php }
+function drawWithdrawDialog(PDO $db,WorkoutClassType $workoutClassType, WorkoutClass $workoutClass): void {
+    $timestamp = strtotime($workoutClass->getClassDateTime());
+
+    $day = date('l', $timestamp);
+    $date = date('d M Y', $timestamp);
+    $time = date('H:i', $timestamp);
+
+    $dialogId = 'withdraw-dialog-' . $workoutClass->getId();
+?>
+    <dialog id="<?= htmlspecialchars($dialogId) ?>" class="popup-dialog">
+        <section class="card popup-card">
+            <button 
+                type="button" 
+                class="popup-close" 
+                data-dialog-close
+                aria-label="Close withdraw class dialog"
+            >
+                &times;
+            </button>
+
+            <header class="popup-header">
+                <p class="profile-member-card-label">PowerPIT Withdrawal</p>
+                <h1>Withdraw from class</h1>
+                <p>Check the details before confirming your withdrawal.
+                    You can always enroll again if there are spots remaining.</p>
+            </header>
+
+            <dl>
+                <div class="card-dl-row">
+                    <dt>Class</dt>
+                    <dd><?= htmlspecialchars($workoutClassType->getName()) ?></dd>
+                </div>
+
+                <div class="card-dl-row">
+                    <dt>Day</dt>
+                    <dd><?= htmlspecialchars($day) ?></dd>
+                </div>
+
+                <div class="card-dl-row">
+                    <dt>Date</dt>
+                    <dd><?= htmlspecialchars($date) ?></dd>
+                </div>
+
+                <div class="card-dl-row">
+                    <dt>Time</dt>
+                    <dd><?= htmlspecialchars($time) ?></dd>
+                </div>
+
+                <div class="card-dl-row">
+                    <dt>Trainer</dt>
+                    <dd><?= htmlspecialchars((string)$workoutClass->getTrainerName($db)) ?></dd>
+                </div>
+
+                <div class="card-dl-row">
+                    <dt>Duration</dt>
+                    <dd><?= htmlspecialchars((string)$workoutClassType->getDuration()) ?> minutes</dd>
+                </div>
+
+                <div class="card-dl-row">
+                    <dt>Capacity</dt>
+                    <dd><?= htmlspecialchars((string)$workoutClass->getCapacity()) ?></dd>
+                </div>
+            </dl>
+
+            <form 
+                class="popup-form withdraw-form"
+                action="../actions/action_withdraw_class.php" 
+                method="post"
+            >
+                <input 
+                    type="hidden" 
+                    name="class_id" 
+                    value="<?= htmlspecialchars((string)$workoutClass->getId()) ?>"
+                >
+
+                <div class="popup-actions">
+                    <button 
+                        type="button" 
+                        class="btn small"
+                        data-dialog-close
+                    >
+                        Cancel
+                    </button>
+
+                    <button type="submit" class="btn small light">
+                        Confirm Withdrawal
+                    </button>
+                </div>
+            </form>
+        </section>
+    </dialog>
 <?php } ?>
