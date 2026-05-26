@@ -314,13 +314,14 @@ function drawMemberProfile(PDO $db, Users $user): void {
                 <?php if (empty($nextClasses)) { ?>
                     <p>You do not have any booked classes yet.</p>
                 <?php } else { ?>
-                    <dl>
+                    <dl id="next-classes-container">
                         <?php foreach ($nextClasses as $workoutClass) { 
                             $dialogId = 'withdraw-dialog-' . $workoutClass->getId();
                             $classType = WorkoutClassType::getWorkoutClassType($db, $workoutClass->getClassTypeId());
-                            drawWithdrawDialog($db, $classType, $workoutClass);
+                            
                             ?>
                             <div class="card-dl-row">
+                                <?php drawWithdrawDialog($db, $classType, $workoutClass); ?>
                                 <dt><?= htmlspecialchars(getWorkoutClassDisplayName($db, $workoutClass)) ?></dt>
                                 <dd>
                                     <?= htmlspecialchars(date('d M · H:i', strtotime($workoutClass->getClassDateTime()))) ?>

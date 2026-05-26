@@ -46,6 +46,12 @@ document.addEventListener('submit', (event) => {
                     'Withdrawn!',
                     'Your class withdrawal has been confirmed.'
                 );
+
+                const enrollmentCard = dialog.closest('.card-dl-row');
+                if(enrollmentCard) enrollmentCard.remove();
+
+                const container = document.querySelector('#next-classes-container');
+                if (container.querySelectorAll('dl').length == 0) container.innerHTML = '<p>You do not have any booked classes yet.</p>';
             } else if (request.status === 401) {
                 showWithdrawResult(
                     card,
