@@ -102,6 +102,6 @@ try {
     $session->addMessage('error', 'Could not create personal class request.');
 }
 
-header('Location: ../pages/profile.php');
+header('Location: ../pages/trainer_profile.php?id=' . $trainerId);
 exit;
 ?>
