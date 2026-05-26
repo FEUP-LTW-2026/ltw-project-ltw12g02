@@ -932,6 +932,34 @@
     justify-content: flex-start;
   }
 
+  .popup-dialog {
+    max-height: 92vh;
+    overflow: hidden;
+  }
+
+  .popup-card {
+    max-height: 92vh;
+    overflow-y: auto;
+  }
+
+  .popup-form {
+    overflow: visible;
+    max-height: none;
+  }
+
+  .popup-form .popup-actions {
+    position: sticky;
+    bottom: 0;
+    z-index: 20;
+
+    margin-left: -1.5rem;
+    margin-right: -1.5rem;
+    padding: 1rem 1.5rem;
+
+    background: var(--white);
+    border-top: 1px solid var(--border);
+  }
+
 }
 
 @media (max-width: 30rem) {
@@ -1080,5 +1108,10 @@
   .admin-user-actions {
     flex-direction: column;
     align-items: stretch;
+  }
+    .popup-form .popup-actions {
+    margin-left: -1.4rem;
+    margin-right: -1.4rem;
+    padding: 1rem 1.4rem;
   }
 }
