@@ -66,7 +66,7 @@ function drawEditProfileDialog(Users $user): void { ?>
 
             <form 
                 class="popup-form"
-                id="edit-profile-form
+                id="edit-profile-form"
                 action="../actions/action_edit_profile.php" 
                 method="post"
                 enctype="multipart/form-data"
