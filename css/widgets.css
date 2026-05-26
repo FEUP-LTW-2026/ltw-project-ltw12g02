@@ -837,6 +837,56 @@
   justify-self: end;
 }
 
+/* ADMIN EQUIPMENTS BUTTONS */
+
+.btn {
+  min-height: 2.8rem;
+  padding: 0 1.2rem;
+  border: none;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--black);
+  color: var(--white);
+  font-size: 0.9rem;
+  font-weight: 900;
+  line-height: 1;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: 0.2s ease;
+}
+
+.btn:hover {
+  background: var(--lime);
+  color: var(--black);
+}
+
+.btn.small {
+  min-height: 2.6rem;
+  padding: 0 1rem;
+  font-size: 0.85rem;
+}
+
+.btn.light {
+  background: var(--lime);
+  color: var(--black);
+}
+
+.btn.light:hover {
+  background: var(--black);
+  color: var(--lime);
+}
+
+.btn.danger {
+  background: #d62828;
+  color: var(--white);
+}
+
+.btn.danger:hover {
+  background: var(--black);
+  color: var(--lime);
+}
 
 /* RESPONSIVE */
 
