@@ -965,53 +965,76 @@ function drawWithdrawDialog(PDO $db,WorkoutClassType $workoutClassType, WorkoutC
 <?php } 
 
 function drawPersonalClassesCard(PDO $db, array $personalClasses): void { ?>
-    <article class="card">
-        <h2 class="card-title center">Personal Classes</h2>
+    <article class="card personal_classes_card">
+        <header class="personal_classes_header">
+            <div>
+                <p class="profile-member-card-label">PowerPIT Personal Training</p>
+                <h2 class="card-title">Personal Classes</h2>
+            </div>
+        </header>
 
         <?php if (empty($personalClasses)) { ?>
             <p>You do not have any personal class requests yet.</p>
         <?php } else { ?>
-            <dl>
+            <div class="personal_classes_list compact">
                 <?php foreach ($personalClasses as $personalClass) {
                     $trainer = Trainers::getTrainer($db, $personalClass->getTrainerId());
                     $trainerName = $trainer === null ? 'Unknown trainer' : $trainer->getName($db);
 
                     $timestamp = strtotime($personalClass->getStartDateTime());
-                    $date = date('d M', $timestamp);
-                    $time = date('H:i', $timestamp);
+                    $date = $timestamp === false ? 'Unknown date' : date('d M Y', $timestamp);
+                    $time = $timestamp === false ? '' : date('H:i', $timestamp);
 
                     $status = $personalClass->getStatus();
                     $trainerResponse = $personalClass->getTrainerResponse();
+                    $requestMessage = $personalClass->getRequestMessage();
                 ?>
-                    <div class="card-dl-row">
-                        <dt>
-                            <?= htmlspecialchars($trainerName) ?>
-                            <span class="equipment_reservation_meta">
+                    <section class="personal_class_compact_item">
+                        <header>
+                            <div>
+                                <strong><?= htmlspecialchars($trainerName) ?></strong>
+                                <span>
+                                    <?= htmlspecialchars($date) ?>
+                                    <?php if ($time !== '') { ?>
+                                        · <?= htmlspecialchars($time) ?>
+                                    <?php } ?>
+                                    · <?= htmlspecialchars((string)$personalClass->getDurationMinutes()) ?> min
+                                </span>
+                            </div>
+
+                            <span class="personal_request_status <?= htmlspecialchars($status) ?>">
                                 <?= htmlspecialchars(ucfirst($status)) ?>
                             </span>
-                        </dt>
+                        </header>
 
-                        <dd>
-                            <?= htmlspecialchars($date) ?> · <?= htmlspecialchars($time) ?>
-                            · <?= htmlspecialchars((string)$personalClass->getDurationMinutes()) ?> min
+                        <?php if ($requestMessage !== null && trim($requestMessage) !== '') { ?>
+                            <p class="personal_class_note">
+                                <strong>Your message:</strong>
+                                <?= htmlspecialchars($requestMessage) ?>
+                            </p>
+                        <?php } ?>
 
-                            <?php if ($status === 'pending') { ?>
-                                <br>
-                                <span>Waiting for trainer response.</span>
-                            <?php } else if ($trainerResponse !== null && trim($trainerResponse) !== '') { ?>
-                                <br>
-                                <span>Trainer response: <?= htmlspecialchars($trainerResponse) ?></span>
-                            <?php } else if ($status === 'accepted') { ?>
-                                <br>
-                                <span>Accepted by trainer.</span>
-                            <?php } else if ($status === 'rejected') { ?>
-                                <br>
-                                <span>Rejected by trainer.</span>
-                            <?php } ?>
-                        </dd>
-                    </div>
+                        <?php if ($status === 'pending') { ?>
+                            <p class="personal_class_note muted">
+                                Waiting for trainer response.
+                            </p>
+                        <?php } else if ($trainerResponse !== null && trim($trainerResponse) !== '') { ?>
+                            <p class="personal_class_note">
+                                <strong>Trainer response:</strong>
+                                <?= htmlspecialchars($trainerResponse) ?>
+                            </p>
+                        <?php } else if ($status === 'accepted') { ?>
+                            <p class="personal_class_note muted">
+                                Accepted by trainer.
+                            </p>
+                        <?php } else if ($status === 'rejected') { ?>
+                            <p class="personal_class_note muted">
+                                Rejected by trainer.
+                            </p>
+                        <?php } ?>
+                    </section>
                 <?php } ?>
-            </dl>
+            </div>
         <?php } ?>
     </article>
 <?php }
@@ -1107,7 +1130,7 @@ function drawTrainerPersonalClassRequestItem(PDO $db, PersonalClass $personalCla
     $trainerResponse = $personalClass->getTrainerResponse();
 ?>
     <section class="personal_request_item">
-        <div class="personal_request_member">
+        <header class="personal_request_member">
             <img
                 src="../assets/users/<?= htmlspecialchars($memberImage) ?>"
                 alt="Member profile picture"
@@ -1121,7 +1144,7 @@ function drawTrainerPersonalClassRequestItem(PDO $db, PersonalClass $personalCla
             <span class="personal_request_status <?= htmlspecialchars($status) ?>">
                 <?= htmlspecialchars(ucfirst($status)) ?>
             </span>
-        </div>
+        </header>
 
         <dl class="personal_request_details">
             <div>
@@ -1170,7 +1193,7 @@ function drawTrainerPersonalClassRequestItem(PDO $db, PersonalClass $personalCla
                     Response message
                     <textarea
                         name="trainer_response"
-                        placeholder="Optional message to the member..."
+                        placeholder="Write a short response to the member..."
                     ></textarea>
                 </label>
 
@@ -1179,7 +1202,7 @@ function drawTrainerPersonalClassRequestItem(PDO $db, PersonalClass $personalCla
                         type="submit"
                         name="response_status"
                         value="accepted"
-                        class="btn small light"
+                        class="btn small light personal_accept_btn"
                     >
                         Accept
                     </button>
@@ -1188,7 +1211,7 @@ function drawTrainerPersonalClassRequestItem(PDO $db, PersonalClass $personalCla
                         type="submit"
                         name="response_status"
                         value="rejected"
-                        class="btn small"
+                        class="btn small personal_reject_btn"
                     >
                         Reject
                     </button>

@@ -2449,22 +2449,107 @@ button {
 
 /* PERSONAL CLASS REQUESTS */
 
+.personal_classes_card,
 .personal_requests_card {
   width: 100%;
 }
 
+.personal_classes_header,
 .personal_requests_header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   gap: 1rem;
-  margin-bottom: 1.4rem;
+  margin-bottom: 1.3rem;
 }
 
+.personal_classes_header .card-title,
 .personal_requests_header .card-title {
   margin: 0.2rem 0 0;
   text-align: left;
 }
+
+.personal_classes_list,
+.personal_requests_list {
+  display: grid;
+  gap: 0.8rem;
+}
+
+/* COMPACT MEMBER VIEW */
+
+.personal_class_compact_item {
+  padding: 1rem 1.1rem;
+  border-radius: 18px;
+  background: var(--gray-card);
+  border: 1px solid var(--border);
+}
+
+.personal_class_compact_item header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.personal_class_compact_item strong {
+  display: block;
+  color: var(--black);
+  font-size: 1rem;
+}
+
+.personal_class_compact_item header span:not(.personal_request_status) {
+  display: block;
+  margin-top: 0.2rem;
+  color: var(--gray-text);
+  font-size: 0.9rem;
+}
+
+.personal_class_note {
+  margin-top: 0.65rem;
+  color: var(--gray-text);
+  font-size: 0.95rem;
+}
+
+.personal_class_note strong {
+  display: inline;
+  color: var(--black);
+  font-size: 0.95rem;
+}
+
+.personal_class_note.muted {
+  color: var(--gray-text);
+  font-weight: 700;
+}
+
+/* STATUS BADGES */
+
+.personal_request_status {
+  width: fit-content;
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.personal_request_status.pending {
+  background: #f5b700;
+  color: var(--black);
+}
+
+.personal_request_status.accepted {
+  background: var(--lime);
+  color: var(--black);
+}
+
+.personal_request_status.rejected {
+  background: var(--black);
+  color: var(--white);
+}
+
+/* TRAINER REQUESTS VIEW */
 
 .personal_request_badge {
   width: fit-content;
@@ -2495,12 +2580,7 @@ button {
 
 .personal_requests_section h3 {
   color: var(--black);
-  font-size: 1.2rem;
-}
-
-.personal_requests_list {
-  display: grid;
-  gap: 1rem;
+  font-size: 1.15rem;
 }
 
 .personal_request_item {
@@ -2509,19 +2589,19 @@ button {
   background: var(--gray-card);
   border: 1px solid var(--border);
   display: grid;
-  gap: 1rem;
+  gap: 0.9rem;
 }
 
 .personal_request_member {
   display: grid;
-  grid-template-columns: 58px 1fr auto;
-  gap: 1rem;
+  grid-template-columns: 48px 1fr auto;
+  gap: 0.9rem;
   align-items: center;
 }
 
 .personal_request_member img {
-  width: 58px;
-  height: 58px;
+  width: 48px;
+  height: 48px;
   object-fit: cover;
   border-radius: 50%;
 }
@@ -2529,6 +2609,7 @@ button {
 .personal_request_member strong {
   display: block;
   color: var(--black);
+  font-size: 1rem;
 }
 
 .personal_request_member span {
@@ -2536,42 +2617,23 @@ button {
   font-size: 0.9rem;
 }
 
-.personal_request_status {
-  width: fit-content;
-  padding: 0.4rem 0.75rem;
-  border-radius: 999px;
-  font-size: 0.7rem;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.personal_request_status.pending {
-  background: #f5b700;
-  color: var(--black);
-}
-
-.personal_request_status.accepted {
-  background: var(--lime);
-  color: var(--black);
-}
-
-.personal_request_status.rejected {
-  background: var(--black);
-  color: var(--white);
-}
-
 .personal_request_details {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
   margin: 0;
 }
 
 .personal_request_details div {
-  padding: 0.8rem;
-  border-radius: 14px;
+  padding: 0.45rem 0.75rem;
+  border-radius: 999px;
   background: var(--white);
+  border: 1px solid var(--border);
+}
+
+.personal_request_details dt,
+.personal_request_details dd {
+  display: inline;
 }
 
 .personal_request_details dt {
@@ -2579,17 +2641,22 @@ button {
   font-size: 0.75rem;
   font-weight: 900;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
+}
+
+.personal_request_details dt::after {
+  content: ": ";
 }
 
 .personal_request_details dd {
-  margin: 0.25rem 0 0;
+  margin: 0;
   color: var(--black);
-  font-weight: 900;
+  font-weight: 800;
+  font-size: 0.9rem;
 }
 
 .personal_request_message {
-  padding: 0.9rem 1rem;
+  padding: 0.75rem 0.9rem;
   border-radius: 14px;
   background: var(--white);
   border-left: 4px solid var(--lime);
@@ -2597,12 +2664,16 @@ button {
 
 .personal_request_message strong {
   display: block;
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.25rem;
   color: var(--black);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
 }
 
 .personal_request_message p {
   color: var(--gray-text);
+  font-size: 0.95rem;
 }
 
 .personal_request_message.trainer_response {
@@ -2611,26 +2682,26 @@ button {
 
 .personal_request_response_form {
   display: grid;
-  gap: 0.9rem;
+  gap: 0.75rem;
 }
 
 .personal_request_response_form label {
   display: grid;
-  gap: 0.5rem;
+  gap: 0.45rem;
   color: var(--gray-text);
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   font-weight: 900;
 }
 
 .personal_request_response_form textarea {
   width: 100%;
-  min-height: 6rem;
-  padding: 1rem;
+  min-height: 4.5rem;
+  padding: 0.85rem;
   border: 1px solid var(--border);
   border-radius: 14px;
   background: var(--white);
   color: var(--black);
-  font-size: 1rem;
+  font-size: 0.95rem;
   resize: vertical;
 }
 
@@ -2642,8 +2713,37 @@ button {
 .personal_request_actions {
   display: flex;
   justify-content: flex-end;
-  gap: 0.7rem;
+  gap: 0.6rem;
   flex-wrap: wrap;
+}
+
+.personal_request_actions .btn {
+  min-width: 6.5rem;
+  justify-content: center;
+}
+
+.personal_accept_btn {
+  background: var(--lime);
+  color: var(--black);
+  border-color: var(--lime);
+}
+
+.personal_accept_btn:hover {
+  background: var(--lime-soft);
+  color: var(--black);
+  border-color: var(--lime-soft);
+}
+
+.personal_reject_btn {
+  background: var(--black);
+  color: var(--white);
+  border-color: var(--black);
+}
+
+.personal_reject_btn:hover {
+  background: #d62828;
+  color: var(--white);
+  border-color: #d62828;
 }
 
 /* RESPONSIVE */
@@ -2804,6 +2904,37 @@ button {
 
   .admin-inline-form select {
     flex: 1;
+  }
+
+  /* TRAINER ANALYTICS PAGE */
+
+  .trainer_analytics_top {
+    padding: 2.5rem 0 3.5rem;
+  }
+
+  .trainer_analytics_hero {
+    grid-template-columns: 1fr;
+  }
+
+  .trainer_analytics_hero_card {
+    width: 100%;
+  }
+
+  .trainer_analytics_grid {
+    grid-template-columns: 1fr;
+  }
+
+  .trainer_analytics_insights {
+    grid-template-columns: 1fr;
+  }
+
+  .analytics-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .trainer_analytics_empty_dashboard {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -3091,5 +3222,105 @@ button {
   .admin-inline-form {
     flex-direction: column;
     align-items: stretch;
+  }
+
+  /* TRAINER ANALYTICS PAGE */
+
+  .trainer_analytics_wrap {
+    width: min(100% - 1.5rem, 78rem);
+  }
+
+  .trainer_analytics_top {
+    padding: 2rem 0 3rem;
+  }
+
+  .trainer_analytics_bottom {
+    padding: 2.5rem 0 3rem;
+  }
+
+  .trainer_analytics_hero {
+    padding: 1.5rem;
+    min-height: auto;
+  }
+
+  .trainer_analytics_hero h1 {
+    font-size: 2rem;
+  }
+
+  .trainer_analytics_stats {
+    grid-template-columns: 1fr;
+  }
+
+  .analytics-card {
+    padding: 1.3rem;
+  }
+
+  .trainer_analytics_empty_dashboard {
+    padding: 1.5rem;
+  }
+
+  .trainer_analytics_empty_icon {
+    width: 5rem;
+    height: 5rem;
+    border-radius: 20px;
+  }
+
+  .trainer_analytics_empty_icon i {
+    font-size: 2rem;
+  }
+
+  .trainer_analytics_empty_dashboard h2 {
+    font-size: 2rem;
+  }
+
+  .trainer_analytics_empty_actions {
+    flex-direction: column;
+  }
+
+  .trainer_analytics_empty_actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .analytics-reviews-list li {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .analytics-reviews-list img {
+    justify-self: center;
+  }
+
+  /* PERSONAL CLASS REQUESTS */
+
+  .personal_classes_header,
+  .personal_requests_header {
+    flex-direction: column;
+  }
+
+  .personal_class_compact_item header {
+    flex-direction: column;
+  }
+
+  .personal_request_member {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .personal_request_member img {
+    justify-self: center;
+  }
+
+  .personal_request_status {
+    justify-self: flex-start;
+  }
+
+  .personal_request_actions {
+    flex-direction: column;
+  }
+
+  .personal_request_actions .btn {
+    width: 100%;
+    justify-content: center;
   }
 }
