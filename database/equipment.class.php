@@ -110,5 +110,96 @@ class Equipment {
 
         $stmt->execute([$equipmentId]);
     }
+
+    public static function createEquipment(
+    PDO $db,
+    string $name,
+    string $type,
+    int $quantity,
+    string $status
+): ?Equipment {
+    if ($name === '' || $type === '' || $quantity < 0 || $status === '') {
+        return null;
+    }
+
+    $stmt = $db->prepare('
+        INSERT INTO Equipment (Name, Type, Quantity, AvailabilityStatus)
+        VALUES (?, ?, ?, ?)
+    ');
+
+    $stmt->execute([
+        $name,
+        $type,
+        $quantity,
+        $status
+    ]);
+
+    $id = (int)$db->lastInsertId();
+
+    return new Equipment(
+        $id,
+        $name,
+        $type,
+        $quantity,
+        $status
+    );
+}
+
+public function updateEquipment(
+    PDO $db,
+    string $name,
+    string $type,
+    int $quantity,
+    string $status
+): bool {
+    if ($name === '' || $type === '' || $quantity < 0 || $status === '') {
+        return false;
+    }
+
+    $stmt = $db->prepare('
+        UPDATE Equipment
+        SET Name = ?,
+            Type = ?,
+            Quantity = ?,
+            AvailabilityStatus = ?
+        WHERE EquipmentId = ?
+    ');
+
+    $stmt->execute([
+        $name,
+        $type,
+        $quantity,
+        $status,
+        $this->id
+    ]);
+
+    $this->name = $name;
+    $this->type = $type;
+    $this->quantity = $quantity;
+    $this->status = $status;
+
+    return true;
+}
+
+public static function deleteEquipment(PDO $db, int $id): bool {
+        if ($id <= 0) {
+            return false;
+        }
+
+        $equipment = Equipment::getEquipment($db, $id);
+
+        if ($equipment === null) {
+            return false;
+        }
+
+        $stmt = $db->prepare('
+            DELETE FROM Equipment
+            WHERE EquipmentId = ?
+        ');
+
+        $stmt->execute([$id]);
+
+        return $stmt->rowCount() > 0;   
+    }
 }
 ?>

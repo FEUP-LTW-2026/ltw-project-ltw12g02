@@ -1,30 +1,28 @@
 function showReviewResult(card, dialog, title, message) {
     card.classList.add('review-result-card');
 
-    card.innerHTML = `
-        <button type="button" class="popup-close" aria-label="Close review dialog">
-            &times;
-        </button>
+    const template = document.querySelector('#result-card');
 
-        <header class="popup-header">
-            <p class="profile-member-card-label">PowerPIT Review</p>
-            <h1>${title}</h1>
-            <p>${message}</p>
-        </header>
+    const clone = template.content.cloneNode(true);
 
-        <div class="popup-actions">
-            <button type="button" class="btn small light popup-ok">
-                Done
-            </button>
-        </div>
-    `;
+    clone.querySelector('.popup-close').setAttribute('aria-label','Close review dialog');
+    clone.querySelector('.result-topic').textContent = 'PowerPIT Review';
+    clone.querySelector('.result-title').textContent = title;
+    clone.querySelector('.result-message').textContent = message;
 
-    card.querySelector('.popup-close').addEventListener('click', () => {
-        dialog.close();
-    });
+    card.innerHTML = '';
+    card.appendChild(clone);
 
-    card.querySelector('.popup-ok').addEventListener('click', () => {
-        dialog.close();
+    document.addEventListener('click', (event) => {
+        const closeButton = event.target.closest('.popup-close, .popup-ok');
+
+        if (!closeButton) return;
+
+        const dialog = closeButton.closest('dialog');
+
+        if (dialog) {
+            dialog.close();
+        }
     });
 }
 
@@ -67,7 +65,7 @@ document.addEventListener('submit', (event) => {
 
         request.open('POST', reviewForm.action, true);
 
-        const data = new FormData(form);
+        const data = new FormData(reviewForm);
         request.send(data);
     }  
 });

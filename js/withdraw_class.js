@@ -1,12 +1,12 @@
-function showBookingResult(card, dialog, title, message) {
-    card.classList.add('booking-result-card');
+function showWithdrawResult(card, dialog, title, message) {
+    card.classList.add('withdraw-result-card');
 
     const template = document.querySelector('#result-card');
 
     const clone = template.content.cloneNode(true);
 
-    clone.querySelector('.popup-close').setAttribute('aria-label','Close booking dialog');
-    clone.querySelector('.result-topic').textContent = 'PowerPIT Booking';
+    clone.querySelector('.popup-close').setAttribute('aria-label','Close withdrawal dialog');
+    clone.querySelector('.result-topic').textContent = 'PowerPIT Withdrawal';
     clone.querySelector('.result-title').textContent = title;
     clone.querySelector('.result-message').textContent = message;
 
@@ -27,53 +27,53 @@ function showBookingResult(card, dialog, title, message) {
 }
 
 document.addEventListener('submit', (event) => {
-    const bookingForm = event.target.closest('.booking-form');
+    const withdrawForm = event.target.closest('.withdraw-form');
     
-    if (bookingForm) {
+    if (withdrawForm) {
         event.preventDefault();
         const request = new XMLHttpRequest();
 
         request.addEventListener('load', () => {
-            const dialog = bookingForm.closest('dialog');
-            const card = bookingForm.closest('.popup-card');
+            const dialog = withdrawForm.closest('dialog');
+            const card = withdrawForm.closest('.popup-card');
 
             if (!dialog || !card) return;
 
             if (request.status === 200) {
-                showBookingResult(
+                showWithdrawResult(
                     card,
                     dialog,
-                    'Booked!',
-                    'Your class booking has been confirmed.'
+                    'Withdrawn!',
+                    'Your class withdrawal has been confirmed.'
                 );
             } else if (request.status === 401) {
-                showBookingResult(
+                showWithdrawResult(
                     card,
                     dialog,
                     'Login required',
-                    'You need to be logged in to book this class.'
+                    'You need to be logged in to withdraw from this class.'
                 );
             } else if (request.status === 409) {
-                showBookingResult(
+                showWithdrawResult(
                     card,
                     dialog,
-                    'Already booked',
-                    'You have already booked this class.'
+                    'Already withdrawn',
+                    'You have already withdrawn from this class.'
                 );
             } else {
-                showBookingResult(
+                showWithdrawResult(
                     card,
                     dialog,
-                    'Booking failed',
-                    'Could not complete the booking. Please try again.'
+                    'Withdrawal failed',
+                    'Could not complete the withdrawal. Please try again.'
                 );
             }
         });
 
-        request.open('POST', bookingForm.action, true);
+        request.open('POST', withdrawForm.action, true);
         request.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 
-        const data = new FormData(bookingForm);
+        const data = new FormData(withdrawForm);
         request.send(data);
     }
     

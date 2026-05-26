@@ -60,12 +60,12 @@ if ($classId === false || $classId === null) {
 }
 
 try {
-    //Enrollments::addEnrollmentToDb($db, $userId, $classId);
-    sendJsonResponse(200, 'Class withdrawn successfully.');
-} catch (PDOException $e) {
-    if ($e->getCode() === '23000') {
+    if (Enrollments::removeEnrollmentFromDb($db, $userId, $classId)) {
+        sendJsonResponse(200, 'Class withdrawn successfully.');
+    }
+    else {
         sendJsonResponse(409, 'You have already withdraw from this class.');
     }
-
+} catch (PDOException $e) {
     sendJsonResponse(500, 'Could not withdraw from the class.');
 }

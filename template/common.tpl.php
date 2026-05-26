@@ -18,6 +18,7 @@ function generateHead(string $title) {
     <script src="../js/popup.js" defer></script>
     <script src="../js/profile.js" defer></script>
     <script src="../js/booking_class.js" defer></script>
+    <script src="../js/withdraw_class.js" defer></script>
     <script src="../js/filter_class.js" defer></script>
     <script src="../js/review.js" defer></script>
     <script src="../js/search_users.js" defer></script>
@@ -127,4 +128,24 @@ function drawMessages(array $messages): void { ?>
             <?php } ?>
         </div>
     <?php } ?>
+<?php } 
+
+function generateTemplates(): void { ?>
+<template id="result-card">
+    <button type="button" class="popup-close">
+            &times;
+        </button>
+
+        <header class="popup-header">
+            <p class="profile-member-card-label result-topic"></p>
+            <h1 class="result-title"></h1>
+            <p class="result-message"></p>
+        </header>
+
+        <div class="popup-actions">
+            <button type="button" class="btn small light popup-ok">
+                Done
+            </button>
+        </div>
+</template>
 <?php } ?>

@@ -218,6 +218,7 @@
   letter-spacing: 0.04em;
   text-transform: uppercase;
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+  transition: opacity 0.3s ease;
 }
 
 .message.error {
@@ -230,6 +231,10 @@
   background-color: rgba(183, 255, 0, 0.55);
   color: var(--black);
   border: 1px solid rgba(183, 255, 0, 0.9);
+}
+
+.message.closing {
+  opacity: 0;
 }
 
 .message_close {

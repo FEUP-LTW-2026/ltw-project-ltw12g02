@@ -159,7 +159,7 @@ function drawAvailableClassesOLD(PDO $db,WorkoutClassType $workoutClassType): vo
 
 
 <?php
-function drawClassCard(PDO $db,WorkoutClass $workoutClass): void {
+function drawClassCard(PDO $db, WorkoutClass $workoutClass): void {
     $timestamp = strtotime($workoutClass->getClassDateTime());
 
     $day = date('l', $timestamp);
@@ -167,23 +167,40 @@ function drawClassCard(PDO $db,WorkoutClass $workoutClass): void {
     $time = date('H:i', $timestamp);
 
     $dialogId = 'booking-dialog-' . $workoutClass->getId();
+
+    $enrollmentCount = WorkoutClass::getEnrollmentCount($db, $workoutClass->getId());
+    $isFull = WorkoutClass::isFull(
+        $db,
+        $workoutClass->getId(),
+        $workoutClass->getCapacity()
+    );
 ?>
-    <article class="card">
+    <article class="card <?= $isFull ? 'full' : '' ?>">
         <h3><?= htmlspecialchars($day) ?></h3>
 
         <div class="card-wrap">
             <p><strong>Date:</strong> <?= htmlspecialchars($date) ?></p>
             <p><strong>Time:</strong> <?= htmlspecialchars($time) ?></p>
-            <p><strong>Trainer:</strong><?= htmlspecialchars((string)$workoutClass->getTrainerName($db)) ?></p>
-            <p><strong>Capacity:</strong> <?= htmlspecialchars((string)$workoutClass->getCapacity()) ?></p>
+            <p><strong>Trainer:</strong> <?= htmlspecialchars((string)$workoutClass->getTrainerName($db)) ?></p>
+            <p>
+                <strong>Capacity:</strong>
+                <?= htmlspecialchars((string)$enrollmentCount) ?> /
+                <?= htmlspecialchars((string)$workoutClass->getCapacity()) ?>
+            </p>
 
-            <button 
-                type="button" 
-                class="btn small light card-action"
-                data-dialog-target="<?= htmlspecialchars($dialogId) ?>"
-            >
-                Book class
-            </button>
+            <?php if ($isFull) { ?>
+                <span class="btn small light disabled card-action">
+                    Full
+                </span>
+            <?php } else { ?>
+                <button 
+                    type="button" 
+                    class="btn small light card-action"
+                    data-dialog-target="<?= htmlspecialchars($dialogId) ?>"
+                >
+                    Book class
+                </button>
+            <?php } ?>
         </div>
     </article>
 <?php } ?>

@@ -5,6 +5,9 @@ require_once(__DIR__ . '/../database/users.class.php');
 require_once(__DIR__ . '/../database/trainers.class.php');
 require_once(__DIR__ . '/../database/workoutclass.class.php');
 require_once(__DIR__ . '/../database/workoutclasstype.class.php');
+require_once(__DIR__ . '/../database/equipment.class.php');
+require_once(__DIR__ . '/../database/equipmentreservation.class.php');
+require_once(__DIR__ . '/../database/enrollments.class.php');
 
 function userToJson(Users $user): array {
     return [
@@ -50,8 +53,6 @@ function trainersToJson(array $trainers, PDO $db): array {
     return $result;
 }
 
-
-
 function workoutClassTypeToJson(WorkoutClassType $type): array {
     return [
         'id' => $type->getId(),
@@ -59,6 +60,16 @@ function workoutClassTypeToJson(WorkoutClassType $type): array {
         'description' => $type->getDescription(),
         'duration' => $type->getDuration()
     ];
+}
+
+function workoutClassTypesToJson(array $types): array {
+    $result = [];
+
+    foreach ($types as $type) {
+        $result[] = workoutClassTypeToJson($type);
+    }
+
+    return $result;
 }
 
 function workoutClassToJson(WorkoutClass $class, PDO $db): array {
@@ -91,3 +102,75 @@ function workoutClassesToJson(array $classes, PDO $db): array {
 
     return $result;
 }
+
+function equipmentToJson(Equipment $equipment): array {
+    return [
+        'id' => $equipment->getId(),
+        'name' => $equipment->getName(),
+        'type' => $equipment->getType(),
+        'quantity' => $equipment->getQuantity(),
+        'status' => $equipment->getStatus()
+    ];
+}
+
+function equipmentListToJson(array $equipmentList): array {
+    $result = [];
+
+    foreach ($equipmentList as $equipment) {
+        $result[] = equipmentToJson($equipment);
+    }
+
+    return $result;
+}
+
+function equipmentReservationToJson(array $reservation): array {
+    return [
+        'id' => (int)$reservation['EquipmentReservationId'],
+        'userId' => (int)$reservation['UserId'],
+        'equipmentId' => (int)$reservation['EquipmentId'],
+        'reservationDateTime' => $reservation['ReservationDateTime'],
+        'duration' => (int)$reservation['Duration'],
+        'status' => $reservation['Status'],
+        'endDateTime' => $reservation['EndDateTime'] ?? null,
+        'equipment' => [
+            'name' => $reservation['Name'] ?? null,
+            'type' => $reservation['Type'] ?? null
+        ]
+    ];
+}
+
+function equipmentReservationsToJson(array $reservations): array {
+    $result = [];
+
+    foreach ($reservations as $reservation) {
+        $result[] = equipmentReservationToJson($reservation);
+    }
+
+    return $result;
+}
+
+function enrollmentToJson(Enrollments $enrollment, PDO $db): array {
+    $class = WorkoutClass::getWorkoutClass($db, $enrollment->get_class_id());
+
+    return [
+        'id' => $enrollment->get_enrollment_id(),
+        'userId' => $enrollment->get_user_id(),
+        'classId' => $enrollment->get_class_id(),
+        'enrollmentDate' => $enrollment->get_enrollment_date(),
+        'status' => $enrollment->get_enrollment_status(),
+        'rating' => $enrollment->get_rating(),
+        'review' => $enrollment->get_review(),
+        'class' => $class !== null ? workoutClassToJson($class, $db) : null
+    ];
+}
+
+function enrollmentsToJson(array $enrollments, PDO $db): array {
+    $result = [];
+
+    foreach ($enrollments as $enrollment) {
+        $result[] = enrollmentToJson($enrollment, $db);
+    }
+
+    return $result;
+}
+?>
