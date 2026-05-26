@@ -53,7 +53,7 @@ class Equipment {
 
         $equipment = [];
 
-        while ($row = $stmt->fetch()) {
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $equipment[] = new Equipment(
                 (int)$row['EquipmentId'],
                 $row['Name'],
@@ -90,12 +90,113 @@ class Equipment {
         );
     }
 
+    public static function addEquipment( PDO $db, string $name, string $type, int $quantity, string $status): int {
+        self::validateEquipmentData($name, $type, $quantity, $status);
+
+        $stmt = $db->prepare('
+            INSERT INTO Equipment (
+                Name,
+                Type,
+                Quantity,
+                AvailabilityStatus
+            )
+            VALUES (?, ?, ?, ?)
+        ');
+
+        $stmt->execute([
+            trim($name),
+            trim($type),
+            $quantity,
+            $status
+        ]);
+
+        return (int)$db->lastInsertId();
+    }
+
+    public static function updateEquipmentStatus(PDO $db,int $equipmentId,string $status): void {
+        self::validateStatus($status);
+
+        $equipment = self::getEquipment($db, $equipmentId);
+
+        if ($equipment === null) {
+            throw new Exception('Equipment not found.');
+        }
+
+        $stmt = $db->prepare('
+            UPDATE Equipment
+            SET AvailabilityStatus = ?
+            WHERE EquipmentId = ?
+        ');
+
+        $stmt->execute([
+            $status,
+            $equipmentId
+        ]);
+    }
+
+    public static function updateEquipment( PDO $db, int $equipmentId, string $name, string $type, int $quantity, string $status): void {
+        self::validateEquipmentData($name, $type, $quantity, $status);
+
+        $equipment = self::getEquipment($db, $equipmentId);
+
+        if ($equipment === null) {
+            throw new Exception('Equipment not found.');
+        }
+
+        $stmt = $db->prepare('
+            UPDATE Equipment
+            SET Name = ?,
+                Type = ?,
+                Quantity = ?,
+                AvailabilityStatus = ?
+            WHERE EquipmentId = ?
+        ');
+
+        $stmt->execute([
+            trim($name),
+            trim($type),
+            $quantity,
+            $status,
+            $equipmentId
+        ]);
+    }
+
+    public static function deleteEquipment(PDO $db, int $equipmentId): void {
+        if (self::hasActiveReservations($db, $equipmentId)) {
+            throw new Exception('This equipment has active reservations and cannot be removed.');
+        }
+
+        $stmt = $db->prepare('
+            DELETE FROM Equipment
+            WHERE EquipmentId = ?
+        ');
+
+        $stmt->execute([$equipmentId]);
+
+        if ($stmt->rowCount() === 0) {
+            throw new Exception('Equipment not found.');
+        }
+    }
+
+    private static function hasActiveReservations(PDO $db, int $equipmentId): bool {
+        $stmt = $db->prepare('
+            SELECT COUNT(*)
+            FROM EquipmentReservations
+            WHERE EquipmentId = ?
+              AND Status = "active"
+        ');
+
+        $stmt->execute([$equipmentId]);
+
+        return (int)$stmt->fetchColumn() > 0;
+    }
+
     public static function decreaseQuantity(PDO $db, int $equipmentId): void {
         $stmt = $db->prepare('
             UPDATE Equipment
             SET Quantity = Quantity - 1
             WHERE EquipmentId = ?
-            AND Quantity > 0
+              AND Quantity > 0
         ');
 
         $stmt->execute([$equipmentId]);
@@ -111,95 +212,32 @@ class Equipment {
         $stmt->execute([$equipmentId]);
     }
 
-    public static function createEquipment(
-    PDO $db,
-    string $name,
-    string $type,
-    int $quantity,
-    string $status
-): ?Equipment {
-    if ($name === '' || $type === '' || $quantity < 0 || $status === '') {
-        return null;
-    }
-
-    $stmt = $db->prepare('
-        INSERT INTO Equipment (Name, Type, Quantity, AvailabilityStatus)
-        VALUES (?, ?, ?, ?)
-    ');
-
-    $stmt->execute([
-        $name,
-        $type,
-        $quantity,
-        $status
-    ]);
-
-    $id = (int)$db->lastInsertId();
-
-    return new Equipment(
-        $id,
-        $name,
-        $type,
-        $quantity,
-        $status
-    );
-}
-
-public function updateEquipment(
-    PDO $db,
-    string $name,
-    string $type,
-    int $quantity,
-    string $status
-): bool {
-    if ($name === '' || $type === '' || $quantity < 0 || $status === '') {
-        return false;
-    }
-
-    $stmt = $db->prepare('
-        UPDATE Equipment
-        SET Name = ?,
-            Type = ?,
-            Quantity = ?,
-            AvailabilityStatus = ?
-        WHERE EquipmentId = ?
-    ');
-
-    $stmt->execute([
-        $name,
-        $type,
-        $quantity,
-        $status,
-        $this->id
-    ]);
-
-    $this->name = $name;
-    $this->type = $type;
-    $this->quantity = $quantity;
-    $this->status = $status;
-
-    return true;
-}
-
-public static function deleteEquipment(PDO $db, int $id): bool {
-        if ($id <= 0) {
-            return false;
+    private static function validateEquipmentData( string $name, string $type, int $quantity, string $status): void {
+        if (trim($name) === '') {
+            throw new Exception('Equipment name is required.');
         }
 
-        $equipment = Equipment::getEquipment($db, $id);
-
-        if ($equipment === null) {
-            return false;
+        if (trim($type) === '') {
+            throw new Exception('Equipment type is required.');
         }
 
-        $stmt = $db->prepare('
-            DELETE FROM Equipment
-            WHERE EquipmentId = ?
-        ');
+        if ($quantity < 0) {
+            throw new Exception('Quantity cannot be negative.');
+        }
 
-        $stmt->execute([$id]);
+        self::validateStatus($status);
+    }
 
-        return $stmt->rowCount() > 0;   
+    private static function validateStatus(string $status): void {
+        $allowedStatuses = [
+            'available',
+            'maintenance',
+            'unavailable'
+        ];
+
+        if (!in_array($status, $allowedStatuses, true)) {
+            throw new Exception('Invalid equipment status.');
+        }
     }
 }
 ?>
