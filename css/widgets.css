@@ -837,6 +837,19 @@
   justify-self: end;
 }
 
+.btn.danger {
+  color: var(--white);
+  background: #d62828;
+  border: 1px solid transparent;
+}
+
+.btn.danger:hover {
+  color: var(--white);
+  background: #a4161a;
+  border-color: transparent;
+  transform: translateY(-2px);
+}
+
 /* RESPONSIVE */
 
 @media (max-width: 60rem) {

@@ -39,6 +39,8 @@ if ($quantity === false || $quantity === null) {
 }
 
 try {
+    $db->beginTransaction();
+
     $equipmentId = Equipment::addEquipment(
         $db,
         $name,
@@ -52,14 +54,19 @@ try {
         $_FILES['photo']['error'] !== UPLOAD_ERR_NO_FILE
     ) {
         if ($_FILES['photo']['error'] !== UPLOAD_ERR_OK) {
-            throw new Exception('Equipment was created, but the photo upload failed.');
+            throw new Exception('Photo upload failed.');
         }
 
         $temporaryPath = $_FILES['photo']['tmp_name'];
+
+        if (!is_uploaded_file($temporaryPath)) {
+            throw new Exception('Invalid uploaded file.');
+        }
+
         $mimeType = mime_content_type($temporaryPath);
 
         if ($mimeType !== 'image/png') {
-            throw new Exception('Equipment was created, but the photo must be a PNG image.');
+            throw new Exception('The equipment photo must be a PNG image.');
         }
 
         $destinationDirectory = __DIR__ . '/../assets/equipment';
@@ -71,12 +78,18 @@ try {
         $destinationPath = $destinationDirectory . '/equipment' . $equipmentId . '.png';
 
         if (!move_uploaded_file($temporaryPath, $destinationPath)) {
-            throw new Exception('Equipment was created, but the photo could not be saved.');
+            throw new Exception('The equipment photo could not be saved.');
         }
     }
 
+    $db->commit();
+
     $session->addMessage('success', 'Equipment added successfully.');
 } catch (Exception $exception) {
+    if ($db->inTransaction()) {
+        $db->rollBack();
+    }
+
     $session->addMessage('error', $exception->getMessage());
 }
 

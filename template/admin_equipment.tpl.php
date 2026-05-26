@@ -28,6 +28,24 @@ function getAdminEquipmentImagePath(Equipment $item): ?string {
     return '../assets/equipment/' . $filename;
 }
 
+function groupAdminEquipmentByType(array $equipment): array {
+    $groups = [];
+
+    foreach ($equipment as $item) {
+        $type = $item->getType();
+
+        if (!isset($groups[$type])) {
+            $groups[$type] = [];
+        }
+
+        $groups[$type][] = $item;
+    }
+
+    ksort($groups);
+
+    return $groups;
+}
+
 function drawAdminEquipmentPage(array $equipment): void { ?>
     <main class="admin-users-page admin-equipment-page">
 
@@ -42,15 +60,14 @@ function drawAdminEquipmentPage(array $equipment): void { ?>
             </p>
         </section>
 
-        <section class="card admin-edit-user-card">
-            <header class="admin-section-header">
-                <div>
-                    <p class="admin-label">Inventory</p>
-                    <h2>Add equipment</h2>
-                </div>
-
-                <p>Create a new equipment item available in the gym.</p>
-            </header>
+        <section class="card admin-equipment-add-card">
+            <div class="admin-equipment-add-intro">
+                <p class="admin-label">Inventory</p>
+                <h2>Add equipment</h2>
+                <p>
+                    Register a new item, define its quantity and optionally upload a PNG photo.
+                </p>
+            </div>
 
             <form
                 class="admin-equipment-form"
@@ -90,7 +107,7 @@ function drawAdminEquipmentPage(array $equipment): void { ?>
                 </label>
 
                 <label>
-                    Availability status
+                    Status
                     <select name="status" required>
                         <option value="available">Available</option>
                         <option value="maintenance">Maintenance</option>
@@ -98,7 +115,7 @@ function drawAdminEquipmentPage(array $equipment): void { ?>
                     </select>
                 </label>
 
-                <label>
+                <label class="admin-equipment-photo-field">
                     Photo
                     <input
                         type="file"
@@ -115,26 +132,25 @@ function drawAdminEquipmentPage(array $equipment): void { ?>
             </form>
         </section>
 
-        <section class="card admin-edit-user-card">
-            <header class="admin-section-header">
+        <section class="admin-equipment-section">
+            <header class="admin-section-header admin-equipment-main-header">
                 <div>
-                    <p class="admin-label">Equipment List</p>
                     <h2>Current equipment</h2>
                 </div>
 
-                <p>Update availability or remove equipment items.</p>
+                <p>Equipment grouped by training type.</p>
             </header>
 
             <?php if (empty($equipment)) { ?>
-                <article class="admin-empty-card">
+                <article class="card admin-empty-card">
                     <h3>No equipment registered</h3>
                     <p>There are no equipment items in the system yet.</p>
                 </article>
             <?php } else { ?>
-                <div class="admin-equipment-list">
-                    <?php foreach ($equipment as $item) {
-                        drawAdminEquipmentRow($item);
-                    } ?>
+                <div class="equipment_groups admin-equipment-groups">
+                    <?php foreach (groupAdminEquipmentByType($equipment) as $type => $items) { ?>
+                        <?php drawAdminEquipmentGroup($type, $items); ?>
+                    <?php } ?>
                 </div>
             <?php } ?>
         </section>
@@ -144,13 +160,33 @@ function drawAdminEquipmentPage(array $equipment): void { ?>
 
 
 <?php
-function drawAdminEquipmentRow(Equipment $item): void {
+function drawAdminEquipmentGroup(string $type, array $items): void { ?>
+    <section class="equipment_group admin-equipment-group">
+        <header class="equipment_group_header">
+            <div>
+                <p class="classes_label"><?= htmlspecialchars($type) ?></p>
+            </div>
+
+            <h2><?= htmlspecialchars((string)count($items)) ?> items</h2>
+        </header>
+
+        <div class="equipment_gallery admin-equipment-grid">
+            <?php foreach ($items as $item) {
+                drawAdminEquipmentCard($item);
+            } ?>
+        </div>
+    </section>
+<?php } ?>
+
+
+<?php
+function drawAdminEquipmentCard(Equipment $item): void {
     $statusClass = getAdminEquipmentStatusClass($item->getStatus());
     $imagePath = getAdminEquipmentImagePath($item);
 ?>
-    <article class="admin-equipment-row">
+    <article class="admin-equipment-item">
 
-        <div class="admin-equipment-main">
+        <div class="equipment_gallery_card">
             <?php if ($imagePath !== null) { ?>
                 <img
                     src="<?= htmlspecialchars($imagePath) ?>"
@@ -162,80 +198,78 @@ function drawAdminEquipmentRow(Equipment $item): void {
                 </div>
             <?php } ?>
 
-            <div>
-                <strong><?= htmlspecialchars($item->getName()) ?></strong>
+            <div class="equipment_gallery_overlay">
+                <span class="equipment_status <?= htmlspecialchars($statusClass) ?>">
+                    <?= htmlspecialchars($item->getStatus()) ?>
+                </span>
 
-                <div class="admin-equipment-meta">
-                    <span class="admin-tag">
-                        <?= htmlspecialchars($item->getType()) ?>
-                    </span>
-
-                    <span>
-                        <?= htmlspecialchars((string)$item->getQuantity()) ?> units
-                    </span>
+                <div>
+                    <p><?= htmlspecialchars($item->getType()) ?></p>
+                    <h2><?= htmlspecialchars($item->getName()) ?></h2>
                 </div>
+
+                <strong>
+                    <?= htmlspecialchars((string)$item->getQuantity()) ?> units
+                </strong>
             </div>
         </div>
 
-        <span class="equipment_status <?= htmlspecialchars($statusClass) ?>">
-            <?= htmlspecialchars($item->getStatus()) ?>
-        </span>
-
-        <form
-            class="admin-inline-form"
-            action="../actions/action_update_equipment_status.php"
-            method="post"
-        >
-            <input
-                type="hidden"
-                name="equipment_id"
-                value="<?= htmlspecialchars((string)$item->getId()) ?>"
+        <div class="admin-equipment-controls">
+            <form
+                action="../actions/action_update_equipment_status.php"
+                method="post"
             >
-
-            <select name="status" required>
-                <option
-                    value="available"
-                    <?= $item->getStatus() === 'available' ? 'selected' : '' ?>
+                <input
+                    type="hidden"
+                    name="equipment_id"
+                    value="<?= htmlspecialchars((string)$item->getId()) ?>"
                 >
-                    Available
-                </option>
 
-                <option
-                    value="maintenance"
-                    <?= $item->getStatus() === 'maintenance' ? 'selected' : '' ?>
-                >
-                    Maintenance
-                </option>
+                <select name="status" required>
+                    <option
+                        value="available"
+                        <?= $item->getStatus() === 'available' ? 'selected' : '' ?>
+                    >
+                        Available
+                    </option>
 
-                <option
-                    value="unavailable"
-                    <?= $item->getStatus() === 'unavailable' ? 'selected' : '' ?>
-                >
-                    Unavailable
-                </option>
-            </select>
+                    <option
+                        value="maintenance"
+                        <?= $item->getStatus() === 'maintenance' ? 'selected' : '' ?>
+                    >
+                        Maintenance
+                    </option>
 
-            <button type="submit" class="btn small">
-                Save
-            </button>
-        </form>
+                    <option
+                        value="unavailable"
+                        <?= $item->getStatus() === 'unavailable' ? 'selected' : '' ?>
+                    >
+                        Unavailable
+                    </option>
+                </select>
 
-        <form
-            class="admin-delete-form"
-            action="../actions/action_delete_equipment.php"
-            method="post"
-            onsubmit="return confirm('Are you sure you want to remove this equipment?');"
-        >
-            <input
-                type="hidden"
-                name="equipment_id"
-                value="<?= htmlspecialchars((string)$item->getId()) ?>"
+                <button type="submit" class="btn small light">
+                    Save
+                </button>
+            </form>
+
+            <form
+                class="admin-equipment-delete-form"
+                action="../actions/action_delete_equipment.php"
+                method="post"
+                onsubmit="return confirm('Are you sure you want to remove this equipment?');"
             >
+                <input
+                    type="hidden"
+                    name="equipment_id"
+                    value="<?= htmlspecialchars((string)$item->getId()) ?>"
+                >
 
-            <button type="submit" class="btn small danger">
-                Remove
-            </button>
-        </form>
+                <button type="submit" class="btn small danger">
+                    Remove
+                </button>
+            </form>
+        </div>
 
     </article>
 <?php } ?>
