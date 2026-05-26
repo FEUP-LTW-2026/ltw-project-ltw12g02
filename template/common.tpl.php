@@ -47,8 +47,13 @@ function generateHeader(Session $session) { ?>
                 <li><a href="classes.php"><i class="fa fa-users" aria-hidden="true"></i> Classes</a></li>
                 <li><a href="trainers.php"><i class="fa fa-id-badge" aria-hidden="true"></i> Trainers</a></li>
                 <li><a href="equipment.php"><i class="fa fa-th" aria-hidden="true"></i> Equipment</a></li>
+
+                <?php if ($session->isLoggedIn() && $session->getRole() === 'trainer') { ?>
+                    <li><a href="trainer_analytics.php"><i class="fa fa-line-chart" aria-hidden="true"></i> Analytics</a></li>
+                <?php } ?>
+
                 <?php if ($session->getRole() === 'admin'){ ?>
-                <li><a href="admin.php"><i class="fa fa-shield" aria-hidden="true"></i> Admin</a></li>
+                    <li><a href="admin.php"><i class="fa fa-shield" aria-hidden="true"></i> Admin</a></li>
                 <?php } ?>
             </ul>
         </nav>
@@ -111,8 +116,6 @@ function generateFooter() { ?>
 </body>
 </html>
 <?php } 
-
-
 
 function drawMessages(array $messages): void { ?>
     <?php if (!empty($messages)) { ?>

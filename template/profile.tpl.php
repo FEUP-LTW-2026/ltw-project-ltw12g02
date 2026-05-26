@@ -468,7 +468,7 @@ function drawTrainerProfile(PDO $db, Users $user, Trainers $trainer, bool $canEd
     $avgRating = $avgRatings['AverageRating'];
     $ratingCount = $avgRatings['TotalReviews'];
     $reviews = $trainer->getReviews($db);
-    $personalClasses = $canEdit ? PersonalClass::getUserPersonalClasses($db, $user->getUserId()) : [];
+    $personalClasses = $canEdit ? PersonalClass::getTrainerPersonalClasses($db, $trainer->getTrainerId()) : [];
 ?>
     <main>
         <section class="flex-row light">
@@ -540,7 +540,7 @@ function drawTrainerProfile(PDO $db, Users $user, Trainers $trainer, bool $canEd
         </section>
         <?php if ($canEdit) { ?>
         <section class="grid">
-            <?php drawPersonalClassesCard($db, $personalClasses); ?>
+            <?php drawTrainerPersonalClassRequestsCard($db, $personalClasses); ?>
         </section>
         <?php } ?>
         <?php if ($canEdit){ ?>
@@ -1014,4 +1014,186 @@ function drawPersonalClassesCard(PDO $db, array $personalClasses): void { ?>
             </dl>
         <?php } ?>
     </article>
+<?php }
+
+function drawTrainerPersonalClassRequestsCard(PDO $db, array $personalClasses): void { 
+    $pendingClasses = [];
+    $acceptedClasses = [];
+    $answeredClasses = [];
+
+    foreach ($personalClasses as $personalClass) {
+        if ($personalClass->getStatus() === 'pending') {
+            $pendingClasses[] = $personalClass;
+        } else if ($personalClass->getStatus() === 'accepted') {
+            $acceptedClasses[] = $personalClass;
+        } else {
+            $answeredClasses[] = $personalClass;
+        }
+    }
+?>
+    <article class="card personal_requests_card">
+        <header class="personal_requests_header">
+            <div>
+                <p class="profile-member-card-label">PowerPIT Personal Training</p>
+                <h2 class="card-title">Personal Class Requests</h2>
+            </div>
+
+            <?php if (!empty($pendingClasses)) { ?>
+                <span class="personal_request_badge">
+                    <?= htmlspecialchars((string)count($pendingClasses)) ?> pending
+                </span>
+            <?php } ?>
+        </header>
+
+        <?php if (empty($personalClasses)) { ?>
+            <p>You do not have any personal class requests yet.</p>
+        <?php } else { ?>
+
+            <?php if (!empty($pendingClasses)) { ?>
+                <section class="personal_requests_section">
+                    <h3>Pending Requests</h3>
+
+                    <div class="personal_requests_list">
+                        <?php foreach ($pendingClasses as $personalClass) {
+                            drawTrainerPersonalClassRequestItem($db, $personalClass, true);
+                        } ?>
+                    </div>
+                </section>
+            <?php } ?>
+
+            <?php if (!empty($acceptedClasses)) { ?>
+                <section class="personal_requests_section">
+                    <h3>Accepted Personal Classes</h3>
+
+                    <div class="personal_requests_list">
+                        <?php foreach ($acceptedClasses as $personalClass) {
+                            drawTrainerPersonalClassRequestItem($db, $personalClass, false);
+                        } ?>
+                    </div>
+                </section>
+            <?php } ?>
+
+            <?php if (!empty($answeredClasses)) { ?>
+                <section class="personal_requests_section">
+                    <h3>Answered Requests</h3>
+
+                    <div class="personal_requests_list">
+                        <?php foreach ($answeredClasses as $personalClass) {
+                            drawTrainerPersonalClassRequestItem($db, $personalClass, false);
+                        } ?>
+                    </div>
+                </section>
+            <?php } ?>
+
+        <?php } ?>
+    </article>
+<?php }
+
+
+function drawTrainerPersonalClassRequestItem(PDO $db, PersonalClass $personalClass, bool $canRespond): void {
+    $member = Users::getUser($db, $personalClass->getUserId());
+
+    $memberName = $member === null ? 'Unknown member' : $member->getName();
+    $memberUsername = $member === null ? 'unknown' : $member->getUserName();
+    $memberImage = $member === null ? 'default.png' : $member->getProfileImage();
+
+    $timestamp = strtotime($personalClass->getStartDateTime());
+
+    $date = $timestamp === false ? 'Unknown date' : date('d M Y', $timestamp);
+    $time = $timestamp === false ? '' : date('H:i', $timestamp);
+
+    $status = $personalClass->getStatus();
+    $requestMessage = $personalClass->getRequestMessage();
+    $trainerResponse = $personalClass->getTrainerResponse();
+?>
+    <section class="personal_request_item">
+        <div class="personal_request_member">
+            <img
+                src="../assets/users/<?= htmlspecialchars($memberImage) ?>"
+                alt="Member profile picture"
+            >
+
+            <div>
+                <strong><?= htmlspecialchars($memberName) ?></strong>
+                <span>@<?= htmlspecialchars($memberUsername) ?></span>
+            </div>
+
+            <span class="personal_request_status <?= htmlspecialchars($status) ?>">
+                <?= htmlspecialchars(ucfirst($status)) ?>
+            </span>
+        </div>
+
+        <dl class="personal_request_details">
+            <div>
+                <dt>Date</dt>
+                <dd><?= htmlspecialchars($date) ?></dd>
+            </div>
+
+            <div>
+                <dt>Time</dt>
+                <dd><?= htmlspecialchars($time) ?></dd>
+            </div>
+
+            <div>
+                <dt>Duration</dt>
+                <dd><?= htmlspecialchars((string)$personalClass->getDurationMinutes()) ?> min</dd>
+            </div>
+        </dl>
+
+        <?php if ($requestMessage !== null && trim($requestMessage) !== '') { ?>
+            <div class="personal_request_message">
+                <strong>Member message</strong>
+                <p><?= htmlspecialchars($requestMessage) ?></p>
+            </div>
+        <?php } ?>
+
+        <?php if ($trainerResponse !== null && trim($trainerResponse) !== '') { ?>
+            <div class="personal_request_message trainer_response">
+                <strong>Your response</strong>
+                <p><?= htmlspecialchars($trainerResponse) ?></p>
+            </div>
+        <?php } ?>
+
+        <?php if ($canRespond) { ?>
+            <form
+                class="personal_request_response_form"
+                action="../actions/action_respond_personal_class.php"
+                method="post"
+            >
+                <input
+                    type="hidden"
+                    name="personal_class_id"
+                    value="<?= htmlspecialchars((string)$personalClass->getId()) ?>"
+                >
+
+                <label>
+                    Response message
+                    <textarea
+                        name="trainer_response"
+                        placeholder="Optional message to the member..."
+                    ></textarea>
+                </label>
+
+                <div class="personal_request_actions">
+                    <button
+                        type="submit"
+                        name="response_status"
+                        value="accepted"
+                        class="btn small light"
+                    >
+                        Accept
+                    </button>
+
+                    <button
+                        type="submit"
+                        name="response_status"
+                        value="rejected"
+                        class="btn small"
+                    >
+                        Reject
+                    </button>
+                </div>
+            </form>
+        <?php } ?>
+    </section>
 <?php }
