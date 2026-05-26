@@ -890,7 +890,7 @@
   }
 
   .popup-card > dl,
-  .popup-form
+  .popup-form,
   .popup-card > .popup-actions {
     grid-column: 1;
   }
