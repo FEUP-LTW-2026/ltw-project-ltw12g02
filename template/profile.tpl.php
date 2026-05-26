@@ -7,6 +7,7 @@ require_once(__DIR__ . '/../database/enrollments.class.php');
 require_once(__DIR__ . '/../database/workoutclass.class.php');
 require_once(__DIR__ . '/../database/workoutclasstype.class.php');
 require_once(__DIR__ . '/../database/equipmentreservation.class.php');
+require_once(__DIR__ . '/../database/personalclass.class.php');
 
 
 function getWorkoutClassDisplayName(PDO $db, WorkoutClass $workoutClass): string {
@@ -229,6 +230,86 @@ function drawEditTrainerProfileDialog(Trainers $trainer): void { ?>
 <?php }
 
 
+function drawPersonalClassRequestDialog(Trainers $trainer, Users $trainerUser): void {
+    $trainerId = method_exists($trainer, 'getId') ? $trainer->getId() : $trainer->getTrainerId();
+?>
+    <dialog id="personal-class-request-dialog" class="popup-dialog">
+        <section class="card popup-card">
+            <button 
+                type="button" 
+                class="popup-close" 
+                data-dialog-close
+                aria-label="Close personal class request dialog"
+            >
+                &times;
+            </button>
+
+            <header class="popup-header">
+                <p class="profile-member-card-label">PowerPIT Personal Class</p>
+                <h1>Request Personal Class</h1>
+                <p>
+                    Send a request to <?= htmlspecialchars($trainerUser->getName()) ?>.
+                    The trainer will accept or reject it later.
+                </p>
+            </header>
+
+            <form 
+                class="popup-form"
+                action="../actions/action_create_personal_class.php"
+                method="post"
+            >
+                <input 
+                    type="hidden"
+                    name="trainer_id"
+                    value="<?= htmlspecialchars((string)$trainerId) ?>"
+                >
+
+                <label>
+                    Date and Time
+                    <input 
+                        type="datetime-local"
+                        name="start_date_time"
+                        required
+                    >
+                </label>
+
+                <label>
+                    Duration
+                    <select name="duration_minutes" required>
+                        <option value="30">30 minutes</option>
+                        <option value="45">45 minutes</option>
+                        <option value="60" selected>60 minutes</option>
+                        <option value="90">90 minutes</option>
+                    </select>
+                </label>
+
+                <label>
+                    Message
+                    <textarea 
+                        name="request_message"
+                        placeholder="Tell the trainer what you want to work on..."
+                    ></textarea>
+                </label>
+
+                <div class="popup-actions">
+                    <button 
+                        type="button" 
+                        class="btn small"
+                        data-dialog-close
+                    >
+                        Cancel
+                    </button>
+
+                    <button type="submit" class="btn small light">
+                        Send Request
+                    </button>
+                </div>
+            </form>
+        </section>
+    </dialog>
+<?php }
+
+
 function drawProfile(PDO $db, Users $user): void {
     if ($user->getRole() === 'trainer') {
         $trainer = Trainers::getTrainerByUserId($db, $user->getUserId());
@@ -247,6 +328,7 @@ function drawMemberProfile(PDO $db, Users $user): void {
     $nextClasses = $user->getWorkoutNextClasses($db);
     $classHistory = $user->getWorkoutClassHistory($db);
     $equipmentReservations = EquipmentReservation::getUserUpcomingReservations($db, $user->getUserId());
+    $personalClasses = PersonalClass::getUserPersonalClasses($db, $user->getUserId());
 ?>
     <main>
         <section class="flex-row light">
@@ -314,13 +396,14 @@ function drawMemberProfile(PDO $db, Users $user): void {
                 <?php if (empty($nextClasses)) { ?>
                     <p>You do not have any booked classes yet.</p>
                 <?php } else { ?>
-                    <dl>
+                    <dl id="next-classes-container">
                         <?php foreach ($nextClasses as $workoutClass) { 
                             $dialogId = 'withdraw-dialog-' . $workoutClass->getId();
                             $classType = WorkoutClassType::getWorkoutClassType($db, $workoutClass->getClassTypeId());
-                            drawWithdrawDialog($db, $classType, $workoutClass);
+                            
                             ?>
                             <div class="card-dl-row">
+                                <?php drawWithdrawDialog($db, $classType, $workoutClass); ?>
                                 <dt><?= htmlspecialchars(getWorkoutClassDisplayName($db, $workoutClass)) ?></dt>
                                 <dd>
                                     <?= htmlspecialchars(date('d M · H:i', strtotime($workoutClass->getClassDateTime()))) ?>
@@ -339,6 +422,8 @@ function drawMemberProfile(PDO $db, Users $user): void {
             </article>
 
             <?php drawEquipmentReservationsCard($equipmentReservations); ?>
+
+            <?php drawPersonalClassesCard($db, $personalClasses); ?>
 
             <article class="card">
                 <h2 class="card-title center">Classes History</h2>
@@ -378,11 +463,12 @@ function drawMemberProfile(PDO $db, Users $user): void {
 
 
 function drawTrainerProfile(PDO $db, Users $user, Trainers $trainer, bool $canEdit): void {
-    $assignedClasses = $trainer->getAssignedClasses($db);
+     $assignedClasses = $trainer->getAssignedClasses($db);
     $avgRatings = $trainer->getAverageRatings($db);
     $avgRating = $avgRatings['AverageRating'];
     $ratingCount = $avgRatings['TotalReviews'];
     $reviews = $trainer->getReviews($db);
+    $personalClasses = $canEdit ? PersonalClass::getUserPersonalClasses($db, $user->getUserId()) : [];
 ?>
     <main>
         <section class="flex-row light">
@@ -417,6 +503,14 @@ function drawTrainerProfile(PDO $db, Users $user, Trainers $trainer, bool $canEd
                             >
                                 Edit Profile
                             </button>
+                        <?php } else { ?>
+                            <button 
+                                type="button" 
+                                class="btn small light profile-edit-btn"
+                                data-dialog-target="personal-class-request-dialog"
+                            >
+                                Request Personal Class
+                            </button>
                         <?php } ?>
                     </div>
 
@@ -444,11 +538,16 @@ function drawTrainerProfile(PDO $db, Users $user, Trainers $trainer, bool $canEd
             <?php drawTrainerPublicCard($trainer, $canEdit); ?>
             <?php drawTrainerScheduleCard($db, $assignedClasses); ?>
         </section>
-
+        <?php if ($canEdit) { ?>
+        <section class="grid">
+            <?php drawPersonalClassesCard($db, $personalClasses); ?>
+        </section>
+        <?php } ?>
+        <?php if ($canEdit){ ?>
         <section class="grid">
             <?php drawTrainerRosterCard($db, $assignedClasses); ?>
         </section>
-
+        <?php } ?>
         <section class="grid">
             <?php drawTrainerReviews($db, $reviews, $canEdit); ?>
         </section>
@@ -457,6 +556,8 @@ function drawTrainerProfile(PDO $db, Users $user, Trainers $trainer, bool $canEd
 
             <?php drawEditProfileDialog($user); ?>
             <?php drawEditTrainerProfileDialog($trainer); ?>
+        <?php } else { ?>
+            <?php drawPersonalClassRequestDialog($trainer, $user); ?>
         <?php } ?>
     </main>
 <?php }
@@ -769,6 +870,7 @@ function drawEquipmentReservationsCard(array $equipmentReservations): void { ?>
         <?php } ?>
     </article>
 <?php }
+
 function drawWithdrawDialog(PDO $db,WorkoutClassType $workoutClassType, WorkoutClass $workoutClass): void {
     $timestamp = strtotime($workoutClass->getClassDateTime());
 
@@ -860,4 +962,56 @@ function drawWithdrawDialog(PDO $db,WorkoutClassType $workoutClassType, WorkoutC
             </form>
         </section>
     </dialog>
-<?php } ?>
+<?php } 
+
+function drawPersonalClassesCard(PDO $db, array $personalClasses): void { ?>
+    <article class="card">
+        <h2 class="card-title center">Personal Classes</h2>
+
+        <?php if (empty($personalClasses)) { ?>
+            <p>You do not have any personal class requests yet.</p>
+        <?php } else { ?>
+            <dl>
+                <?php foreach ($personalClasses as $personalClass) {
+                    $trainer = Trainers::getTrainer($db, $personalClass->getTrainerId());
+                    $trainerName = $trainer === null ? 'Unknown trainer' : $trainer->getName($db);
+
+                    $timestamp = strtotime($personalClass->getStartDateTime());
+                    $date = date('d M', $timestamp);
+                    $time = date('H:i', $timestamp);
+
+                    $status = $personalClass->getStatus();
+                    $trainerResponse = $personalClass->getTrainerResponse();
+                ?>
+                    <div class="card-dl-row">
+                        <dt>
+                            <?= htmlspecialchars($trainerName) ?>
+                            <span class="equipment_reservation_meta">
+                                <?= htmlspecialchars(ucfirst($status)) ?>
+                            </span>
+                        </dt>
+
+                        <dd>
+                            <?= htmlspecialchars($date) ?> · <?= htmlspecialchars($time) ?>
+                            · <?= htmlspecialchars((string)$personalClass->getDurationMinutes()) ?> min
+
+                            <?php if ($status === 'pending') { ?>
+                                <br>
+                                <span>Waiting for trainer response.</span>
+                            <?php } else if ($trainerResponse !== null && trim($trainerResponse) !== '') { ?>
+                                <br>
+                                <span>Trainer response: <?= htmlspecialchars($trainerResponse) ?></span>
+                            <?php } else if ($status === 'accepted') { ?>
+                                <br>
+                                <span>Accepted by trainer.</span>
+                            <?php } else if ($status === 'rejected') { ?>
+                                <br>
+                                <span>Rejected by trainer.</span>
+                            <?php } ?>
+                        </dd>
+                    </div>
+                <?php } ?>
+            </dl>
+        <?php } ?>
+    </article>
+<?php }
