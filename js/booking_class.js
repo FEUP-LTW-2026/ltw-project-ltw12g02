@@ -46,6 +46,11 @@ document.addEventListener('submit', (event) => {
                     'Booked!',
                     'Your class booking has been confirmed.'
                 );
+                const classId = bookingForm.querySelector('[name="class_id"]').value.trim();
+                const response = JSON.parse(request.responseText);
+                const oldCard = document.querySelector(`.card[data-class-id="${classId}"]`);
+                if (oldCard) oldCard.outerHTML = response.html;
+
             } else if (request.status === 401) {
                 showBookingResult(
                     card,

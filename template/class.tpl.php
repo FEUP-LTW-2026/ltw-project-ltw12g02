@@ -158,7 +158,7 @@ function drawClassCard(PDO $db, WorkoutClass $workoutClass): void {
         $workoutClass->getCapacity()
     );
 ?>
-    <article class="card <?= $isFull ? 'full' : '' ?>">
+    <article class="card <?= $isFull ? 'full' : '' ?>" data-class-id="<?= htmlspecialchars((string)$workoutClass->getId()) ?>">
         <h3><?= htmlspecialchars($day) ?></h3>
 
         <div class="card-wrap">

@@ -6,6 +6,7 @@ require_once(__DIR__ . '/../database/connection.db.php');
 require_once(__DIR__ . '/../database/users.class.php');
 require_once(__DIR__ . '/../database/workoutclass.class.php');
 require_once(__DIR__ . '/../database/enrollments.class.php');
+require_once(__DIR__ . '/../template/class.tpl.php');
 
 $session = new Session();
 
@@ -14,16 +15,16 @@ function isAjaxRequest(): bool {
            strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
 }
 
-function sendJsonResponse(int $statusCode, string $message): void {
+function sendJsonResponse(int $statusCode, array $data): void {
     http_response_code($statusCode);
     header('Content-Type: application/json');
-    echo json_encode(['message' => $message]);
+    echo json_encode($data);
     exit;
 }
 
 if (!$session->isLoggedIn()) {
     if (isAjaxRequest()) {
-        sendJsonResponse(401, 'You need to be logged in to book a class.');
+        sendJsonResponse(401, ['message' => 'You need to be logged in to book a class.']);
     }
 
     header('Location: ../pages/login.php');
@@ -32,7 +33,7 @@ if (!$session->isLoggedIn()) {
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     if (isAjaxRequest()) {
-        sendJsonResponse(405, 'Invalid request method.');
+        sendJsonResponse(405, ['message' => 'Invalid request method.']);
     }
 
     header('Location: ../pages/profile.php');
@@ -45,7 +46,7 @@ $userId = $session->getId();
 
 if ($userId === null) {
     if (isAjaxRequest()) {
-        sendJsonResponse(401, 'Invalid session.');
+        sendJsonResponse(401, ['message' => 'Invalid session.']);
     }
 
     $session->logout();
@@ -56,16 +57,21 @@ if ($userId === null) {
 $classId = filter_input(INPUT_POST, 'class_id', FILTER_VALIDATE_INT);
 
 if ($classId === false || $classId === null) {
-    sendJsonResponse(400, 'Invalid class.');
+    sendJsonResponse(400, ['message' =>'Invalid class.']);
 }
 
 try {
     Enrollments::addEnrollmentToDb($db, $userId, $classId);
-    sendJsonResponse(200, 'Class booked successfully.');
+    $class = WorkoutClass::getWorkoutClass($db, $classId);
+    ob_start();
+    drawClassCard($db, $class);
+    $html = ob_get_clean();
+
+    sendJsonResponse(200, ['message' => 'Class booked successfully.', 'html' => $html]);
 } catch (PDOException $e) {
     if ($e->getCode() === '23000') {
-        sendJsonResponse(409, 'You have already booked this class.');
+        sendJsonResponse(409, ['message' => 'You have already booked this class.']);
     }
 
-    sendJsonResponse(500, 'Could not complete the booking.');
+    sendJsonResponse(500, ['message' => 'Could not complete the booking.']);
 }
