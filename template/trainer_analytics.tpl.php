@@ -90,14 +90,32 @@ function drawAnalyticsInsightCard(
     </article>
 <?php }
 
-function drawTrainerAnalyticsPage(
-    Users $user,
-    array $overview,
-    array $classPerformance,
-    array $recentReviews,
-    array $personalStats,
-    array $insights
-): void {
+function drawTrainerAnalyticsFilters(string $filter): void { ?>
+    <nav class="admin-class-filters trainer_analytics_filters" aria-label="Trainer analytics filters">
+        <a
+            href="trainer_analytics.php?filter=upcoming"
+            class="admin-user-role <?= $filter === 'upcoming' ? 'active' : '' ?>"
+        >
+            Upcoming
+        </a>
+
+        <a
+            href="trainer_analytics.php?filter=past"
+            class="admin-user-role <?= $filter === 'past' ? 'active' : '' ?>"
+        >
+            Past
+        </a>
+
+        <a
+            href="trainer_analytics.php?filter=all"
+            class="admin-user-role <?= $filter === 'all' ? 'active' : '' ?>"
+        >
+            All classes
+        </a>
+    </nav>
+<?php }
+
+function drawTrainerAnalyticsPage(Users $user, array $overview, array $classPerformance, array $recentReviews, array $personalStats, array $insights, string $filter): void {
     $totalClasses = (int)($overview['TotalClasses'] ?? 0);
     $upcomingClasses = (int)($overview['UpcomingClasses'] ?? 0);
     $pastClasses = (int)($overview['PastClasses'] ?? 0);
@@ -112,7 +130,8 @@ function drawTrainerAnalyticsPage(
     $rejectedPersonalClasses = (int)($personalStats['Rejected'] ?? 0);
     $upcomingAcceptedPersonalClasses = (int)($personalStats['UpcomingAccepted'] ?? 0);
 
-    $hasClassData = !empty($classPerformance);
+    $hasFilteredClassData = !empty($classPerformance);
+    $hasClassData = $totalClasses > 0;
     $hasReviewData = !empty($recentReviews);
     $hasPersonalData = $totalPersonalClasses > 0;
     $hasAnyData = $hasClassData || $hasReviewData || $hasPersonalData;
@@ -188,6 +207,9 @@ function drawTrainerAnalyticsPage(
 
         <section class="trainer_analytics_bottom">
             <div class="trainer_analytics_wrap">
+                <?php if ($hasClassData) { ?>
+                    <?php drawTrainerAnalyticsFilters($filter); ?>
+                <?php } ?>
                 <?php if (!$hasAnyData) { ?>
                     <section class="card trainer_analytics_empty_dashboard">
                         <div class="trainer_analytics_empty_icon">
@@ -229,9 +251,9 @@ function drawTrainerAnalyticsPage(
                                 </span>
                             </header>
 
-                            <?php if (empty($classPerformance)) { ?>
+                            <?php if (!$hasFilteredClassData) { ?>
                                 <div class="analytics-empty">
-                                    <p>You do not have any assigned classes yet.</p>
+                                    <p>No classes found for this filter.</p>
                                 </div>
                             <?php } else { ?>
                                 <div class="analytics-table-wrap">
@@ -391,7 +413,7 @@ function drawTrainerAnalyticsPage(
                         </aside>
                     </section>
 
-                    <?php if ($hasClassData) { ?>
+                    <?php if ($hasFilteredClassData) { ?>
                         <section class="trainer_analytics_insights">
                             <?php
                                 $mostPopular = $insights['MostPopular'] ?? null;

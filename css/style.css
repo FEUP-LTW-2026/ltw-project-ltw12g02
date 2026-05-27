@@ -2759,6 +2759,15 @@ button {
   border-color: #d62828;
 }
 
+.trainer_analytics_filters {
+  margin-bottom: 1.5rem;
+}
+
+.analytics-status-closed {
+  background: var(--black);
+  color: var(--lime);
+}
+
 /* RESPONSIVE */
 
 @media (max-width: 60rem) {

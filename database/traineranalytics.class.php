@@ -100,13 +100,15 @@ class TrainerAnalytics {
         return $row;
     }
 
-    public static function getClassPerformance(PDO $db, int $trainerId): array {
-        $stmt = $db->prepare('
+    public static function getClassPerformance(PDO $db, int $trainerId, string $filter = 'upcoming'): array {
+        $sql = '
             SELECT
                 Classes.ClassId,
                 Classes.ClassDateTime,
                 Classes.Capacity,
                 ClassType.Name AS ClassName,
+
+                datetime(Classes.ClassDateTime) < datetime("now", "localtime") AS IsPast,
 
                 COUNT(
                     CASE 
@@ -133,26 +135,40 @@ class TrainerAnalytics {
             LEFT JOIN Enrollments
                 ON Classes.ClassId = Enrollments.ClassId
             WHERE Classes.TrainerId = ?
-            GROUP BY Classes.ClassId
-            ORDER BY datetime(Classes.ClassDateTime) DESC
-        ');
+        ';
 
-        $stmt->execute([$trainerId]);
+        $params = [$trainerId];
+
+        if ($filter === 'upcoming') {
+            $sql .= '
+                AND datetime(Classes.ClassDateTime) >= datetime("now", "localtime")
+            ';
+        } else if ($filter === 'past') {
+            $sql .= '
+                AND datetime(Classes.ClassDateTime) < datetime("now", "localtime")
+            ';
+        }
+
+        $sql .= '
+            GROUP BY Classes.ClassId
+            ORDER BY datetime(Classes.ClassDateTime) ' . ($filter === 'past' ? 'DESC' : 'ASC');
+
+        $stmt = $db->prepare($sql);
+        $stmt->execute($params);
 
         $classes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         foreach ($classes as &$class) {
             $capacity = (int)$class['Capacity'];
             $enrolled = (int)$class['Enrolled'];
+            $isPast = (int)$class['IsPast'] === 1;
 
             $class['OccupancyRate'] = $capacity > 0
                 ? (int)round(($enrolled / $capacity) * 100)
                 : 0;
 
-            $timestamp = strtotime((string)$class['ClassDateTime']);
-
-            if ($timestamp !== false && $timestamp < time()) {
-                $class['StatusLabel'] = 'Completed';
+            if ($isPast) {
+                $class['StatusLabel'] = 'Closed';
             } else if ($capacity > 0 && $enrolled >= $capacity) {
                 $class['StatusLabel'] = 'Full';
             } else if ($enrolled === 0) {
@@ -247,8 +263,8 @@ class TrainerAnalytics {
         return $stats;
     }
 
-    public static function getEngagementInsights(PDO $db, int $trainerId): array {
-        $classes = TrainerAnalytics::getClassPerformance($db, $trainerId);
+    public static function getEngagementInsights(PDO $db, int $trainerId, string $filter = 'upcoming'): array {
+        $classes = TrainerAnalytics::getClassPerformance($db, $trainerId, $filter);
 
         $mostPopular = null;
         $bestRated = null;

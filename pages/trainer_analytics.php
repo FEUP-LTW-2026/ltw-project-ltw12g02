@@ -41,11 +41,17 @@ if ($trainer === null) {
     exit;
 }
 
+$filter = $_GET['filter'] ?? 'upcoming';
+
+if (!in_array($filter, ['all', 'upcoming', 'past'], true)) {
+    $filter = 'upcoming';
+}
+
 $overview = TrainerAnalytics::getOverview($db, $trainer->getTrainerId());
-$classPerformance = TrainerAnalytics::getClassPerformance($db, $trainer->getTrainerId());
+$classPerformance = TrainerAnalytics::getClassPerformance($db, $trainer->getTrainerId(), $filter);
 $recentReviews = TrainerAnalytics::getRecentReviews($db, $trainer->getTrainerId(), 5);
 $personalStats = TrainerAnalytics::getPersonalClassStats($db, $trainer->getTrainerId());
-$insights = TrainerAnalytics::getEngagementInsights($db, $trainer->getTrainerId());
+$insights = TrainerAnalytics::getEngagementInsights($db, $trainer->getTrainerId(), $filter);
 
 generateHead('PowerPIT - Trainer Analytics');
 generateHeader($session);
@@ -58,7 +64,8 @@ drawTrainerAnalyticsPage(
     $classPerformance,
     $recentReviews,
     $personalStats,
-    $insights
+    $insights,
+    $filter
 );
 
 generateFooter();
