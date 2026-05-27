@@ -398,7 +398,7 @@ function drawMemberProfile(PDO $db, Users $user): void {
 
             <?php drawPersonalClassesCard($db, $personalClasses); ?>
 
-            <?php drawClassHistoryCard($db, $classHistory); ?>
+            <?php drawClassHistoryCard($db, $user, $classHistory); ?>
 
             <?php drawComplaintsCard($db, $complaints); ?>
         </section>
@@ -1199,7 +1199,7 @@ function drawNextClassesCard(PDO $db, array $nextClasses): void { ?>
     </article>
 <?php }
 
-function drawClassHistoryCard(PDO $db, array $classHistory): void { ?>
+function drawClassHistoryCard(PDO $db, Users $user, array $classHistory): void { ?>
     <article class="card">
         <h2 class="card-title center">Classes History</h2>
 
@@ -1210,6 +1210,7 @@ function drawClassHistoryCard(PDO $db, array $classHistory): void { ?>
                 <?php foreach ($classHistory as $workoutClass) {
                     $dialogId = 'review-dialog-' . $workoutClass->getId();
                     $classType = WorkoutClassType::getWorkoutClassType($db, $workoutClass->getClassTypeId());
+                    $enrollment = Enrollments::getEnrollmentByUserAndClass($db, $user->getUserId(), $workoutClass->getId());
                     drawReviewDialog($db, $classType, $workoutClass);
                 ?>
                     <div class="card-dl-row">
@@ -1217,13 +1218,19 @@ function drawClassHistoryCard(PDO $db, array $classHistory): void { ?>
 
                         <dd>
                             <?= htmlspecialchars(date('d M · H:i', strtotime($workoutClass->getClassDateTime()))) ?>
-                            <button 
-                                type="button" 
-                                class="btn small light profile-edit-btn"
-                                data-dialog-target="<?=htmlspecialchars($dialogId)?>"
-                            >
-                                Review
-                            </button>
+                            <?php if ($enrollment->get_rating() != -1) { ?>
+                                <span class="btn small light disabled card-action">
+                                    Review Sent
+                                </span>
+                            <?php } else { ?>
+                                <button 
+                                    type="button" 
+                                    class="btn small light profile-edit-btn"
+                                    data-dialog-target="<?=htmlspecialchars($dialogId)?>"
+                                >
+                                    Review
+                                </button>
+                            <?php } ?>
                         </dd>
                     </div>
                 <?php } ?>

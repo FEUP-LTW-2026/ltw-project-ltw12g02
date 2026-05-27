@@ -88,6 +88,31 @@ class Enrollments {
         );
     }
 
+    public static function getEnrollmentByUserAndClass(PDO $db, int $userId, int $classId): ?Enrollments {
+        $stmt = $db->prepare('
+            SELECT *
+            FROM Enrollments
+            WHERE UserId = ? AND ClassId = ?
+        ');
+
+        $stmt->execute([$userId, $classId]);
+        $row = $stmt->fetch();
+
+        if ($row === false) {
+            return null;
+        }
+
+        return new Enrollments(
+            (int)$row['EnrollmentId'],
+            (int)$row['UserId'],
+            (int)$row['ClassId'],
+            $row['EnrollmentDate'],
+            $row['Status'],
+            $row['Rating'] !== null ? (int)$row['Rating'] : -1,
+            $row['Review'] ?? ''
+        );
+    }
+
     public static function getUserEnrollments(PDO $db, int $userId): array {
         $stmt = $db->prepare('
             SELECT *
