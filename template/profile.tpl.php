@@ -1180,7 +1180,7 @@ function drawNextClassesCard(PDO $db, array $nextClasses): void { ?>
                     $classType = WorkoutClassType::getWorkoutClassType($db, $workoutClass->getClassTypeId());
                     drawWithdrawDialog($db, $classType, $workoutClass);       
                 ?>
-                    <div class="card-dl-row">
+                    <div class="card-dl-row" data-class-id="<?=htmlspecialchars((string)$workoutClass->getId())?>">
                         <dt><?= htmlspecialchars(getWorkoutClassDisplayName($db, $workoutClass)) ?></dt>
                         <dd>
                             <?= htmlspecialchars(date('d M · H:i', strtotime($workoutClass->getClassDateTime()))) ?>

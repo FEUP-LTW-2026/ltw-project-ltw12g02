@@ -140,23 +140,6 @@ function drawAvailableClasses(PDO $db,WorkoutClassType $workoutClassType): void 
     </section>
 <?php } ?>
 
-<?php
-function drawAvailableClassesOLD(PDO $db,WorkoutClassType $workoutClassType): void { ?>
-    <section id="available-classes" class="grid">
-        <?php if (empty($workoutClasses)) { ?>
-            <article class="card">
-                <h3>No classes available</h3>
-                <p>There are no upcoming sessions for this class yet.</p>
-            </article>
-        <?php } ?>
-
-        <?php foreach ($workoutClasses as $workoutClass) { ?>
-            <?php drawClassCard($db,$workoutClass); ?>
-            <?php drawBookingDialog($db,$workoutClassType, $workoutClass); ?>
-        <?php } ?>
-    </section>
-<?php } ?>
-
 
 <?php
 function drawClassCard(PDO $db, WorkoutClass $workoutClass): void {

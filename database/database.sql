@@ -1,5 +1,6 @@
 PRAGMA foreign_keys = ON;
 
+DROP TABLE IF EXISTS Complaints
 DROP TABLE IF EXISTS EquipmentReservations;
 DROP TABLE IF EXISTS Enrollments;
 DROP TABLE IF EXISTS Classes;

@@ -46,11 +46,12 @@ document.addEventListener('submit', (event) => {
                     'Withdrawn!  ',
                     'Your class withdrawal has been confirmed.'
                 );
-                
-                const container = document.querySelector('#next-classes-container');
-                const enrollmentCard = container.querySelector('.card-dl-row');
+
+                const classId = withdrawForm.querySelector('[name="class_id"]').value.trim();
+                const enrollmentCard = document.querySelector(`.card-dl-row[data-class-id="${classId}"]`);
                 if(enrollmentCard) enrollmentCard.remove();
-                if (!container.querySelector('.card-dl-row')) container.innerHTML = '<p>You do not have any booked classes yet.</p>'; 
+                const container = document.querySelector('#next-classes-container');
+                if (container.querySelectorAll('.card-dl-row').length === 0) container.innerHTML = '<p>You do not have any booked classes yet.</p>';
                 
             } else if (request.status === 401) {
                 showWithdrawResult(
