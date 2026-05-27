@@ -114,7 +114,6 @@ function generateFooter() { ?>
         <p>Our transactions are made in euros (&euro;).</p>
     </div>
     <button 
-        type="button" 
         class="btn small light profile-edit-btn"
         data-dialog-target="complaint-dialog"
     >

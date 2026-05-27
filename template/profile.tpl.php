@@ -1240,87 +1240,66 @@ function drawClassHistoryCard(PDO $db, Users $user, array $classHistory): void {
 <?php }
 
 function drawComplaintsCard(PDO $db, array $complaints): void { ?>
-    <article class="card">
-        <h2 class="card-title center">Complaints</h2>
+    
+    <article class="card personal_classes_card">
+        <header class="personal_classes_header">
+            <div>
+                <h2 class="card-title">Complaints</h2>
+            </div>
+        </header>
 
         <?php if (empty($complaints)) { ?>
             <p>You have not sent any complaints yet.</p>
         <?php } else { ?>
-            <dl>
+            <div class="personal_classes_list compact">
                 <?php foreach ($complaints as $complaint) {
-                    $dialogId = 'check-complaint-dialog-' . $complaint->get_complaint_id();
-                    drawCheckComplaintDialog($db, $complaint);
-                ?>
-                    <div class="card-dl-row">
-                        <dt><?= htmlspecialchars($complaint->get_reason()) ?></dt>
+                    $reason = $complaint->get_reason();
 
-                        <dd>
-                            response:
-                            <?php if ($complaint->get_response() == "") { ?>
-                                <i class="fa fa-times-circle-o" aria-hidden="true"></i>
-                            <?php } else { ?>
-                                <i class="fa fa-check-circle-o" aria-hidden="true"></i>
-                            <?php } ?>
-                            <button 
-                                type="button" 
-                                class="btn small light profile-edit-btn"
-                                data-dialog-target="<?=htmlspecialchars($dialogId)?>"
-                            >
-                                Check
-                            </button>
-                        </dd>
-                    </div>
-                <?php } ?>
-            </dl>
+                    $timestamp = strtotime($complaint->get_complaint_date());
+                    $date = $timestamp === false ? 'Unknown date' : date('d M Y', $timestamp);
+                    $time = $timestamp === false ? '' : date('H:i', $timestamp);
+
+                    $response = $complaint->get_response() ?? "";
+                    $status = $response !== "" ? "accepted" : "pending";
+                    $details = $complaint->get_details();
+                ?>
+                    <section class="personal_class_compact_item">
+                        <header>
+                            <div>
+                                <strong><?= htmlspecialchars($reason) ?></strong>
+                                <span>
+                                    <?= htmlspecialchars($date) ?>
+                                    <?php if ($time !== '') { ?>
+                                        · <?= htmlspecialchars($time) ?>
+                                    <?php } ?>
+                                </span>
+                            </div>
+
+                            <span class="personal_request_status <?= htmlspecialchars($status) ?>">
+                                <?= htmlspecialchars(ucfirst($status === "accepted" ? "responded" : $status)) ?>
+                            </span>
+                        </header>
+
+                        <?php if ($details !== null && trim($details) !== '') { ?>
+                            <p class="personal_class_note">
+                                <strong>Your details:</strong>
+                                <?= htmlspecialchars($details) ?>
+                            </p>
+                        <?php } ?>
+
+                        <?php if ($response === "") { ?>
+                            <p class="personal_class_note muted">
+                                We will respond to your complaint as soon as possible.
+                            </p>
+                        <?php } else { ?>
+                            <p class="personal_class_note">
+                                <strong>Response:</strong>
+                                <?= htmlspecialchars($response) ?>
+                            </p>
+                        <?php } ?>    
+                    </section>
+                <?php } ?>   
+            </div>
         <?php } ?>
     </article>
-<?php }
-
-function drawCheckComplaintDialog(PDO $db, Complaints $complaint): void { 
-    $dialogId = 'check-complaint-dialog-' . $complaint->get_complaint_id();
-?>
-    <dialog id="<?= htmlspecialchars($dialogId) ?>" class="popup-dialog">
-        <section class="card popup-card">
-            <button 
-                type="button" 
-                class="popup-close" 
-                data-dialog-close
-                aria-label="Close check complaint dialog"
-            >
-                &times;
-            </button>
-
-            <header class="popup-header">
-                <p class="profile-member-card-label">PowerPIT Complaint</p>
-                <h1>Your Complaint</h1>
-                <p>If your complaint doesn't have a response yet, wait patiently and we will answer you when we can.</p>
-            </header>
-
-            <form class="popup-form check-complaint-form">
-                <label>
-                    Reason: <?=htmlspecialchars($complaint->get_reason())?> 
-                </label>
-
-                <label>
-                    Complaint:
-                        <textarea readonly><?=htmlspecialchars($complaint->get_details())?></textarea>
-                </label>
-
-                <label>
-                    Response:
-                        <textarea readonly placeholder="We will respond to your complaint as soon as possible."><?=htmlspecialchars($complaint->get_response())?></textarea>
-                </label>
-
-                <div class="popup-actions">
-                    <button 
-                        type="button" 
-                        class="btn small"
-                        data-dialog-close
-                    >
-                        Cancel
-                    </button>
-                </div>
-            </form>
-        </section>
-    </dialog>
 <?php }

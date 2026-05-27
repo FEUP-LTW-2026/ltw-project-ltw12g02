@@ -2785,6 +2785,11 @@ button {
     align-self: center;
   }
 
+  .main-footer button {
+    grid-column: 2;
+    justify-self: center;
+  }
+
   #menu-icon {
     display: block;
   }
