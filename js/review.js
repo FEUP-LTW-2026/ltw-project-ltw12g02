@@ -54,6 +54,9 @@ document.addEventListener('submit', (event) => {
                     'You have already reviewed this class.'
                 );
             } else {
+                console.log('Review request failed with status:', request.status);
+                console.log('Response:', request.responseText);
+
                 showReviewResult(
                     card,
                     dialog,

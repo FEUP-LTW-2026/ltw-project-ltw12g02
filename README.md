@@ -8,11 +8,11 @@
 - [X] Edit their profile, including name, username, password, and profile photo.
 
 **Members:**
-- [ ] Browse the schedule of available fitness classes, filtering by type, trainer, day, or time.
-- [ ] Enroll in and cancel enrollment from upcoming classes, subject to capacity limits.
+- [X] Browse the schedule of available fitness classes, filtering by type, trainer, day, or time.
+- [X] Enroll in and cancel enrollment from upcoming classes, subject to capacity limits.
 - [X] View trainer profiles, including their specializations and the classes they teach.
-- [ ] Check the current availability of equipment in the main training area.
-- [ ] Leave ratings and reviews for classes they have attended.
+- [X] Check the current availability of equipment in the main training area.
+- [X] Leave ratings and reviews for classes they have attended.
 
 **Trainers:**
 - [X] Manage their public profile, including bio, specializations, and certifications.
@@ -20,11 +20,11 @@
 - [ ] Track and manage their assigned class schedule.
 
 **Admins:**
-- [ ] Manage members and trainers (create, update, and deactivate accounts).
-- [ ] Manage the class catalog (create, edit, and remove classes) and assign trainers to them.
-- [ ] Manage equipment in the main training area (add, update availability status, and remove items).
-- [ ] Elevate a user to admin status.
-- [ ] Oversee and ensure the smooth operation of the entire system.
+- [X] Manage members and trainers (create, update, and deactivate accounts).
+- [X] Manage the class catalog (create, edit, and remove classes) and assign trainers to them.
+- [X] Manage equipment in the main training area (add, update availability status, and remove items).
+- [X] Elevate a user to admin status.
+- [X] Oversee and ensure the smooth operation of the entire system.
 
 **Extra:**
 - [ ] Something extra (e.g., personal training bookings, membership plans, waitlist, ...).

@@ -142,9 +142,11 @@ class Users {
         $stmt = $db->prepare('
             SELECT Classes.*
             FROM Classes
-            JOIN Enrollments ON Enrollments.ClassId = Classes.ClassId
+            JOIN Enrollments
+                ON Enrollments.ClassId = Classes.ClassId
             WHERE Enrollments.UserId = ?
-            ORDER BY Classes.ClassDateTime
+            AND Enrollments.Status = "active"
+            ORDER BY datetime(Classes.ClassDateTime) ASC
         ');
 
         $stmt->execute([$this->user_id]);
@@ -156,7 +158,7 @@ class Users {
                 (int)$row['ClassId'],
                 (int)$row['TrainerId'],
                 (int)$row['ClassTypeId'],
-                $row['ClassDateTime'],
+                (string)$row['ClassDateTime'],
                 (int)$row['Capacity']
             );
         }
@@ -168,9 +170,12 @@ class Users {
         $stmt = $db->prepare('
             SELECT Classes.*
             FROM Classes
-            JOIN Enrollments ON Enrollments.ClassId = Classes.ClassId
-            WHERE Enrollments.UserId = ? AND Classes.ClassDateTime < datetime()
-            ORDER BY Classes.ClassDateTime DESC
+            JOIN Enrollments
+                ON Enrollments.ClassId = Classes.ClassId
+            WHERE Enrollments.UserId = ?
+            AND Enrollments.Status = "active"
+            AND datetime(Classes.ClassDateTime) < datetime("now", "localtime")
+            ORDER BY datetime(Classes.ClassDateTime) DESC
         ');
 
         $stmt->execute([$this->user_id]);
@@ -182,7 +187,7 @@ class Users {
                 (int)$row['ClassId'],
                 (int)$row['TrainerId'],
                 (int)$row['ClassTypeId'],
-                $row['ClassDateTime'],
+                (string)$row['ClassDateTime'],
                 (int)$row['Capacity']
             );
         }
@@ -194,9 +199,12 @@ class Users {
         $stmt = $db->prepare('
             SELECT Classes.*
             FROM Classes
-            JOIN Enrollments ON Enrollments.ClassId = Classes.ClassId
-            WHERE Enrollments.UserId = ? AND Classes.ClassDateTime >= datetime()
-            ORDER BY Classes.ClassDateTime
+            JOIN Enrollments
+                ON Enrollments.ClassId = Classes.ClassId
+            WHERE Enrollments.UserId = ?
+            AND Enrollments.Status = "active"
+            AND datetime(Classes.ClassDateTime) >= datetime("now", "localtime")
+            ORDER BY datetime(Classes.ClassDateTime) ASC
         ');
 
         $stmt->execute([$this->user_id]);
@@ -208,7 +216,7 @@ class Users {
                 (int)$row['ClassId'],
                 (int)$row['TrainerId'],
                 (int)$row['ClassTypeId'],
-                $row['ClassDateTime'],
+                (string)$row['ClassDateTime'],
                 (int)$row['Capacity']
             );
         }

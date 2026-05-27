@@ -10,29 +10,40 @@ require_once(__DIR__ . '/../database/workoutclass.class.php');
 require_once(__DIR__ . '/../database/enrollments.class.php');
 
 if (!$session->isLoggedIn()) {
-    header('Location: ../pages/login.php');
+    http_response_code(401);
     exit;
 }
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: ../pages/profile.php');
+    http_response_code(405);
     exit;
 }
-
 
 $db = getDatabaseConnection();
 
 $userId = $session->getId();
-$classId = intval($_POST['class_id']);
-$rating = intval($_POST['rating']);
-$review = $_POST['review'];
 
-if ($rating < 1 || $rating > 5) {
-    $session->addMessage('error', 'Invalid rating!');
-    header('Location: ../pages/profile.php');
+$classId = filter_input(INPUT_POST, 'class_id', FILTER_VALIDATE_INT);
+$rating = filter_input(INPUT_POST, 'rating', FILTER_VALIDATE_INT);
+$review = trim($_POST['review'] ?? '');
+
+if ($userId === null || $classId === false || $classId === null) {
+    http_response_code(400);
     exit;
 }
 
-Enrollments::updateReview($db, $userId, $classId, $rating, $review);
+if ($rating === false || $rating === null || $rating < 1 || $rating > 5) {
+    http_response_code(400);
+    exit;
+}
 
+try {
+    Enrollments::updateReview($db, (int)$userId, (int)$classId, (int)$rating, $review);
 
+    http_response_code(200);
+    exit;
+} catch (PDOException $e) {
+    http_response_code(500);
+    exit;
+}
+?>
