@@ -2768,6 +2768,44 @@ button {
   color: var(--lime);
 }
 
+/* PLANS */
+
+.plans .card {
+  position: relative;
+}
+
+.plans-corner-icon {
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  color: var(--lime);
+  font-size: 3rem;
+  line-height: 1rem;
+}
+
+.plans-icon {
+  color: var(--lime);
+}
+
+.plans-price {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.plans-price span {
+  font-size: 1rem;
+  opacity: 0.7;
+}
+
+.plans li {
+  padding: 0.5rem;
+}
+
+.plans button {
+  justify-self: center;
+}
+
 /* RESPONSIVE */
 
 @media (max-width: 60rem) {

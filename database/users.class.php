@@ -14,6 +14,7 @@ class Users {
     private string $email; 
     private string $passwordHash;
     private string $role;
+    private ?string $plan;
     private ?string $profileImage;
 
     public function __construct(
@@ -23,6 +24,7 @@ class Users {
         string $email,
         string $passwordHash,
         string $role,
+        ?string $plan,
         ?string $profileImage
     ) {
         $this->user_id = $user_id;
@@ -31,6 +33,7 @@ class Users {
         $this->email = $email;
         $this->passwordHash = $passwordHash;
         $this->role = $role;
+        $this->plan = $plan ?? 'basic';
         $this->profileImage = $profileImage;
     }
 
@@ -56,6 +59,10 @@ class Users {
 
     public function getRole(): string {
         return $this->role;
+    }
+
+    public function getPlan(): string {
+        return $this->plan;
     }
 
     public function getProfileImage(): string {
@@ -84,6 +91,7 @@ class Users {
             $row['Email'],
             $row['PasswordHash'],
             $row['Role'],
+            $row['Plan'],
             $row['ProfileImage']
         );
     }
@@ -107,6 +115,7 @@ class Users {
             $row['Email'],
             $row['PasswordHash'],
             $row['Role'],
+            $row['Plan'],
             $row['ProfileImage']
         );
     }
@@ -250,6 +259,7 @@ class Users {
             $row['Email'],
             $row['PasswordHash'],
             $row['Role'],
+            $row['Plan'],
             $row['ProfileImage']
         );
     }
@@ -418,6 +428,31 @@ public function changeRole(string $role, PDO $db): void {
     if ($oldRole === 'trainer' && $role !== 'trainer') {
         Trainers::deleteTrainer($this->user_id, $db);
     }
+
+    if ($role !== 'member' && this->$plan !== 'premium') {
+        changePlan('premium', $db);
+    }
+}
+
+public function changePlan(string $plan, PDO $db): void {
+    $allowedPlans = ['basic', 'plus', 'premium'];
+
+    if (!in_array($plan, $allowedPlans, true)) {
+        throw new InvalidArgumentException('Invalid plan.');
+    }
+
+    $stmt = $db->prepare('
+        UPDATE Users 
+        SET Plan = ? 
+        WHERE UserId = ?
+    ');
+
+    $stmt->execute([
+        $plan,
+        $this->user_id
+    ]);
+
+    $this->plan = $plan;
 }
 
 public function deleteUser(PDO $db): void {

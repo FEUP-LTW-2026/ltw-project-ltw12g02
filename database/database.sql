@@ -20,6 +20,7 @@ CREATE TABLE Users(
    Email NVARCHAR(100) NOT NULL,
    PasswordHash NVARCHAR(255) NOT NULL,
    Role NVARCHAR(20) NOT NULL,
+   Plan NVARCHAR(20) NOT NULL DEFAULT 'basic',
    ProfileImage NVARCHAR(255),
 
    UNIQUE (Username),
