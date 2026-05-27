@@ -314,8 +314,8 @@ class Users {
         $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
         $stmt = $db->prepare('
-            INSERT INTO Users (Name, Username, Email, PasswordHash, Role, ProfileImage)
-            VALUES (?, ?, ?, ?, ?, ?)
+            INSERT INTO Users (Name, Username, Email, PasswordHash, Role, Plan, ProfileImage)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
         ');
 
         $stmt->execute([
@@ -324,6 +324,7 @@ class Users {
             $email,
             $passwordHash,
             'member',
+            'basic',
             null
         ]);
 
@@ -336,6 +337,7 @@ class Users {
             $email,
             $passwordHash,
             'member',
+            'basic',
             null
         );
     }
