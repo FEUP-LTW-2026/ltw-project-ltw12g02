@@ -313,6 +313,10 @@
   grid-row: 1;
 }
 
+#complaint-dialog .popup-header {
+  grid-row: 1;
+}
+
 .popup-header .profile-member-card-label {
   color: var(--lime);
   margin-bottom: 0.9rem;
