@@ -31,17 +31,38 @@ if ($userId === null) {
     exit;
 }
 
-$reason = $_POST['reason'];
-$details = $_POST['details'];
+$user = Users::getUser($db, (int)$userId);
 
-if ($reason === false || $reason === null || $details === false || $details === null) {
-    $session->addMessage('error', 'Invalid field.');
+if ($user === null) {
+    $session->addMessage('error', 'User not found.');
+    $session->logout();
+    header('Location: ../pages/login.php');
+    exit;
+}
+
+$reason = trim($_POST['reason'] ?? '');
+$details = trim($_POST['details'] ?? '');
+
+$allowedReasons = [
+    'equipment malfunction',
+    'class cancellation',
+    'other'
+];
+
+if (!in_array($reason, $allowedReasons, true)) {
+    $session->addMessage('error', 'Invalid complaint reason.');
+    header('Location: ../pages/profile.php');
+    exit;
+}
+
+if ($details === '') {
+    $session->addMessage('error', 'Complaint details cannot be empty.');
     header('Location: ../pages/profile.php');
     exit;
 }
 
 try {
-    Complaints::addComplaintToDb($db, $userId, $reason, $details);
+    Complaints::addComplaintToDb($db, (int)$userId, $reason, $details);
     $session->addMessage('success', 'Complaint sent successfully.');
 } catch (PDOException $e) {
     $session->addMessage('error', 'Could not send the complaint.');

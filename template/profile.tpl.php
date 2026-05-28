@@ -61,7 +61,6 @@ function drawEditProfileDialog(Users $user): void { ?>
             </button>
 
             <header class="popup-header">
-                <p class="profile-member-card-label">PowerPIT Account</p>
                 <h1>Edit Profile</h1>
                 <p>Update your profile information</p>
             </header>
@@ -312,6 +311,11 @@ function drawPersonalClassRequestDialog(Trainers $trainer, Users $trainerUser): 
 
 
 function drawProfile(PDO $db, Users $user): void {
+    if ($user->getRole() === 'admin') {
+        drawAdminProfile($db, $user);
+        return;
+    }
+
     if ($user->getRole() === 'trainer') {
         $trainer = Trainers::getTrainerByUserId($db, $user->getUserId());
 
@@ -323,7 +327,6 @@ function drawProfile(PDO $db, Users $user): void {
 
     drawMemberProfile($db, $user);
 }
-
 
 function drawMemberProfile(PDO $db, Users $user): void {
     $nextClasses = $user->getWorkoutNextClasses($db);
@@ -408,6 +411,70 @@ function drawMemberProfile(PDO $db, Users $user): void {
     </main>
 <?php }
 
+function drawAdminProfile(PDO $db, Users $user): void {
+    $complaints = Complaints::getAllComplaints($db);
+?>
+    <main>
+        <section class="flex-row light">
+            <div class="flex-item">
+                <div class="card card--dark">
+                    <div class="profile-member-card-content">
+                        <img 
+                            class="profile-image-preview"
+                            src="../assets/users/<?= htmlspecialchars($user->getProfileImage()) ?>" 
+                            alt="Profile picture" 
+                            width="200" 
+                            height="100"
+                        >
+
+                        <div>
+                            <p class="profile-member-card-label">PowerPIT Admin</p>
+                            <h1><?= htmlspecialchars($user->getName()) ?></h1>
+                            <p class="profile-member-card-meta">
+                                @<?= htmlspecialchars($user->getUserName()) ?> · <?= htmlspecialchars($user->getEmail()) ?>
+                            </p>
+                        </div>
+
+                        <button 
+                            type="button" 
+                            class="btn small light profile-edit-btn"
+                            data-dialog-target="edit-profile-dialog"
+                        >
+                            Edit Profile
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="grid admin_profile_grid">
+            <article class="card admin_profile_info_card">
+                <h2 class="card-title center">Personal Information</h2>
+
+                <dl>
+                    <div class="card-dl-row">
+                        <dt>Username</dt>
+                        <dd><?= htmlspecialchars($user->getUserName()) ?></dd>
+                    </div>
+
+                    <div class="card-dl-row">
+                        <dt>Email</dt>
+                        <dd><?= htmlspecialchars($user->getEmail()) ?></dd>
+                    </div>
+
+                    <div class="card-dl-row">
+                        <dt>Role</dt>
+                        <dd><?= htmlspecialchars(ucfirst($user->getRole())) ?></dd>
+                    </div>
+                </dl>
+            </article>
+
+            <?php drawAdminComplaintsCard($db, $complaints); ?>
+        </section>
+
+        <?php drawEditProfileDialog($user); ?>
+    </main>
+<?php }
 
 function drawTrainerProfile(PDO $db, Users $trainerUser, Trainers $trainer, bool $canEdit, Users $user): void {
     $assignedClasses = $trainer->getAssignedClasses($db);
@@ -1313,4 +1380,156 @@ function drawComplaintsCard(PDO $db, array $complaints): void { ?>
             </div>
         <?php } ?>
     </article>
+<?php }
+
+function drawAdminComplaintsCard(PDO $db, array $complaints): void {
+    $pendingComplaints = [];
+    $answeredComplaints = [];
+
+    foreach ($complaints as $complaint) {
+        if (trim($complaint->get_response()) === '') {
+            $pendingComplaints[] = $complaint;
+        } else {
+            $answeredComplaints[] = $complaint;
+        }
+    }
+?>
+    <article class="card personal_requests_card complaints_card">
+        <header class="personal_requests_header complaints_header">
+            <div>
+                <h2 class="card-title">Complaints</h2>
+            </div>
+
+            <?php if (!empty($pendingComplaints)) { ?>
+                <span class="personal_request_badge">
+                    <?= htmlspecialchars((string)count($pendingComplaints)) ?> pending
+                </span>
+            <?php } ?>
+        </header>
+
+        <?php if (empty($complaints)) { ?>
+            <p>No complaints have been submitted yet.</p>
+        <?php } else { ?>
+
+            <?php if (!empty($pendingComplaints)) { ?>
+                <section class="personal_requests_section">
+                    <h3>Pending Complaints</h3>
+
+                    <div class="personal_requests_list">
+                        <?php foreach ($pendingComplaints as $complaint) {
+                            drawAdminComplaintItem($db, $complaint, true);
+                        } ?>
+                    </div>
+                </section>
+            <?php } ?>
+
+            <?php if (!empty($answeredComplaints)) { ?>
+                <section class="personal_requests_section">
+                    <h3>Answered Complaints</h3>
+
+                    <div class="personal_requests_list">
+                        <?php foreach ($answeredComplaints as $complaint) {
+                            drawAdminComplaintItem($db, $complaint, false);
+                        } ?>
+                    </div>
+                </section>
+            <?php } ?>
+
+        <?php } ?>
+    </article>
+<?php }
+
+
+function drawAdminComplaintItem(PDO $db, Complaints $complaint, bool $canRespond): void {
+    $member = Users::getUser($db, $complaint->get_user_id());
+
+    $memberName = $member === null ? 'Unknown member' : $member->getName();
+    $memberUsername = $member === null ? 'unknown' : $member->getUserName();
+    $memberImage = $member === null ? 'default.png' : $member->getProfileImage();
+
+    $timestamp = strtotime($complaint->get_complaint_date());
+    $date = $timestamp === false ? 'Unknown date' : date('d M Y', $timestamp);
+    $time = $timestamp === false ? '' : date('H:i', $timestamp);
+
+    $response = trim($complaint->get_response());
+    $status = $response === '' ? 'pending' : 'accepted';
+?>
+    <section class="personal_request_item complaint_item">
+        <header class="personal_request_member">
+            <img
+                src="../assets/users/<?= htmlspecialchars($memberImage) ?>"
+                alt="Member profile picture"
+            >
+
+            <div>
+                <strong><?= htmlspecialchars($memberName) ?></strong>
+                <span>@<?= htmlspecialchars($memberUsername) ?></span>
+            </div>
+
+            <span class="personal_request_status <?= htmlspecialchars($status) ?>">
+                <?= $response === '' ? 'Pending' : 'Responded' ?>
+            </span>
+        </header>
+
+        <dl class="personal_request_details">
+            <div>
+                <dt>Reason</dt>
+                <dd><?= htmlspecialchars($complaint->get_reason()) ?></dd>
+            </div>
+
+            <div>
+                <dt>Date</dt>
+                <dd><?= htmlspecialchars($date) ?></dd>
+            </div>
+
+            <div>
+                <dt>Time</dt>
+                <dd><?= htmlspecialchars($time) ?></dd>
+            </div>
+        </dl>
+
+        <div class="personal_request_message">
+            <strong>Complaint details</strong>
+            <p><?= htmlspecialchars($complaint->get_details()) ?></p>
+        </div>
+
+        <?php if ($response !== '') { ?>
+            <div class="personal_request_message trainer_response">
+                <strong>Admin response</strong>
+                <p><?= htmlspecialchars($response) ?></p>
+            </div>
+        <?php } ?>
+
+        <?php if ($canRespond) { ?>
+            <form
+                class="personal_request_response_form"
+                action="../actions/action_complaint_response.php"
+                method="post"
+            >
+                <input
+                    type="hidden"
+                    name="complaint_id"
+                    value="<?= htmlspecialchars((string)$complaint->get_complaint_id()) ?>"
+                >
+
+                <label>
+                    Response
+                    <textarea
+                        name="response"
+                        placeholder="Write a response to this complaint..."
+                        required
+                    ></textarea>
+                </label>
+
+                <div class="personal_request_actions">
+                    <button
+                        type="submit"
+                        class="btn small light personal_accept_btn"
+                    >
+                        Send response
+                    </button>
+                </div>
+            </form>
+        <?php } ?>
+    </section>
 <?php }

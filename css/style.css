@@ -2920,6 +2920,35 @@ button {
   font-size: 0.9rem;
 }
 
+/* ADMIN PROFILE + COMPLAINTS */
+
+.admin_profile_grid {
+  align-items: start;
+}
+
+.admin_profile_info_card {
+  min-height: auto;
+  height: fit-content;
+}
+
+.complaints_card {
+  width: 100%;
+}
+
+.complaints_header {
+  margin-bottom: 1rem;
+}
+
+.complaint_item .personal_request_status.accepted {
+  background: var(--lime);
+  color: var(--black);
+}
+
+.complaint_item .personal_request_status.pending {
+  background: #f5b700;
+  color: var(--black);
+}
+
 
 /* RESPONSIVE */
 

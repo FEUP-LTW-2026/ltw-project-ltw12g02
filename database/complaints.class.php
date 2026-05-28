@@ -16,14 +16,14 @@ class Complaints {
         string $reason,
         string $details,
         string $complaint_date,
-        string $response = "",
+        ?string $response = ''
     ) {
         $this->complaint_id = $complaint_id;
         $this->user_id = $user_id;
         $this->reason = $reason;
         $this->details = $details;
         $this->complaint_date = $complaint_date;
-        $this->response = $response;
+        $this->response = $response ?? '';
     }
 
     public function get_complaint_id(): int {
@@ -33,7 +33,6 @@ class Complaints {
     public function get_user_id(): int {
         return $this->user_id;
     }
-
 
     public function get_reason(): string {
         return $this->reason;
@@ -48,7 +47,11 @@ class Complaints {
     }
 
     public function get_response(): string {
-        return $this->response ?? "";
+        return $this->response;
+    }
+
+    public function isAnswered(): bool {
+        return trim($this->response) !== '';
     }
 
     public static function getComplaint(PDO $db, int $id): ?Complaints {
@@ -59,6 +62,7 @@ class Complaints {
         ');
 
         $stmt->execute([$id]);
+
         $row = $stmt->fetch();
 
         if ($row === false) {
@@ -68,11 +72,36 @@ class Complaints {
         return new Complaints(
             (int)$row['ComplaintId'],
             (int)$row['UserId'],
-            $row['Reason'],
-            $row['Details'],
-            $row['ComplaintDate'],
-            $row['Response'],
+            (string)$row['Reason'],
+            (string)$row['Details'],
+            (string)$row['ComplaintDate'],
+            $row['Response'] ?? ''
         );
+    }
+
+    public static function getAllComplaints(PDO $db): array {
+        $stmt = $db->prepare('
+            SELECT *
+            FROM Complaints
+            ORDER BY datetime(ComplaintDate) DESC
+        ');
+
+        $stmt->execute();
+
+        $complaints = [];
+
+        while ($row = $stmt->fetch()) {
+            $complaints[] = new Complaints(
+                (int)$row['ComplaintId'],
+                (int)$row['UserId'],
+                (string)$row['Reason'],
+                (string)$row['Details'],
+                (string)$row['ComplaintDate'],
+                $row['Response'] ?? ''
+            );
+        }
+
+        return $complaints;
     }
 
     public static function getUserComplaints(PDO $db, int $userId): array {
@@ -80,37 +109,43 @@ class Complaints {
             SELECT *
             FROM Complaints
             WHERE UserId = ?
-            ORDER BY ComplaintDate DESC
+            ORDER BY datetime(ComplaintDate) DESC
         ');
 
         $stmt->execute([$userId]);
 
-        $Complaints = [];
+        $complaints = [];
 
         while ($row = $stmt->fetch()) {
-            $Complaints[] = new Complaints(
+            $complaints[] = new Complaints(
                 (int)$row['ComplaintId'],
                 (int)$row['UserId'],
-                $row['Reason'],
-                $row['Details'],
-                $row['ComplaintDate'],
-                $row['Response'] ?? "",
+                (string)$row['Reason'],
+                (string)$row['Details'],
+                (string)$row['ComplaintDate'],
+                $row['Response'] ?? ''
             );
         }
 
-        return $Complaints;
+        return $complaints;
     }
 
     public static function addComplaintToDb(PDO $db, int $userId, string $reason, string $details): void {
         $stmt = $db->prepare('
-            INSERT INTO Complaints (UserId, Reason, Details, ComplaintDate)
-            VALUES (?, ?, ?, datetime("now"))
+            INSERT INTO Complaints (
+                UserId,
+                Reason,
+                Details,
+                ComplaintDate,
+                Response
+            )
+            VALUES (?, ?, ?, datetime("now", "localtime"), "")
         ');
 
         $stmt->execute([
             $userId,
             $reason,
-            $details,
+            $details
         ]);
     }
 
@@ -122,11 +157,7 @@ class Complaints {
         return Complaints::getComplaint($db, $id);
     }
 
-    public static function updateResponse(
-        PDO $db,
-        int $id,
-        string $review
-    ): void {
+    public static function updateResponse(PDO $db, int $id, string $response): void {
         $stmt = $db->prepare('
             UPDATE Complaints
             SET Response = ?
@@ -134,8 +165,8 @@ class Complaints {
         ');
 
         $stmt->execute([
-            $review,
-            $id,
+            $response,
+            $id
         ]);
     }
 }
