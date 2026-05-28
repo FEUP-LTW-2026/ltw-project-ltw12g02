@@ -864,8 +864,8 @@
     gap: 1rem;
   }
 
-  .profile-member-card-content img {
-    width: 10rem;
+  .card .profile-member-card-content img {
+    width: auto;
     height: 10rem;
   }
 
@@ -984,8 +984,8 @@
     gap: 1rem;
   }
 
-  .profile-member-card-content img {
-    width: 9rem;
+  .card .profile-member-card-content img {
+    width: auto;
     height: 9rem;
   }
 
