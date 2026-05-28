@@ -57,6 +57,10 @@ class Session {
         return $_SESSION['role'] ?? null;
     }
 
+    public function getPlan(): ?string {
+        return $_SESSION['plan'] ?? null;
+    }
+
     public function setId(int $id): void {
         $_SESSION['id'] = $id;
     }
@@ -75,6 +79,10 @@ class Session {
 
     public function setRole(string $role): void {
         $_SESSION['role'] = $role;
+    }
+
+    public function setPlan(string $plan): void {
+        $_SESSION['plan'] = $plan;
     }
 
     public function addMessage(string $type, string $text): void {

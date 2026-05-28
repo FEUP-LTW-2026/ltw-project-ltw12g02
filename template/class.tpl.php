@@ -142,7 +142,7 @@ function drawAvailableClasses(PDO $db,WorkoutClassType $workoutClassType): void 
 
 
 <?php
-function drawClassCard(PDO $db, WorkoutClass $workoutClass): void {
+function drawClassCard(PDO $db, Users $user, WorkoutClass $workoutClass): void {
     $timestamp = strtotime($workoutClass->getClassDateTime());
 
     $day = date('l', $timestamp);
@@ -174,6 +174,10 @@ function drawClassCard(PDO $db, WorkoutClass $workoutClass): void {
             <?php if ($isFull) { ?>
                 <span class="btn small light disabled card-action">
                     Full
+                </span>
+            <?php } else if ($user->getRole() === 'member' && $user->getPlan() === 'basic') { ?>
+                <span class="btn small light disabled card-action">
+                    Upgrade your plan to book
                 </span>
             <?php } else { ?>
                 <button 

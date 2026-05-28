@@ -37,13 +37,15 @@ if ($trainerUser === null) {
 
 $canEdit = $session->isLoggedIn() && $session->getId() === $trainerUser->getUserId();
 
+$user = Users::getUser($db, $session->getId());
+
 $messages = $session->getMessages();
 
 generateHead('PowerPIT - ' . $trainerUser->getName());
 generateHeader($session);
 
 drawMessages($messages);
-drawTrainerProfile($db, $trainerUser, $trainer, $canEdit);
+drawTrainerProfile($db, $trainerUser, $trainer, $canEdit, $user);
 
 generateFooter();
 ?>

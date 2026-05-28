@@ -525,7 +525,8 @@ public function updateUser(
     string $username,
     string $email,
     ?string $password,
-    string $role
+    string $role,
+    string $plan
 ): void {
     $allowedRoles = ['member', 'trainer', 'admin'];
 
@@ -566,6 +567,10 @@ public function updateUser(
 
         if ($role !== $this->role) {
             $this->changeRole($role, $db);
+        }
+
+        if ($plan !== $this->plan) {
+            $this->changeRole($plan, $db);
         }
 
         $db->commit();

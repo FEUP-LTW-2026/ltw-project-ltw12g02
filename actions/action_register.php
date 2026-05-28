@@ -57,6 +57,7 @@ $session->setName($user->getName());
 $session->setUsername($user->getUserName());
 $session->setEmail($user->getEmail());
 $session->setRole($user->getRole());
+$session->setPlan($user->getPlan());
 
 $session->addMessage('success', 'Account created successfully!');
 

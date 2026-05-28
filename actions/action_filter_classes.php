@@ -86,6 +86,8 @@ if (($_GET['admin'] ?? '') === '1') {
 
 require_once(__DIR__ . '/../template/class.tpl.php');
 
+$user = Users::getUser($db, $session->getId());
+
 $classTypeId = $_GET['id'] ?? null;
 
 if ($classTypeId === null) {
@@ -117,7 +119,7 @@ if (count($classes) === 0) { ?>
 $workoutClassType = WorkoutClassType::getWorkoutClassType($db, (int) $classTypeId);
 
 foreach ($classes as $workoutClass) { ?>
-    <?php drawClassCard($db, $workoutClass); ?>
+    <?php drawClassCard($db, $user, $workoutClass); ?>
 
     <?php if ($workoutClassType !== null) { ?>
         <?php drawBookingDialog($db, $workoutClassType, $workoutClass); ?>

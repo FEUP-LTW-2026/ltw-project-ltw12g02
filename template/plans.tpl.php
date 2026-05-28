@@ -23,15 +23,15 @@ function drawPlans($db, $user): void { ?>
                             <ul class="trainer_certifications">
                                 <li>
                                     <span class="plans-icon"><i class="fa fa-check" aria-hidden="true"></i></span>
-                                    Access to our gyms.
+                                    Gyms access.
                                 </li>
                                 <li>
                                     <span class="plans-icon"><i class="fa fa-check" aria-hidden="true"></i></span>
-                                    Access to our gyms.
+                                    Locker room access.
                                 </li>
                                 <li>
                                     <span class="plans-icon"><i class="fa fa-check" aria-hidden="true"></i></span>
-                                    Access to our gyms.
+                                    Free fitness assessment.
                                 </li>
                             </ul>
 
@@ -76,11 +76,11 @@ function drawPlans($db, $user): void { ?>
                                 </li>
                                 <li>
                                     <span class="plans-icon"><i class="fa fa-check" aria-hidden="true"></i></span>
-                                    Access to our gyms.
+                                    Themed group classes.
                                 </li>
                                 <li>
                                     <span class="plans-icon"><i class="fa fa-check" aria-hidden="true"></i></span>
-                                    Access to our gyms.
+                                    Class schedule and history.
                                 </li>
                             </ul>
 
@@ -125,11 +125,11 @@ function drawPlans($db, $user): void { ?>
                                 </li>
                                 <li>
                                     <span class="plans-icon"><i class="fa fa-check" aria-hidden="true"></i></span>
-                                    Access to our gyms.
+                                    Personal classes with a certified trainer.
                                 </li>
                                 <li>
                                     <span class="plans-icon"><i class="fa fa-check" aria-hidden="true"></i></span>
-                                    Access to our gyms.
+                                    Equipment Reservation.
                                 </li>
                             </ul>
 

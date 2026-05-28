@@ -18,12 +18,13 @@ function getEquipmentDetailsStatusClass(string $status): string {
     return 'unavailable';
 }
 
-function drawEquipmentDetailsPage(Equipment $equipment, Session $session, int $availableQuantity): void {
+function drawEquipmentDetailsPage(Equipment $equipment, Session $session, Users $user, int $availableQuantity): void {
     $statusClass = getEquipmentDetailsStatusClass($equipment->getStatus());
     $image = 'equipment' . $equipment->getId() . '.png';
 
     $canReserve = $session->isLoggedIn()
-        && $session->getRole() === 'member'
+        && $user->getRole() === 'member'
+        && $user->getPlan() === 'premium'
         && strtolower($equipment->getStatus()) === 'available';
 ?>
     <main class="equipment_details_page">
@@ -66,9 +67,13 @@ function drawEquipmentDetailsPage(Equipment $equipment, Session $session, int $a
                         <a class="btn small light" href="../pages/login.php">
                             Login to reserve
                         </a>
-                    <?php } elseif ($session->getRole() !== 'member') { ?>
+                    <?php } elseif ($user->getRole() !== 'member') { ?>
                         <span class="equipment_reservation_hint">
                             Only members can reserve equipment.
+                        </span>
+                    <?php } elseif ($user->getPlan() !== 'premium') { ?>
+                        <span class="equipment_reservation_hint">
+                            Upgrade your plan to reserve equipment.
                         </span>
                     <?php } ?>
                 </div>

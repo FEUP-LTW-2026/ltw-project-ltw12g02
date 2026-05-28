@@ -49,6 +49,7 @@ if ($hasId && $id === false) {
 }
 
 $allowedRoles = ['member', 'trainer', 'admin'];
+$allowedPlans = ['basic', 'plus', 'premium'];
 
 switch ($method) {
     case 'GET':
@@ -78,6 +79,7 @@ switch ($method) {
         $email = trim((string)($input['email'] ?? ''));
         $password = (string)($input['password'] ?? '');
         $role = trim((string)($input['role'] ?? 'member'));
+        $plan = trim((string)($input['plan'] ?? 'basic'));
 
         if ($name === '' || $username === '' || $email === '' || $password === '') {
             sendJson([
@@ -104,6 +106,13 @@ switch ($method) {
             sendJson([
                 'success' => false,
                 'message' => 'Invalid role.'
+            ], 400);
+        }
+
+        if (!in_array($plan, $allowedPlans, true)) {
+            sendJson([
+                'success' => false,
+                'message' => 'Invalid plan.'
             ], 400);
         }
 
@@ -140,6 +149,10 @@ switch ($method) {
             $user->changeRole($role, $db);
         }
 
+        if ($plan !== 'basic') {
+            $user->changePlan($plan, $db);
+        }
+
         sendJson([
             'success' => true,
             'message' => 'User created successfully.',
@@ -172,6 +185,7 @@ switch ($method) {
         $email = trim((string)($input['email'] ?? $user->getEmail()));
         $password = array_key_exists('password', $input) ? (string)$input['password'] : null;
         $newRole = array_key_exists('role', $input) ? trim((string)$input['role']) : $user->getRole();
+        $newPlan = array_key_exists('plan', $input) ? trim((string)$input['plan']) : $user->getPlan();
 
         if ($name === '' || $username === '' || $email === '') {
             sendJson([
@@ -201,6 +215,13 @@ switch ($method) {
             ], 400);
         }
 
+        if (!in_array($plan, $allowedPlans, true)) {
+            sendJson([
+                'success' => false,
+                'message' => 'Invalid plan.'
+            ], 400);
+        }
+
         if (Users::usernameExistsForOtherUser($db, $username, $id)) {
             sendJson([
                 'success' => false,
@@ -221,6 +242,7 @@ switch ($method) {
             $username,
             $email,
             $password,
+            $newRole,
             $newRole
         );
 

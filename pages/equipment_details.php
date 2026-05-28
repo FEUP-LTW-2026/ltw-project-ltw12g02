@@ -19,6 +19,8 @@ if ($id === false || $id === null) {
 
 $db = getDatabaseConnection();
 
+$user = Users::getUser($db, $session->getId());
+
 $equipment = Equipment::getEquipment($db, $id);
 
 generateHead('PowerPIT - Equipment Details');
@@ -29,7 +31,7 @@ drawMessages($session->getMessages());
 if ($equipment === null) {
     drawEquipmentNotFoundPage();
 } else {
-    drawEquipmentDetailsPage($equipment, $session, $equipment->getQuantity());
+    drawEquipmentDetailsPage($equipment, $session, $user, $equipment->getQuantity());
 }
 
 generateFooter();

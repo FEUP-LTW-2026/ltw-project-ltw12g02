@@ -263,6 +263,7 @@ class Enrollments {
                 $row['Email'],
                 $row['PasswordHash'],
                 $row['Role'],
+                $row['Plan'],
                 $row['ProfileImage']
             );
         }

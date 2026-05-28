@@ -349,6 +349,7 @@ function drawMemberProfile(PDO $db, Users $user): void {
                             <p class="profile-member-card-label">PowerPIT Member</p>
                             <h1><?= htmlspecialchars($user->getName()) ?></h1>
                             <p class="profile-member-card-meta">
+                                <?php if ($user->getRole() == 'member') echo htmlspecialchars(ucfirst($user->getPlan()) . ' '); ?>
                                 <?= htmlspecialchars(ucfirst($user->getRole())) ?> Account
                             </p>
                         </div>
@@ -392,11 +393,11 @@ function drawMemberProfile(PDO $db, Users $user): void {
                 </dl>
             </article>
 
-            <?php drawNextClassesCard($db, $nextClasses); ?>
+            <?php drawNextClassesCard($db, $user, $nextClasses); ?>
 
-            <?php drawEquipmentReservationsCard($equipmentReservations); ?>
+            <?php drawEquipmentReservationsCard($user, $equipmentReservations); ?>
 
-            <?php drawPersonalClassesCard($db, $personalClasses); ?>
+            <?php drawPersonalClassesCard($db, $user, $personalClasses); ?>
 
             <?php drawClassHistoryCard($db, $user, $classHistory); ?>
 
@@ -408,8 +409,8 @@ function drawMemberProfile(PDO $db, Users $user): void {
 <?php }
 
 
-function drawTrainerProfile(PDO $db, Users $user, Trainers $trainer, bool $canEdit): void {
-     $assignedClasses = $trainer->getAssignedClasses($db);
+function drawTrainerProfile(PDO $db, Users $trainerUser, Trainers $trainer, bool $canEdit, Users $user): void {
+    $assignedClasses = $trainer->getAssignedClasses($db);
     $avgRatings = $trainer->getAverageRatings($db);
     $avgRating = $avgRatings['AverageRating'];
     $ratingCount = $avgRatings['TotalReviews'];
@@ -423,7 +424,7 @@ function drawTrainerProfile(PDO $db, Users $user, Trainers $trainer, bool $canEd
                     <div class="profile-member-card-content">
                         <img 
                             class="profile-image-preview"
-                            src="../assets/users/<?= htmlspecialchars($user->getProfileImage()) ?>" 
+                            src="../assets/users/<?= htmlspecialchars($trainerUser->getProfileImage()) ?>" 
                             alt="Trainer profile picture" 
                             width="200" 
                             height="100"
@@ -431,12 +432,12 @@ function drawTrainerProfile(PDO $db, Users $user, Trainers $trainer, bool $canEd
 
                         <div>
                             <p class="profile-member-card-label">PowerPIT Trainer</p>
-                            <h1><?= htmlspecialchars($user->getName()) ?></h1>
+                            <h1><?= htmlspecialchars($trainerUser->getName()) ?></h1>
                             <p class="profile-member-card-meta">
                                 <?php if ($canEdit) { ?>
-                                    @<?= htmlspecialchars($user->getUserName()) ?> · <?= htmlspecialchars($user->getEmail()) ?>
+                                    @<?= htmlspecialchars($trainerUser->getUserName()) ?> · <?= htmlspecialchars($trainerUser->getEmail()) ?>
                                 <?php } else { ?>
-                                    @<?= htmlspecialchars($user->getUserName()) ?>
+                                    @<?= htmlspecialchars($trainerUser->getUserName()) ?>
                                 <?php } ?>
                             </p>
                         </div>
@@ -449,6 +450,10 @@ function drawTrainerProfile(PDO $db, Users $user, Trainers $trainer, bool $canEd
                             >
                                 Edit Profile
                             </button>
+                        <?php } else if ($user->getRole() === 'member' && $user->getPlan() !== 'premium') { ?>
+                            <button class="btn small light disabled profile-edit-btn">
+                                Upgrade your plan to book
+</button>
                         <?php } else { ?>
                             <button 
                                 type="button" 
@@ -500,10 +505,10 @@ function drawTrainerProfile(PDO $db, Users $user, Trainers $trainer, bool $canEd
 
         <?php if ($canEdit) { ?>
 
-            <?php drawEditProfileDialog($user); ?>
+            <?php drawEditProfileDialog($trainerUser); ?>
             <?php drawEditTrainerProfileDialog($trainer); ?>
         <?php } else { ?>
-            <?php drawPersonalClassRequestDialog($trainer, $user); ?>
+            <?php drawPersonalClassRequestDialog($trainer, $trainerUser); ?>
         <?php } ?>
     </main>
 <?php }
@@ -764,11 +769,12 @@ function drawTrainerReviews($db, $reviews, $canEdit): void { ?>
     </article>
 <?php }
 
-function drawEquipmentReservationsCard(array $equipmentReservations): void { ?>
+function drawEquipmentReservationsCard(Users $user, array $equipmentReservations): void { ?>
     <article class="card">
         <h2 class="card-title center">Equipment Reservations</h2>
-
-        <?php if (empty($equipmentReservations)) { ?>
+        <?php if ($user->getRole() === 'member' && $user->getPlan() === 'basic') { ?>
+            <p>Your membership plan doesnt cover this service.</p>
+        <?php } else if (empty($equipmentReservations)) { ?>
             <p>You do not have any equipment reservations yet.</p>
         <?php } else { ?>
             <dl>
@@ -910,7 +916,7 @@ function drawWithdrawDialog(PDO $db,WorkoutClassType $workoutClassType, WorkoutC
     </dialog>
 <?php } 
 
-function drawPersonalClassesCard(PDO $db, array $personalClasses): void { ?>
+function drawPersonalClassesCard(PDO $db, Users $user, array $personalClasses): void { ?>
     <article class="card personal_classes_card">
         <header class="personal_classes_header">
             <div>
@@ -918,8 +924,9 @@ function drawPersonalClassesCard(PDO $db, array $personalClasses): void { ?>
                 <h2 class="card-title">Personal Classes</h2>
             </div>
         </header>
-
-        <?php if (empty($personalClasses)) { ?>
+        <?php if ($user->getRole() === 'member' && $user->getPlan() !== 'premium') { ?>
+            <p>Your membership plan doesnt cover this service.</p>
+        <?php } else if (empty($personalClasses)) { ?>
             <p>You do not have any personal class requests yet.</p>
         <?php } else { ?>
             <div class="personal_classes_list compact">
@@ -1167,11 +1174,13 @@ function drawTrainerPersonalClassRequestItem(PDO $db, PersonalClass $personalCla
     </section>
 <?php }
 
-function drawNextClassesCard(PDO $db, array $nextClasses): void { ?>
+function drawNextClassesCard(PDO $db, Users $user, array $nextClasses): void { ?>
      <article class="card">
         <h2 class="card-title center">Next Classes</h2>
 
-        <?php if (empty($nextClasses)) { ?>
+        <?php if ($user->getRole() === 'member' && $user->getPlan() === 'basic') { ?>
+            <p>Your membership plan doesnt cover this service.</p>
+        <?php } else if (empty($nextClasses)) { ?>
             <p>You do not have any booked classes yet.</p>
         <?php } else { ?>
             <dl id="next-classes-container">
@@ -1203,7 +1212,9 @@ function drawClassHistoryCard(PDO $db, Users $user, array $classHistory): void {
     <article class="card">
         <h2 class="card-title center">Classes History</h2>
 
-        <?php if (empty($classHistory)) { ?>
+        <?php if ($user->getRole() === 'member' && $user->getPlan() === 'basic') { ?>
+            <p>Your membership plan doesnt cover this service.</p>
+        <?php } else if (empty($classHistory)) { ?>
             <p>You have not attended any classes yet.</p>
         <?php } else { ?>
             <dl>

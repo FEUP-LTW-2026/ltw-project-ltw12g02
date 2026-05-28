@@ -16,6 +16,7 @@ function userToJson(Users $user): array {
         'username' => $user->getUserName(),
         'email' => $user->getEmail(),
         'role' => $user->getRole(),
+        'plan' => $user->getPlan(),
         'profileImage' => $user->getProfileImage()
     ];
 }
