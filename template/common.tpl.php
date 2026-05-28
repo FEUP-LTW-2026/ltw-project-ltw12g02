@@ -105,7 +105,9 @@ function generateHeader(Session $session) { ?>
 
                         <ul>
                             <li><a href="profile.php"><i class="fa fa-user-circle" aria-hidden="true"></i> Profile</a></li>
-                            <li><a href="plans.php"><i class="fa fa-user-plus" aria-hidden="true"></i> Membership Plan</a></li>
+                            <?php if ($session->getRole() === 'member') { ?>
+                                <li><a href="plans.php"><i class="fa fa-user-plus" aria-hidden="true"></i> Membership Plan</a></li>
+                            <?php } ?>
                             <li><a href="../actions/action_logout.php"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a></li>
                         </ul>
                     </nav>
