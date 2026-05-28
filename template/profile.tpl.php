@@ -316,7 +316,7 @@ function drawProfile(PDO $db, Users $user): void {
         $trainer = Trainers::getTrainerByUserId($db, $user->getUserId());
 
         if ($trainer !== null) {
-            drawTrainerProfile($db, $user, $trainer, true);
+            drawTrainerProfile($db, $user, $trainer, true, $user);
             return;
         }
     }

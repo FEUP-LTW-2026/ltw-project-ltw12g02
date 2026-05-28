@@ -2,6 +2,7 @@
 declare(strict_types = 1);
 
 require_once(__DIR__ . '/../utils/session.php');
+require_once(__DIR__ . '/../database/users.class.php');
 require_once(__DIR__ . '/../database/equipment.class.php');
 
 function getEquipmentDetailsStatusClass(string $status): string {
@@ -18,14 +19,87 @@ function getEquipmentDetailsStatusClass(string $status): string {
     return 'unavailable';
 }
 
-function drawEquipmentDetailsPage(Equipment $equipment, Session $session, Users $user, int $availableQuantity): void {
+function drawEquipmentAvailabilityBadge(Equipment $equipment, int $availableQuantity): void {
+    $status = strtolower($equipment->getStatus());
+
+    if ($status === 'available') { ?>
+        <strong>
+            <?= htmlspecialchars((string)$availableQuantity) ?> available now
+        </strong>
+    <?php } elseif ($status === 'maintenance') { ?>
+        <strong>
+            Temporarily under maintenance
+        </strong>
+    <?php } else { ?>
+        <strong>
+            Currently unavailable
+        </strong>
+    <?php }
+}
+
+function drawEquipmentDetailsList(Equipment $equipment, int $availableQuantity): void {
+    $status = strtolower($equipment->getStatus());
+?>
+    <dl class="equipment_details_list">
+        <div>
+            <dt>Name</dt>
+            <dd><?= htmlspecialchars($equipment->getName()) ?></dd>
+        </div>
+
+        <div>
+            <dt>Type</dt>
+            <dd><?= htmlspecialchars($equipment->getType()) ?></dd>
+        </div>
+
+        <div>
+            <dt>Status</dt>
+            <dd><?= htmlspecialchars($equipment->getStatus()) ?></dd>
+        </div>
+
+        <?php if ($status === 'available') { ?>
+            <div>
+                <dt>Total quantity</dt>
+                <dd><?= htmlspecialchars((string)$equipment->getQuantity()) ?></dd>
+            </div>
+
+            <div>
+                <dt>Available now</dt>
+                <dd><?= htmlspecialchars((string)$availableQuantity) ?></dd>
+            </div>
+        <?php } elseif ($status === 'maintenance') { ?>
+            <div>
+                <dt>Availability</dt>
+                <dd>Paused for maintenance</dd>
+            </div>
+
+            <div>
+                <dt>Reservation</dt>
+                <dd>Not available right now</dd>
+            </div>
+        <?php } else { ?>
+            <div>
+                <dt>Availability</dt>
+                <dd>Not available for reservation</dd>
+            </div>
+        <?php } ?>
+    </dl>
+<?php }
+
+function drawEquipmentDetailsPage(Equipment $equipment, Session $session, ?Users $user, int $availableQuantity): void {
+    $status = strtolower($equipment->getStatus());
     $statusClass = getEquipmentDetailsStatusClass($equipment->getStatus());
     $image = 'equipment' . $equipment->getId() . '.png';
 
-    $canReserve = $session->isLoggedIn()
-        && $user->getRole() === 'member'
-        && $user->getPlan() === 'premium'
-        && strtolower($equipment->getStatus()) === 'available';
+    $isLoggedIn = $session->isLoggedIn() && $user !== null;
+    $isMember = $isLoggedIn && $user->getRole() === 'member';
+
+    $hasPremiumPlan = $isLoggedIn
+        && method_exists($user, 'getPlan')
+        && $user->getPlan() === 'premium';
+
+    $canReserve = $isMember
+        && $hasPremiumPlan
+        && $status === 'available';
 ?>
     <main class="equipment_details_page">
 
@@ -41,9 +115,19 @@ function drawEquipmentDetailsPage(Equipment $equipment, Session $session, Users 
 
                     <h1><?= htmlspecialchars($equipment->getName()) ?></h1>
 
-                    <p>
-                        View the current availability and reserve this equipment for your training session.
-                    </p>
+                    <?php if ($status === 'available') { ?>
+                        <p>
+                            View the current availability and reserve this equipment for your training session.
+                        </p>
+                    <?php } elseif ($status === 'maintenance') { ?>
+                        <p>
+                            This equipment is temporarily under maintenance and cannot be reserved right now.
+                        </p>
+                    <?php } else { ?>
+                        <p>
+                            This equipment is currently unavailable for reservations.
+                        </p>
+                    <?php } ?>
                 </div>
 
                 <div class="equipment_details_badges">
@@ -51,9 +135,7 @@ function drawEquipmentDetailsPage(Equipment $equipment, Session $session, Users 
                         <?= htmlspecialchars($equipment->getStatus()) ?>
                     </span>
 
-                    <strong>
-                        <?= htmlspecialchars((string)$availableQuantity) ?> available now
-                    </strong>
+                    <?php drawEquipmentAvailabilityBadge($equipment, $availableQuantity); ?>
 
                     <?php if ($canReserve) { ?>
                         <button
@@ -63,15 +145,15 @@ function drawEquipmentDetailsPage(Equipment $equipment, Session $session, Users 
                         >
                             Reserve equipment
                         </button>
-                    <?php } elseif (!$session->isLoggedIn()) { ?>
+                    <?php } elseif (!$isLoggedIn) { ?>
                         <a class="btn small light" href="../pages/login.php">
                             Login to reserve
                         </a>
-                    <?php } elseif ($user->getRole() !== 'member') { ?>
+                    <?php } elseif (!$isMember) { ?>
                         <span class="equipment_reservation_hint">
                             Only members can reserve equipment.
                         </span>
-                    <?php } elseif ($user->getPlan() !== 'premium') { ?>
+                    <?php } elseif (!$hasPremiumPlan) { ?>
                         <span class="equipment_reservation_hint">
                             Upgrade your plan to reserve equipment.
                         </span>
@@ -86,52 +168,27 @@ function drawEquipmentDetailsPage(Equipment $equipment, Session $session, Users 
                 <p class="classes_label">Details</p>
                 <h2>Equipment information</h2>
 
-                <dl class="equipment_details_list">
-                    <div>
-                        <dt>Name</dt>
-                        <dd><?= htmlspecialchars($equipment->getName()) ?></dd>
-                    </div>
-
-                    <div>
-                        <dt>Type</dt>
-                        <dd><?= htmlspecialchars($equipment->getType()) ?></dd>
-                    </div>
-
-                    <div>
-                        <dt>Total quantity</dt>
-                        <dd><?= htmlspecialchars((string)$equipment->getQuantity()) ?></dd>
-                    </div>
-
-                    <div>
-                        <dt>Available now</dt>
-                        <dd><?= htmlspecialchars((string)$availableQuantity) ?></dd>
-                    </div>
-
-                    <div>
-                        <dt>Status</dt>
-                        <dd><?= htmlspecialchars($equipment->getStatus()) ?></dd>
-                    </div>
-                </dl>
+                <?php drawEquipmentDetailsList($equipment, $availableQuantity); ?>
             </article>
 
             <article class="card equipment_details_card equipment_details_note">
                 <p class="classes_label">Usage</p>
                 <h2>Usage notes</h2>
 
-                <?php if (strtolower($equipment->getStatus()) === 'available') { ?>
+                <?php if ($status === 'available') { ?>
                     <p>
-                        This equipment is currently available. Members can reserve it for a selected
+                        This equipment is currently available. Premium members can reserve it for a selected
                         time slot in the main training area.
                     </p>
-                <?php } elseif (strtolower($equipment->getStatus()) === 'maintenance') { ?>
+                <?php } elseif ($status === 'maintenance') { ?>
                     <p>
-                        This equipment is currently under maintenance. Please choose another option
-                        until it becomes available again.
+                        This equipment is being checked or repaired by the team. Reservations are paused
+                        until it is marked as available again.
                     </p>
                 <?php } else { ?>
                     <p>
-                        This equipment is currently unavailable. Please check again later or ask a
-                        staff member for more information.
+                        This equipment is not available for use at the moment. Please choose another option
+                        or ask a staff member for more information.
                     </p>
                 <?php } ?>
             </article>

@@ -5,6 +5,7 @@ require_once(__DIR__ . '/../utils/session.php');
 require_once(__DIR__ . '/../template/common.tpl.php');
 require_once(__DIR__ . '/../template/equipment_details.tpl.php');
 require_once(__DIR__ . '/../database/connection.db.php');
+require_once(__DIR__ . '/../database/users.class.php');
 require_once(__DIR__ . '/../database/equipment.class.php');
 require_once(__DIR__ . '/../database/equipmentreservation.class.php');
 
@@ -19,7 +20,15 @@ if ($id === false || $id === null) {
 
 $db = getDatabaseConnection();
 
-$user = Users::getUser($db, $session->getId());
+$user = null;
+
+if ($session->isLoggedIn()) {
+    $userId = $session->getId();
+
+    if ($userId !== null) {
+        $user = Users::getUser($db, (int)$userId);
+    }
+}
 
 $equipment = Equipment::getEquipment($db, $id);
 
