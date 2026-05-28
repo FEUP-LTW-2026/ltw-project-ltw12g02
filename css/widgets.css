@@ -5,6 +5,8 @@
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   padding: 1.5rem;
+  max-height: 30rem;
+  overflow-y: auto;
 }
 
 .card--dark {

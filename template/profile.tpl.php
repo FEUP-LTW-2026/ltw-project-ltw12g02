@@ -391,7 +391,7 @@ function drawMemberProfile(PDO $db, Users $user): void {
 
                     <div class="card-dl-row">
                         <dt>Plan</dt>
-                        <dd>Standard</dd>
+                        <dd><?= htmlspecialchars(ucfirst($user->getPlan())) ?></dd>
                     </div>
                 </dl>
             </article>
