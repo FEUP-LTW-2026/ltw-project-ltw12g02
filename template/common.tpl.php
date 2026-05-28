@@ -173,7 +173,7 @@ function generateTemplates(): void { ?>
         <p class="result-message"></p>
     </header>
 
-    <div class="popup-actions">
+    <div class="actions-row popup-actions">
         <button type="button" class="btn small light popup-ok">
             Done
         </button>
@@ -182,8 +182,8 @@ function generateTemplates(): void { ?>
 <?php }
 
 function drawComplaintDialog(): void { ?>
-    <dialog id="complaint-dialog" class="popup-dialog">
-        <section class="card popup-card">
+    <dialog id="complaint-dialog" class="modal popup-dialog">
+        <section class="modal-card card popup-card">
             <button 
                 type="button" 
                 class="popup-close" 
@@ -200,7 +200,7 @@ function drawComplaintDialog(): void { ?>
             </header>
 
             <form 
-                class="popup-form issue-form"
+                class="form-stack popup-form issue-form"
                 action="../actions/action_complaint.php" 
                 method="post"
             >
@@ -221,7 +221,7 @@ function drawComplaintDialog(): void { ?>
                     ></textarea>
                 </label>
 
-                <div class="popup-actions">
+                <div class="actions-row popup-actions">
                     <button 
                         type="button" 
                         class="btn small"

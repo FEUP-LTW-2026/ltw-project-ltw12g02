@@ -86,14 +86,14 @@ function drawAdminEditUserRoleCard(
     $dialogId = 'admin-role-dialog-' . $targetRole;
     ?>
 
-    <article class="admin-card">
+    <article class="action-card admin-card">
         <div>
             <div class="admin-card-row">
-                <span class="admin-tag">
+                <span class="pill admin-tag">
                     <?= htmlspecialchars($targetRole) ?>
                 </span>
 
-                <div class="admin-icon-box">
+                <div class="icon-box admin-icon-box">
                     <i class="fa <?= htmlspecialchars($icon) ?>"></i>
                 </div>
             </div>
@@ -116,9 +116,9 @@ function drawAdminEditUserRoleCard(
 
         <dialog
             id="<?= htmlspecialchars($dialogId) ?>"
-            class="popup-dialog admin-confirm-dialog"
+            class="modal popup-dialog admin-confirm-dialog"
         >
-            <section class="popup-card admin-confirm-card">
+            <section class="modal-card popup-card admin-confirm-card">
                 <button
                     type="button"
                     class="popup-close"
@@ -140,7 +140,7 @@ function drawAdminEditUserRoleCard(
                 <form
                     action="../actions/action_admin_change_role.php"
                     method="post"
-                    class="popup-form admin-confirm-form"
+                    class="form-stack popup-form admin-confirm-form"
                     data-confirm-name="<?= htmlspecialchars($user->getName()) ?>"
                 >
                     <input
@@ -172,7 +172,7 @@ function drawAdminEditUserRoleCard(
                         >
                     </label>
 
-                    <div class="popup-actions">
+                    <div class="actions-row popup-actions">
                         <button
                             type="button"
                             class="btn"
@@ -198,9 +198,9 @@ function drawAdminEditUserRoleCard(
 <?php }
 
 function drawAdminEditUserPage(Users $user): void { ?>
-    <main class="admin-users-page">
+    <main class="page-shell admin-users-page">
 
-        <section class="admin-users-hero">
+        <section class="hero-panel admin-users-hero">
             <p class="admin-label">Admin Panel</p>
 
             <h1>User Management</h1>
@@ -246,7 +246,7 @@ function drawAdminEditUserPage(Users $user): void { ?>
                     </p>
                 </div>
 
-                <span class="admin-user-role">
+                <span class="pill admin-user-role">
                     <?= htmlspecialchars($user->getRole()) ?>
                 </span>
             </div>
@@ -340,7 +340,7 @@ function drawAdminEditUserPage(Users $user): void { ?>
                 </p>
             </header>
 
-            <div class="popup-actions">
+            <div class="actions-row popup-actions">
                 <a href="../pages/admin_users.php" class="btn">
                     Back to Users
                 </a>
@@ -356,9 +356,9 @@ function drawAdminEditUserPage(Users $user): void { ?>
 
             <dialog
                 id="delete-user-dialog"
-                class="popup-dialog admin-confirm-dialog"
+                class="modal popup-dialog admin-confirm-dialog"
             >
-                <section class="popup-card admin-confirm-card">
+                <section class="modal-card popup-card admin-confirm-card">
                     <button
                         type="button"
                         class="popup-close"
@@ -380,7 +380,7 @@ function drawAdminEditUserPage(Users $user): void { ?>
                     <form
                         action="../actions/action_admin_delete_user.php"
                         method="post"
-                        class="popup-form admin-confirm-form"
+                        class="form-stack popup-form admin-confirm-form"
                         data-confirm-name="<?= htmlspecialchars($user->getName()) ?>"
                     >
                         <input
@@ -406,7 +406,7 @@ function drawAdminEditUserPage(Users $user): void { ?>
                             >
                         </label>
 
-                        <div class="popup-actions">
+                        <div class="actions-row popup-actions">
                             <button
                                 type="button"
                                 class="btn"

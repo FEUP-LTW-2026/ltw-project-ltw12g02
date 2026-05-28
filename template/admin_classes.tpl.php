@@ -8,7 +8,7 @@ function drawAdminClassesPage(
     string $filter,
     PDO $db
 ): void { ?>
-    <main class="admin-users-page admin-classes-page">
+    <main class="page-shell admin-users-page admin-classes-page">
         <?php drawAdminClassesHero(); ?>
         <?php drawAdminClassesControls($trainers, $filter, $db); ?>
         <?php drawAdminClassFilters($filter); ?>
@@ -44,7 +44,7 @@ function drawAdminClassesPage(
 
 <?php
 function drawAdminClassesHero(): void { ?>
-    <section class="admin-users-hero">
+    <section class="hero-panel admin-users-hero">
         <p class="admin-label">PowerPit Admin</p>
         <h1>Manage Classes</h1>
         <p>Create classes, assign trainers, edit schedules and manage capacity.</p>
@@ -57,8 +57,8 @@ function drawAdminClassesControls(array $trainers, string $filter, PDO $db): voi
     $dateMin = $filter === 'upcoming' ? date('Y-m-d') : '';
     $dateMax = $filter === 'past' ? date('Y-m-d') : '';
 ?>
-    <section class="admin-users-controls admin-users-controls-row">
-        <form class="filter-form admin-class-filter-form">
+    <section class="toolbar admin-users-controls admin-users-controls-row">
+        <form class="toolbar-form filter-form admin-class-filter-form">
             <input type="hidden" name="admin" value="1">
             <input type="hidden" name="filter" value="<?= htmlspecialchars($filter) ?>">
 
@@ -102,21 +102,21 @@ function drawAdminClassFilters(string $filter): void { ?>
     <nav class="admin-class-filters" aria-label="Class filters">
         <a
             href="admin_classes.php?filter=all"
-            class="admin-user-role <?= $filter === 'all' ? 'active' : '' ?>"
+            class="pill admin-user-role <?= $filter === 'all' ? 'active' : '' ?>"
         >
             All classes
         </a>
 
         <a
             href="admin_classes.php?filter=upcoming"
-            class="admin-user-role <?= $filter === 'upcoming' ? 'active' : '' ?>"
+            class="pill admin-user-role <?= $filter === 'upcoming' ? 'active' : '' ?>"
         >
             Upcoming
         </a>
 
         <a
             href="admin_classes.php?filter=past"
-            class="admin-user-role <?= $filter === 'past' ? 'active' : '' ?>"
+            class="pill admin-user-role <?= $filter === 'past' ? 'active' : '' ?>"
         >
             Past
         </a>
@@ -126,8 +126,8 @@ function drawAdminClassFilters(string $filter): void { ?>
 
 <?php
 function drawAdminClassesResults(array $classes, PDO $db): void { ?>
-    <section class="admin-users-results">
-        <div class="admin-users-header admin-class-row-layout">
+    <section class="data-list admin-users-results">
+        <div class="data-header admin-users-header admin-class-row-layout">
             <span>Class</span>
             <span>Schedule</span>
             <span>Trainer</span>
@@ -135,7 +135,7 @@ function drawAdminClassesResults(array $classes, PDO $db): void { ?>
             <span>Actions</span>
         </div>
 
-        <div id="available-classes" class="user-search-results">
+        <div id="available-classes" class="data-list-body user-search-results">
             <?php if (empty($classes)) { ?>
                 <p class="empty-search-message">No classes found.</p>
             <?php } ?>
@@ -162,9 +162,9 @@ function drawAdminClassRow(WorkoutClass $class, PDO $db): void {
     $time = formatAdminTime($class->getClassDateTime());
     $trainerName = $class->getTrainerName($db);
 ?>
-    <article class="admin-user-row admin-class-row-layout">
-        <div class="admin-user-main">
-            <div class="admin-icon-box">
+    <article class="data-row admin-user-row admin-class-row-layout">
+        <div class="avatar-title admin-user-main">
+            <div class="icon-box admin-icon-box">
                 <i class="fa fa-calendar" aria-hidden="true"></i>
             </div>
 
@@ -183,12 +183,12 @@ function drawAdminClassRow(WorkoutClass $class, PDO $db): void {
             <?= htmlspecialchars($trainerName) ?>
         </p>
 
-        <span class="admin-user-role">
+        <span class="pill admin-user-role">
             <?= htmlspecialchars((string) $enrollments) ?>/<?= htmlspecialchars((string) $capacity) ?>
             booked
         </span>
 
-        <div class="admin-user-actions">
+        <div class="row-actions admin-user-actions">
             <button
                 type="button"
                 data-dialog-target="admin-class-edit-dialog-<?= htmlspecialchars((string) $class->getId()) ?>"
@@ -224,8 +224,8 @@ function drawAdminClassFormDialog(
     $classDateTime = $class !== null ? formatAdminDateTimeInput($class->getClassDateTime()) : '';
     $minimumDateTime = date('Y-m-d\TH:i');
 ?>
-    <dialog id="<?= htmlspecialchars($dialogId) ?>" class="popup-dialog">
-        <section class="card popup-card">
+    <dialog id="<?= htmlspecialchars($dialogId) ?>" class="modal popup-dialog">
+        <section class="modal-card card popup-card">
             <button
                 type="button"
                 class="popup-close"
@@ -242,7 +242,7 @@ function drawAdminClassFormDialog(
             </header>
 
             <form
-                class="popup-form"
+                class="form-stack popup-form"
                 action="../actions/action_admin_class.php"
                 method="post"
             >
@@ -314,7 +314,7 @@ function drawAdminClassFormDialog(
                     required
                 >
 
-                <div class="popup-actions">
+                <div class="actions-row popup-actions">
                     <button
                         type="button"
                         class="btn small"
@@ -342,9 +342,9 @@ function drawAdminClassDeleteDialog(WorkoutClass $class, PDO $db): void {
 ?>
     <dialog
         id="admin-class-delete-dialog-<?= htmlspecialchars((string) $class->getId()) ?>"
-        class="popup-dialog"
+        class="modal popup-dialog"
     >
-        <section class="card popup-card">
+        <section class="modal-card card popup-card">
             <button
                 type="button"
                 class="popup-close"
@@ -361,7 +361,7 @@ function drawAdminClassDeleteDialog(WorkoutClass $class, PDO $db): void {
             </header>
 
             <form
-                class="popup-form"
+                class="form-stack popup-form"
                 action="../actions/action_admin_class.php"
                 method="post"
             >
@@ -393,7 +393,7 @@ function drawAdminClassDeleteDialog(WorkoutClass $class, PDO $db): void {
                     </div>
                 </article>
 
-                <div class="popup-actions">
+                <div class="actions-row popup-actions">
                     <button
                         type="button"
                         class="btn small"

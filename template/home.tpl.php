@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 function drawHomepage(Session $session): void { ?>
     <main>
-        <section class="image-bg">
+        <section class="hero hero--image image-bg">
             <div id="main-header">
                 <h6 class="highlight-text">Power. Discipline. Results.</h6>
                 <h1>Train with <br><span class="highlight-text">real energy</span></h1>
@@ -22,7 +22,7 @@ function drawHomepage(Session $session): void { ?>
             </div>
         </section>
 
-        <section class="flex-row light" id="aboutus">
+        <section class="media-section flex-row light" id="aboutus">
             <article class="flex-item main">
                 <h1>About us</h1>
                 <p>We are PowerPIT, a space built for people who want to train with purpose.
@@ -36,7 +36,7 @@ function drawHomepage(Session $session): void { ?>
             </aside> 
         </section>
 
-        <section class="flex-row dark" id="classes">
+        <section class="media-section flex-row dark" id="classes">
             <aside class="flex-item side">
                 <img src="https://picsum.photos/400/400" alt="GymGoers" height="400" width="400">
             </aside>
@@ -50,7 +50,7 @@ function drawHomepage(Session $session): void { ?>
             </article> 
         </section>
 
-        <section class="flex-row light" id="trainers">
+        <section class="media-section flex-row light" id="trainers">
             <article class="flex-item main">
                 <h1>Trainers</h1>
                 <p>Our certified trainers are here to guide you every step of the way.
@@ -64,7 +64,7 @@ function drawHomepage(Session $session): void { ?>
             </aside> 
         </section>
 
-        <section class="flex-row dark" id="equipment">
+        <section class="media-section flex-row dark" id="equipment">
             <aside class="flex-item side">
                 <img src="https://picsum.photos/400/400" alt="GymGoers" height="400" width="400">
             </aside>

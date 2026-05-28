@@ -17,7 +17,7 @@ function drawClassPage(WorkoutClassType $workoutClassType, PDO $db): void { ?>
 
 <?php
 function drawClassHeader(WorkoutClassType $workoutClassType): void { ?>
-    <section class="image-bg">
+    <section class="hero hero--image image-bg">
         <div id="class-header">
             <h1><?= htmlspecialchars($workoutClassType->getName()) ?></h1>
 
@@ -36,7 +36,7 @@ function drawClassHeader(WorkoutClassType $workoutClassType): void { ?>
 
 <?php
 function drawClassAbout(PDO  $db,WorkoutClassType $workoutClassType): void { ?>
-    <section class="flex-row light">
+    <section class="media-section flex-row light">
         <article class="flex-item main">
             <h2>About <?= htmlspecialchars($workoutClassType->getName()) ?></h2>
 
@@ -81,7 +81,7 @@ function drawClassAbout(PDO  $db,WorkoutClassType $workoutClassType): void { ?>
 
 <?php
 function drawClassImage(): void { ?>
-    <section class="flex-row dark">
+    <section class="media-section flex-row dark">
         <div class="flex-item">
             <img 
                 src="https://picsum.photos/600/300" 
@@ -96,7 +96,7 @@ function drawClassImage(): void { ?>
 
 <?php
 function drawAvailableClassesIntro(WorkoutClassType $workoutClassType): void { ?>
-    <section class="flex-row light">
+    <section class="media-section flex-row light">
         <div class="flex-item">
             <header>
                 <h2>Available <?= htmlspecialchars($workoutClassType->getName()) ?> Classes</h2>
@@ -109,7 +109,7 @@ function drawAvailableClassesIntro(WorkoutClassType $workoutClassType): void { ?
 
 <?php
 function drawAvailableClasses(PDO $db,WorkoutClassType $workoutClassType): void { ?>
-    <form class="filter-form">
+    <form class="toolbar-form filter-form">
 
         <input 
             type="hidden" 
@@ -203,8 +203,8 @@ function drawBookingDialog(PDO $db,WorkoutClassType $workoutClassType, WorkoutCl
 
     $dialogId = 'booking-dialog-' . $workoutClass->getId();
 ?>
-    <dialog id="<?= htmlspecialchars($dialogId) ?>" class="popup-dialog">
-        <section class="card popup-card">
+    <dialog id="<?= htmlspecialchars($dialogId) ?>" class="modal popup-dialog">
+        <section class="modal-card card popup-card">
             <button 
                 type="button" 
                 class="popup-close" 
@@ -258,7 +258,7 @@ function drawBookingDialog(PDO $db,WorkoutClassType $workoutClassType, WorkoutCl
             </dl>
 
             <form 
-                class="popup-form booking-form"
+                class="form-stack popup-form booking-form"
                 action="../actions/action_book_class.php" 
                 method="post"
             >
@@ -268,7 +268,7 @@ function drawBookingDialog(PDO $db,WorkoutClassType $workoutClassType, WorkoutCl
                     value="<?= htmlspecialchars((string)$workoutClass->getId()) ?>"
                 >
 
-                <div class="popup-actions">
+                <div class="actions-row popup-actions">
                     <button 
                         type="button" 
                         class="btn small"

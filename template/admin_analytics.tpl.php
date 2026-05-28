@@ -30,7 +30,7 @@ function drawAdminAnalyticsStatCard(
     string $value,
     string $description
 ): void { ?>
-    <article class="trainer_analytics_stat">
+    <article class="stat-card trainer_analytics_stat">
         <i class="fa <?= htmlspecialchars($iconClass) ?>" aria-hidden="true"></i>
 
         <span><?= htmlspecialchars($label) ?></span>
@@ -46,7 +46,7 @@ function drawAdminAnalyticsInsightCard(
     string $title,
     string $description
 ): void { ?>
-    <article class="card analytics-insight-card">
+    <article class="summary-card card analytics-insight-card">
         <p class="admin-label"><?= htmlspecialchars($label) ?></p>
 
         <h2><?= htmlspecialchars($title) ?></h2>
@@ -83,10 +83,10 @@ function drawAdminAnalyticsPage(
 
     $engagementDescription = $totalEnrollments . ' class bookings and ' . $equipmentReservations . ' equipment reservations.';
 ?>
-    <main class="trainer_analytics_page admin_analytics_page">
+    <main class="analytics-page trainer_analytics_page admin_analytics_page">
         <section class="trainer_analytics_top">
-            <div class="trainer_analytics_wrap">
-                <section class="trainer_analytics_hero">
+            <div class="page-wrap trainer_analytics_wrap">
+                <section class="dashboard-hero trainer_analytics_hero">
                     <div>
                         <p class="admin-label">PowerPIT Admin Analytics</p>
 
@@ -108,7 +108,7 @@ function drawAdminAnalyticsPage(
                     </aside>
                 </section>
 
-                <section class="trainer_analytics_stats">
+                <section class="stats-grid trainer_analytics_stats">
                     <?php
                         drawAdminAnalyticsStatCard(
                             'fa-users',
@@ -143,7 +143,7 @@ function drawAdminAnalyticsPage(
         </section>
 
         <section class="trainer_analytics_bottom">
-            <div class="trainer_analytics_wrap">
+            <div class="page-wrap trainer_analytics_wrap">
 
                 <section class="trainer_analytics_insights admin_analytics_insights">
                     <?php
@@ -168,14 +168,14 @@ function drawAdminAnalyticsPage(
                 </section>
 
                 <section class="trainer_analytics_grid admin_analytics_grid">
-                    <article class="card analytics-card analytics-main-card">
+                    <article class="section-card card analytics-card analytics-main-card">
                         <header class="analytics-header">
                             <div>
                                 <p class="admin-label">Class Demand</p>
                                 <h2>Popular classes</h2>
                             </div>
 
-                            <span class="analytics-count-pill">
+                            <span class="pill analytics-count-pill">
                                 <?= htmlspecialchars((string)count($popularClasses)) ?> types
                             </span>
                         </header>
@@ -191,7 +191,7 @@ function drawAdminAnalyticsPage(
                                     $capacity = (int)$class['TotalCapacity'];
                                     $percentage = (int)$class['OccupancyRate'];
                                 ?>
-                                    <section class="admin_analytics_item">
+                                    <section class="list-card admin_analytics_item">
                                         <div>
                                             <strong><?= htmlspecialchars((string)$class['ClassName']) ?></strong>
 
@@ -212,14 +212,14 @@ function drawAdminAnalyticsPage(
                     </article>
 
                     <aside class="trainer_analytics_side">
-                        <article class="card analytics-card">
+                        <article class="section-card card analytics-card">
                             <header class="analytics-header">
                                 <div>
                                     <p class="admin-label">Equipment Usage</p>
                                     <h2>Reserved equipment</h2>
                                 </div>
 
-                                <span class="analytics-count-pill">
+                                <span class="pill analytics-count-pill">
                                     <?= htmlspecialchars((string)count($equipmentUsage)) ?> items
                                 </span>
                             </header>
@@ -231,7 +231,7 @@ function drawAdminAnalyticsPage(
                             <?php } else { ?>
                                 <div class="admin_analytics_list compact">
                                     <?php foreach ($equipmentUsage as $equipment) { ?>
-                                        <section class="admin_analytics_item equipment">
+                                        <section class="list-card admin_analytics_item equipment">
                                             <div>
                                                 <strong><?= htmlspecialchars((string)$equipment['Name']) ?></strong>
 
@@ -250,7 +250,7 @@ function drawAdminAnalyticsPage(
                             <?php } ?>
                         </article>
 
-                        <article class="card analytics-card">
+                        <article class="section-card card analytics-card">
                             <header class="analytics-header">
                                 <div>
                                     <p class="admin-label">Feedback</p>
@@ -263,7 +263,7 @@ function drawAdminAnalyticsPage(
                                     <p>No reviews available yet.</p>
                                 </div>
                             <?php } else { ?>
-                                <ul class="analytics-reviews-list admin_analytics_reviews">
+                                <ul class="avatar-list analytics-reviews-list admin_analytics_reviews">
                                     <?php foreach ($recentReviews as $review) {
                                         $reviewText = trim((string)($review['Review'] ?? ''));
 

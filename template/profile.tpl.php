@@ -49,8 +49,8 @@ function renderStars(int $rating): string {
 
 
 function drawEditProfileDialog(Users $user): void { ?>
-    <dialog id="edit-profile-dialog" class="popup-dialog">
-        <section class="card popup-card">
+    <dialog id="edit-profile-dialog" class="modal popup-dialog">
+        <section class="modal-card card popup-card">
             <button 
                 type="button" 
                 class="popup-close" 
@@ -66,7 +66,7 @@ function drawEditProfileDialog(Users $user): void { ?>
             </header>
 
             <form 
-                class="popup-form"
+                class="form-stack popup-form"
                 id="edit-profile-form"
                 action="../actions/action_edit_profile.php" 
                 method="post"
@@ -141,7 +141,7 @@ function drawEditProfileDialog(Users $user): void { ?>
                     </label>
                 </section>
 
-                <div class="popup-actions">
+                <div class="actions-row popup-actions">
                     <button 
                         type="button" 
                         class="btn small"
@@ -161,8 +161,8 @@ function drawEditProfileDialog(Users $user): void { ?>
 
 
 function drawEditTrainerProfileDialog(Trainers $trainer): void { ?>
-    <dialog id="edit-trainer-profile-dialog" class="popup-dialog">
-        <section class="card popup-card">
+    <dialog id="edit-trainer-profile-dialog" class="modal popup-dialog">
+        <section class="modal-card card popup-card">
             <button 
                 type="button" 
                 class="popup-close" 
@@ -179,7 +179,7 @@ function drawEditTrainerProfileDialog(Trainers $trainer): void { ?>
             </header>
 
             <form 
-                class="popup-form" 
+                class="form-stack popup-form" 
                 action="../actions/action_edit_trainer_profile.php" 
                 method="post"
             >
@@ -211,7 +211,7 @@ function drawEditTrainerProfileDialog(Trainers $trainer): void { ?>
                     >
                 </label>
 
-                <div class="popup-actions">
+                <div class="actions-row popup-actions">
                     <button 
                         type="button" 
                         class="btn small"
@@ -233,8 +233,8 @@ function drawEditTrainerProfileDialog(Trainers $trainer): void { ?>
 function drawPersonalClassRequestDialog(Trainers $trainer, Users $trainerUser): void {
     $trainerId = method_exists($trainer, 'getId') ? $trainer->getId() : $trainer->getTrainerId();
 ?>
-    <dialog id="personal-class-request-dialog" class="popup-dialog">
-        <section class="card popup-card">
+    <dialog id="personal-class-request-dialog" class="modal popup-dialog">
+        <section class="modal-card card popup-card">
             <button 
                 type="button" 
                 class="popup-close" 
@@ -254,7 +254,7 @@ function drawPersonalClassRequestDialog(Trainers $trainer, Users $trainerUser): 
             </header>
 
             <form 
-                class="popup-form"
+                class="form-stack popup-form"
                 action="../actions/action_create_personal_class.php"
                 method="post"
             >
@@ -291,7 +291,7 @@ function drawPersonalClassRequestDialog(Trainers $trainer, Users $trainerUser): 
                     ></textarea>
                 </label>
 
-                <div class="popup-actions">
+                <div class="actions-row popup-actions">
                     <button 
                         type="button" 
                         class="btn small"
@@ -336,7 +336,7 @@ function drawMemberProfile(PDO $db, Users $user): void {
     $complaints = Complaints::getUserComplaints($db, $user->getUserId());
 ?>
     <main>
-        <section class="flex-row light">
+        <section class="media-section flex-row light">
             <div class="flex-item">
                 <div class="card card--dark">
                     <div class="profile-member-card-content">
@@ -415,7 +415,7 @@ function drawAdminProfile(PDO $db, Users $user): void {
     $complaints = Complaints::getAllComplaints($db);
 ?>
     <main>
-        <section class="flex-row light">
+        <section class="media-section flex-row light">
             <div class="flex-item">
                 <div class="card card--dark">
                     <div class="profile-member-card-content">
@@ -485,7 +485,7 @@ function drawTrainerProfile(PDO $db, Users $trainerUser, Trainers $trainer, bool
     $personalClasses = $canEdit ? PersonalClass::getTrainerPersonalClasses($db, $trainer->getTrainerId()) : [];
 ?>
     <main>
-        <section class="flex-row light">
+        <section class="media-section flex-row light">
             <div class="flex-item">
                 <div class="card card--dark">
                     <div class="profile-member-card-content">
@@ -654,7 +654,7 @@ function drawTrainerRosterCard(PDO $db, array $assignedClasses): void { ?>
                 $members = Enrollments::getMembersByClassId($db, $workoutClass->getId());
                 $timestamp = strtotime($workoutClass->getClassDateTime());
             ?>
-                <section class="trainer_roster_group">
+                <section class="content-group trainer_roster_group">
                     <header class="trainer_roster_header">
                         <h3><?= htmlspecialchars(getWorkoutClassDisplayName($db, $workoutClass)) ?></h3>
                         <p>
@@ -666,7 +666,7 @@ function drawTrainerRosterCard(PDO $db, array $assignedClasses): void { ?>
                     <?php if (empty($members)) { ?>
                         <p>No members enrolled in this class yet.</p>
                     <?php } else { ?>
-                        <ul class="trainer_roster_members">
+                        <ul class="avatar-list trainer_roster_members">
                             <?php foreach ($members as $member) { ?>
                                 <li>
                                     <img 
@@ -699,8 +699,8 @@ function drawReviewDialog(PDO $db,WorkoutClassType $workoutClassType, WorkoutCla
 
     $dialogId = 'review-dialog-' . $workoutClass->getId();
 ?>
-    <dialog id="<?= htmlspecialchars($dialogId) ?>" class="popup-dialog">
-        <section class="card popup-card">
+    <dialog id="<?= htmlspecialchars($dialogId) ?>" class="modal popup-dialog">
+        <section class="modal-card card popup-card">
             <button 
                 type="button" 
                 class="popup-close" 
@@ -735,7 +735,7 @@ function drawReviewDialog(PDO $db,WorkoutClassType $workoutClassType, WorkoutCla
             </dl>
 
             <form 
-                class="popup-form review-form"
+                class="form-stack popup-form review-form"
                 action="../actions/action_review.php" 
                 method="post"
             >
@@ -779,7 +779,7 @@ function drawReviewDialog(PDO $db,WorkoutClassType $workoutClassType, WorkoutCla
 
 
 
-                <div class="popup-actions">
+                <div class="actions-row popup-actions">
                     <button 
                         type="button" 
                         class="btn small"
@@ -808,7 +808,7 @@ function drawTrainerReviews($db, $reviews, $canEdit): void { ?>
         <?php }
         } else { ?>
 
-            <ul class="trainer_roster_members">
+            <ul class="avatar-list trainer_roster_members">
                 <?php foreach ($reviews as $review) { ?>
 
                         <li>
@@ -899,8 +899,8 @@ function drawWithdrawDialog(PDO $db,WorkoutClassType $workoutClassType, WorkoutC
 
     $dialogId = 'withdraw-dialog-' . $workoutClass->getId();
 ?>
-    <dialog id="<?= htmlspecialchars($dialogId) ?>" class="popup-dialog">
-        <section class="card popup-card">
+    <dialog id="<?= htmlspecialchars($dialogId) ?>" class="modal popup-dialog">
+        <section class="modal-card card popup-card">
             <button 
                 type="button" 
                 class="popup-close" 
@@ -955,7 +955,7 @@ function drawWithdrawDialog(PDO $db,WorkoutClassType $workoutClassType, WorkoutC
             </dl>
 
             <form 
-                class="popup-form withdraw-form"
+                class="form-stack popup-form withdraw-form"
                 action="../actions/action_withdraw_class.php" 
                 method="post"
             >
@@ -965,7 +965,7 @@ function drawWithdrawDialog(PDO $db,WorkoutClassType $workoutClassType, WorkoutC
                     value="<?= htmlspecialchars((string)$workoutClass->getId()) ?>"
                 >
 
-                <div class="popup-actions">
+                <div class="actions-row popup-actions">
                     <button 
                         type="button" 
                         class="btn small"
@@ -1009,7 +1009,7 @@ function drawPersonalClassesCard(PDO $db, Users $user, array $personalClasses): 
                     $trainerResponse = $personalClass->getTrainerResponse();
                     $requestMessage = $personalClass->getRequestMessage();
                 ?>
-                    <section class="personal_class_compact_item">
+                    <section class="list-card personal_class_compact_item">
                         <header>
                             <div>
                                 <strong><?= htmlspecialchars($trainerName) ?></strong>
@@ -1022,7 +1022,7 @@ function drawPersonalClassesCard(PDO $db, Users $user, array $personalClasses): 
                                 </span>
                             </div>
 
-                            <span class="personal_request_status <?= htmlspecialchars($status) ?>">
+                            <span class="status-pill personal_request_status <?= htmlspecialchars($status) ?>">
                                 <?= htmlspecialchars(ucfirst($status)) ?>
                             </span>
                         </header>
@@ -1082,7 +1082,7 @@ function drawTrainerPersonalClassRequestsCard(PDO $db, array $personalClasses): 
             </div>
 
             <?php if (!empty($pendingClasses)) { ?>
-                <span class="personal_request_badge">
+                <span class="pill personal_request_badge">
                     <?= htmlspecialchars((string)count($pendingClasses)) ?> pending
                 </span>
             <?php } ?>
@@ -1093,7 +1093,7 @@ function drawTrainerPersonalClassRequestsCard(PDO $db, array $personalClasses): 
         <?php } else { ?>
 
             <?php if (!empty($pendingClasses)) { ?>
-                <section class="personal_requests_section">
+                <section class="content-group personal_requests_section">
                     <h3>Pending Requests</h3>
 
                     <div class="personal_requests_list">
@@ -1105,7 +1105,7 @@ function drawTrainerPersonalClassRequestsCard(PDO $db, array $personalClasses): 
             <?php } ?>
 
             <?php if (!empty($acceptedClasses)) { ?>
-                <section class="personal_requests_section">
+                <section class="content-group personal_requests_section">
                     <h3>Accepted Personal Classes</h3>
 
                     <div class="personal_requests_list">
@@ -1117,7 +1117,7 @@ function drawTrainerPersonalClassRequestsCard(PDO $db, array $personalClasses): 
             <?php } ?>
 
             <?php if (!empty($answeredClasses)) { ?>
-                <section class="personal_requests_section">
+                <section class="content-group personal_requests_section">
                     <h3>Answered Requests</h3>
 
                     <div class="personal_requests_list">
@@ -1149,7 +1149,7 @@ function drawTrainerPersonalClassRequestItem(PDO $db, PersonalClass $personalCla
     $requestMessage = $personalClass->getRequestMessage();
     $trainerResponse = $personalClass->getTrainerResponse();
 ?>
-    <section class="personal_request_item">
+    <section class="list-card personal_request_item">
         <header class="personal_request_member">
             <img
                 src="../assets/users/<?= htmlspecialchars($memberImage) ?>"
@@ -1161,7 +1161,7 @@ function drawTrainerPersonalClassRequestItem(PDO $db, PersonalClass $personalCla
                 <span>@<?= htmlspecialchars($memberUsername) ?></span>
             </div>
 
-            <span class="personal_request_status <?= htmlspecialchars($status) ?>">
+            <span class="status-pill personal_request_status <?= htmlspecialchars($status) ?>">
                 <?= htmlspecialchars(ucfirst($status)) ?>
             </span>
         </header>
@@ -1341,7 +1341,7 @@ function drawComplaintsCard(PDO $db, array $complaints): void { ?>
                     $status = $response !== "" ? "accepted" : "pending";
                     $details = $complaint->get_details();
                 ?>
-                    <section class="personal_class_compact_item">
+                    <section class="list-card personal_class_compact_item">
                         <header>
                             <div>
                                 <strong><?= htmlspecialchars($reason) ?></strong>
@@ -1353,7 +1353,7 @@ function drawComplaintsCard(PDO $db, array $complaints): void { ?>
                                 </span>
                             </div>
 
-                            <span class="personal_request_status <?= htmlspecialchars($status) ?>">
+                            <span class="status-pill personal_request_status <?= htmlspecialchars($status) ?>">
                                 <?= htmlspecialchars(ucfirst($status === "accepted" ? "responded" : $status)) ?>
                             </span>
                         </header>
@@ -1401,7 +1401,7 @@ function drawAdminComplaintsCard(PDO $db, array $complaints): void {
             </div>
 
             <?php if (!empty($pendingComplaints)) { ?>
-                <span class="personal_request_badge">
+                <span class="pill personal_request_badge">
                     <?= htmlspecialchars((string)count($pendingComplaints)) ?> pending
                 </span>
             <?php } ?>
@@ -1412,7 +1412,7 @@ function drawAdminComplaintsCard(PDO $db, array $complaints): void {
         <?php } else { ?>
 
             <?php if (!empty($pendingComplaints)) { ?>
-                <section class="personal_requests_section">
+                <section class="content-group personal_requests_section">
                     <h3>Pending Complaints</h3>
 
                     <div class="personal_requests_list">
@@ -1424,7 +1424,7 @@ function drawAdminComplaintsCard(PDO $db, array $complaints): void {
             <?php } ?>
 
             <?php if (!empty($answeredComplaints)) { ?>
-                <section class="personal_requests_section">
+                <section class="content-group personal_requests_section">
                     <h3>Answered Complaints</h3>
 
                     <div class="personal_requests_list">
@@ -1454,7 +1454,7 @@ function drawAdminComplaintItem(PDO $db, Complaints $complaint, bool $canRespond
     $response = trim($complaint->get_response());
     $status = $response === '' ? 'pending' : 'accepted';
 ?>
-    <section class="personal_request_item complaint_item">
+    <section class="list-card personal_request_item complaint_item">
         <header class="personal_request_member">
             <img
                 src="../assets/users/<?= htmlspecialchars($memberImage) ?>"
@@ -1466,7 +1466,7 @@ function drawAdminComplaintItem(PDO $db, Complaints $complaint, bool $canRespond
                 <span>@<?= htmlspecialchars($memberUsername) ?></span>
             </div>
 
-            <span class="personal_request_status <?= htmlspecialchars($status) ?>">
+            <span class="status-pill personal_request_status <?= htmlspecialchars($status) ?>">
                 <?= $response === '' ? 'Pending' : 'Responded' ?>
             </span>
         </header>

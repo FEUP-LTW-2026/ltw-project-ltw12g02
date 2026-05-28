@@ -2,17 +2,17 @@
 declare(strict_types = 1);
 
 function drawAdminDashboard(string $adminName, array $stats): void { ?>
-    <main class="admin-dashboard">
+    <main class="dashboard-page admin-dashboard">
 
         <section class="admin-top">
-            <div class="admin-wrap">
+            <div class="page-wrap admin-wrap">
                 <?php drawAdminHero($adminName); ?>
                 <?php drawAdminStats($stats); ?>
             </div>
         </section>
 
         <section class="admin-bottom">
-            <div class="admin-wrap">
+            <div class="page-wrap admin-wrap">
                 <?php drawAdminManagementCards(); ?>
             </div>
         </section>
@@ -23,7 +23,7 @@ function drawAdminDashboard(string $adminName, array $stats): void { ?>
 
 <?php
 function drawAdminHero(string $adminName): void { ?>
-    <section class="admin-hero">
+    <section class="dashboard-hero admin-hero">
         <div>
             <p class="admin-label">PowerPIT Admin Console</p>
             <h1>Welcome back,<br><?= htmlspecialchars($adminName) ?></h1>
@@ -41,7 +41,7 @@ function drawAdminHero(string $adminName): void { ?>
 
 <?php
 function drawAdminStats(array $stats): void { ?>
-    <section class="admin-stats">
+    <section class="stats-grid admin-stats">
         <?php drawAdminStatCard('Users', (int) ($stats['users'] ?? 0), 'fa-users'); ?>
         <?php drawAdminStatCard('Trainers', (int) ($stats['trainers'] ?? 0), 'fa-id-badge'); ?>
         <?php drawAdminStatCard('Classes', (int) ($stats['classes'] ?? 0), 'fa-calendar'); ?>
@@ -53,7 +53,7 @@ function drawAdminStats(array $stats): void { ?>
 
 <?php
 function drawAdminStatCard(string $label, int $value, string $icon): void { ?>
-    <article class="admin-stat-card admin-dark-card">
+    <article class="stat-card admin-stat-card admin-dark-card">
         <div class="admin-card-row">
             <i class="fa <?= htmlspecialchars($icon) ?>" aria-hidden="true"></i>
             <span><?= htmlspecialchars($label) ?></span>
@@ -127,13 +127,13 @@ function drawAdminCard(
     string $icon,
     string $tag
 ): void { ?>
-    <a href="<?= htmlspecialchars($link) ?>" class="admin-card">
+    <a href="<?= htmlspecialchars($link) ?>" class="action-card admin-card">
         <div class="admin-card-row">
-            <div class="admin-icon-box">
+            <div class="icon-box admin-icon-box">
                 <i class="fa <?= htmlspecialchars($icon) ?>" aria-hidden="true"></i>
             </div>
 
-            <span class="admin-tag"><?= htmlspecialchars($tag) ?></span>
+            <span class="pill admin-tag"><?= htmlspecialchars($tag) ?></span>
         </div>
 
         <div>

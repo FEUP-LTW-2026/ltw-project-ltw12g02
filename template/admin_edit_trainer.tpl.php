@@ -17,9 +17,9 @@ function drawAdminEditTrainerPage(Trainers $trainer, Users $user, PDO $db): void
     $allTrainers = Trainers::getAllTrainers($db);
     ?>
 
-    <main class="admin-users-page">
+    <main class="page-shell admin-users-page">
 
-        <section class="admin-users-hero">
+        <section class="hero-panel admin-users-hero">
             <p class="admin-label">PowerPIT Admin</p>
 
             <h1>Edit Trainer</h1>
@@ -64,7 +64,7 @@ function drawAdminEditTrainerPage(Trainers $trainer, Users $user, PDO $db): void
                     </p>
                 </div>
 
-                <span class="admin-user-role">
+                <span class="pill admin-user-role">
                     <?= htmlspecialchars($user->getRole()) ?>
                 </span>
             </div>
@@ -133,7 +133,7 @@ function drawAdminEditTrainerPage(Trainers $trainer, Users $user, PDO $db): void
             <form
                 action="../actions/action_admin_edit_trainer.php"
                 method="post"
-                class="powerpit_form"
+                class="form-stack powerpit_form"
             >
                 <input
                     type="hidden"
@@ -171,7 +171,7 @@ function drawAdminEditTrainerPage(Trainers $trainer, Users $user, PDO $db): void
                     ><?= htmlspecialchars($trainer->getCertifications() ?? '') ?></textarea>
                 </label>
 
-                <div class="popup-actions">
+                <div class="actions-row popup-actions">
                     <a href="../pages/admin_trainers.php" class="btn">
                         Cancel
                     </a>
@@ -184,20 +184,20 @@ function drawAdminEditTrainerPage(Trainers $trainer, Users $user, PDO $db): void
 
         </section>
 
-        <section class="admin-stats">
-            <article class="admin-stat-card">
+        <section class="stats-grid admin-stats">
+            <article class="stat-card admin-stat-card">
                 <span>Assigned Classes</span>
                 <strong><?= htmlspecialchars((string) count($assignedClasses)) ?></strong>
                 <p>Classes currently connected to this trainer.</p>
             </article>
 
-            <article class="admin-stat-card">
+            <article class="stat-card admin-stat-card">
                 <span>Average Rating</span>
                 <strong><?= htmlspecialchars((string) ($ratings['AverageRating'] ?? 0)) ?></strong>
                 <p>Average score from member reviews.</p>
             </article>
 
-            <article class="admin-stat-card">
+            <article class="stat-card admin-stat-card">
                 <span>Total Reviews</span>
                 <strong><?= htmlspecialchars((string) ($ratings['TotalReviews'] ?? 0)) ?></strong>
                 <p>Reviews received from class enrollments.</p>
@@ -263,7 +263,7 @@ function drawAdminEditTrainerPage(Trainers $trainer, Users $user, PDO $db): void
                 </p>
             </header>
 
-            <div class="popup-actions">
+            <div class="actions-row popup-actions">
                 <a href="../pages/admin_trainers.php" class="btn">
                     Back to Trainers
                 </a>
@@ -289,10 +289,10 @@ function drawAdminEditTrainerClasses(array $classes): void { ?>
             This trainer has no assigned classes.
         </p>
     <?php } else { ?>
-        <ul class="trainer_roster_members">
+        <ul class="avatar-list trainer_roster_members">
             <?php foreach ($classes as $class) { ?>
                 <li>
-                    <div class="admin-icon-box">
+                    <div class="icon-box admin-icon-box">
                         <i class="fa fa-calendar"></i>
                     </div>
 
@@ -310,11 +310,11 @@ function drawAdminEditTrainerClasses(array $classes): void { ?>
                         </span>
                     </div>
 
-                    <span class="admin-user-role">
+                    <span class="pill admin-user-role">
                         Capacity <?= htmlspecialchars((string) $class->getCapacity()) ?>
                     </span>
 
-                    <div class="admin-user-actions">
+                    <div class="row-actions admin-user-actions">
                         <button
                             type="button"
                             data-dialog-target="admin-class-edit-dialog-<?= htmlspecialchars((string) $class->getId()) ?>"
@@ -336,7 +336,7 @@ function drawAdminEditTrainerReviews(array $reviews): void { ?>
             This trainer has no reviews yet.
         </p>
     <?php } else { ?>
-        <ul class="trainer_roster_members">
+        <ul class="avatar-list trainer_roster_members">
             <?php foreach ($reviews as $review) { ?>
                 <?php
                     $profileImage = $review['ProfileImage'] ?: 'default.png';
@@ -365,7 +365,7 @@ function drawAdminEditTrainerReviews(array $reviews): void { ?>
                         </span>
                     </div>
 
-                    <span class="admin-user-role">
+                    <span class="pill admin-user-role">
                         <?= htmlspecialchars((string) $review['Rating']) ?>/5
                     </span>
                 </li>

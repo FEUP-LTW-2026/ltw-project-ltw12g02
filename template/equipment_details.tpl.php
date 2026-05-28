@@ -101,9 +101,9 @@ function drawEquipmentDetailsPage(Equipment $equipment, Session $session, ?Users
         && $hasPremiumPlan
         && $status === 'available';
 ?>
-    <main class="equipment_details_page">
+    <main class="details-page equipment_details_page">
 
-        <section class="equipment_details_hero">
+        <section class="image-hero equipment_details_hero">
             <img
                 src="../assets/equipment/<?= htmlspecialchars($image) ?>"
                 alt="<?= htmlspecialchars($equipment->getName()) ?>"
@@ -131,7 +131,7 @@ function drawEquipmentDetailsPage(Equipment $equipment, Session $session, ?Users
                 </div>
 
                 <div class="equipment_details_badges">
-                    <span class="equipment_status <?= htmlspecialchars($statusClass) ?>">
+                    <span class="status-pill equipment_status <?= htmlspecialchars($statusClass) ?>">
                         <?= htmlspecialchars($equipment->getStatus()) ?>
                     </span>
 
@@ -164,14 +164,14 @@ function drawEquipmentDetailsPage(Equipment $equipment, Session $session, ?Users
 
         <section class="equipment_details_content">
 
-            <article class="card equipment_details_card">
+            <article class="section-card card equipment_details_card">
                 <p class="classes_label">Details</p>
                 <h2>Equipment information</h2>
 
                 <?php drawEquipmentDetailsList($equipment, $availableQuantity); ?>
             </article>
 
-            <article class="card equipment_details_card equipment_details_note">
+            <article class="section-card card equipment_details_card equipment_details_note">
                 <p class="classes_label">Usage</p>
                 <h2>Usage notes</h2>
 
@@ -207,8 +207,8 @@ function drawEquipmentDetailsPage(Equipment $equipment, Session $session, ?Users
 function drawEquipmentReservationDialog(Equipment $equipment, int $availableQuantity): void {
     $minimumDateTime = date('Y-m-d\TH:i');
 ?>
-    <dialog id="equipment-reservation-dialog" class="popup-dialog">
-        <section class="card popup-card">
+    <dialog id="equipment-reservation-dialog" class="modal popup-dialog">
+        <section class="modal-card card popup-card">
             <button
                 type="button"
                 class="popup-close"
@@ -247,7 +247,7 @@ function drawEquipmentReservationDialog(Equipment $equipment, int $availableQuan
             </dl>
 
             <form
-                class="popup-form"
+                class="form-stack popup-form"
                 action="../actions/action_equipment_reservation.php"
                 method="post"
             >
@@ -277,7 +277,7 @@ function drawEquipmentReservationDialog(Equipment $equipment, int $availableQuan
                     </select>
                 </label>
 
-                <div class="popup-actions">
+                <div class="actions-row popup-actions">
                     <button
                         type="button"
                         class="btn small"
@@ -298,7 +298,7 @@ function drawEquipmentReservationDialog(Equipment $equipment, int $availableQuan
 
 <?php
 function drawEquipmentNotFoundPage(): void { ?>
-    <main class="equipment_details_page">
+    <main class="details-page equipment_details_page">
         <section class="card equipment_not_found">
             <h1>Equipment not found</h1>
 

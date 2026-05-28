@@ -47,9 +47,9 @@ function groupAdminEquipmentByType(array $equipment): array {
 }
 
 function drawAdminEquipmentPage(array $equipment): void { ?>
-    <main class="admin-users-page admin-equipment-page">
+    <main class="page-shell admin-users-page admin-equipment-page">
 
-        <section class="admin-users-hero">
+        <section class="hero-panel admin-users-hero">
             <p class="admin-label">PowerPIT Admin</p>
 
             <h1>Manage Equipment</h1>
@@ -60,7 +60,7 @@ function drawAdminEquipmentPage(array $equipment): void { ?>
             </p>
         </section>
 
-        <section class="card admin-equipment-add-card">
+        <section class="section-card card admin-equipment-add-card">
             <div class="admin-equipment-add-intro">
                 <p class="admin-label">Inventory</p>
                 <h2>Add equipment</h2>
@@ -70,7 +70,7 @@ function drawAdminEquipmentPage(array $equipment): void { ?>
             </div>
 
             <form
-                class="admin-equipment-form"
+                class="toolbar-form admin-equipment-form"
                 action="../actions/action_add_equipment.php"
                 method="post"
                 enctype="multipart/form-data"
@@ -161,7 +161,7 @@ function drawAdminEquipmentPage(array $equipment): void { ?>
 
 <?php
 function drawAdminEquipmentGroup(string $type, array $items): void { ?>
-    <section class="equipment_group admin-equipment-group">
+    <section class="content-group equipment_group admin-equipment-group">
         <header class="equipment_group_header">
             <div>
                 <p class="classes_label"><?= htmlspecialchars($type) ?></p>
@@ -186,7 +186,7 @@ function drawAdminEquipmentCard(Equipment $item): void {
 ?>
     <article class="admin-equipment-item">
 
-        <div class="equipment_gallery_card">
+        <div class="image-card equipment_gallery_card">
             <?php if ($imagePath !== null) { ?>
                 <img
                     src="<?= htmlspecialchars($imagePath) ?>"
@@ -199,7 +199,7 @@ function drawAdminEquipmentCard(Equipment $item): void {
             <?php } ?>
 
             <div class="equipment_gallery_overlay">
-                <span class="equipment_status <?= htmlspecialchars($statusClass) ?>">
+                <span class="status-pill equipment_status <?= htmlspecialchars($statusClass) ?>">
                     <?= htmlspecialchars($item->getStatus()) ?>
                 </span>
 
