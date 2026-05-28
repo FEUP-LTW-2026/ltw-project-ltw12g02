@@ -36,7 +36,7 @@ function checkCSRF(string $token): bool {
 
 function evaluateCSRF(string $token): void {
     if (!checkCSRF($token)) {
-        header('Location: ../pages/error.php');
+        header('Location: ../pages/index.php');
         exit;
     }
 }
