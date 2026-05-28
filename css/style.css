@@ -2806,6 +2806,119 @@ button {
   justify-self: center;
 }
 
+/* ADMIN ANALYTICS PAGE */
+
+.admin_analytics_page .trainer_analytics_hero_card strong {
+  font-size: 2.4rem;
+}
+
+.admin_analytics_insights {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+}
+
+.admin_analytics_grid {
+  margin-top: 0;
+}
+
+.admin_analytics_list {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.admin_analytics_item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(8rem, auto);
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem;
+  border-radius: 18px;
+  background: var(--gray-card);
+  border: 1px solid var(--border);
+}
+
+.admin_analytics_item strong {
+  display: block;
+  color: var(--black);
+  font-size: 1rem;
+}
+
+.admin_analytics_item span {
+  display: block;
+  margin-top: 0.2rem;
+  color: var(--gray-text);
+  font-size: 0.9rem;
+}
+
+.admin_analytics_progress_cell {
+  display: grid;
+  grid-template-columns: minmax(5rem, 1fr) auto;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.admin_analytics_progress_cell strong {
+  color: var(--gray-text);
+  font-size: 0.85rem;
+}
+
+.admin_analytics_list.compact {
+  gap: 0.7rem;
+}
+
+.admin_analytics_item.equipment {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.admin_analytics_item .admin_analytics_pill {
+  min-width: 3rem;
+  height: 3rem;
+  padding: 0 0.9rem;
+  border-radius: 999px;
+  display: inline-grid;
+  place-items: center;
+  background: var(--black);
+  color: var(--lime);
+  font-size: 1rem;
+}
+
+/* REVIEWS */
+
+.admin_analytics_reviews li {
+  align-items: start;
+}
+
+.admin_analytics_reviews strong {
+  margin-bottom: 0;
+}
+
+.admin_analytics_reviews .admin_analytics_stars {
+  display: inline-flex;
+  flex-direction: row;
+  gap: 0.08rem;
+  margin: 0.25rem 0;
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+.admin_analytics_reviews .admin_analytics_stars span {
+  display: inline-block;
+  margin: 0;
+  color: #cfcfcf;
+  font-size: inherit;
+}
+
+.admin_analytics_reviews .admin_analytics_stars span.filled {
+  color: #f5b700;
+}
+
+.admin_analytics_reviews li > div > span:not(.admin_analytics_stars) {
+  display: block;
+  color: var(--gray-text);
+  font-size: 0.9rem;
+}
+
+
 /* RESPONSIVE */
 
 @media (max-width: 60rem) {

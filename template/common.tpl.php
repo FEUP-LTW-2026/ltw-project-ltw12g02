@@ -42,6 +42,7 @@ function generateHeader(Session $session) { ?>
             <div id="profile">
                 <img src="../html/PowerPIT.png" alt="logo" width="100" height="50">
             </div>
+
             <ul>
                 <li><a href="index.php"><i class="fa fa-id-card" aria-hidden="true"></i> About&nbsp;us</a></li>
                 <li><a href="classes.php"><i class="fa fa-users" aria-hidden="true"></i> Classes</a></li>
@@ -49,11 +50,25 @@ function generateHeader(Session $session) { ?>
                 <li><a href="equipment.php"><i class="fa fa-th" aria-hidden="true"></i> Equipment</a></li>
 
                 <?php if ($session->isLoggedIn() && $session->getRole() === 'trainer') { ?>
-                    <li><a href="trainer_analytics.php"><i class="fa fa-line-chart" aria-hidden="true"></i> Analytics</a></li>
+                    <li>
+                        <a href="trainer_analytics.php">
+                            <i class="fa fa-line-chart" aria-hidden="true"></i> Analytics
+                        </a>
+                    </li>
                 <?php } ?>
 
-                <?php if ($session->getRole() === 'admin'){ ?>
-                    <li><a href="admin.php"><i class="fa fa-shield" aria-hidden="true"></i> Admin</a></li>
+                <?php if ($session->isLoggedIn() && $session->getRole() === 'admin') { ?>
+                    <li>
+                        <a href="admin.php">
+                            <i class="fa fa-shield" aria-hidden="true"></i> Admin
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="admin_analytics.php">
+                            <i class="fa fa-line-chart" aria-hidden="true"></i> Analytics
+                        </a>
+                    </li>
                 <?php } ?>
             </ul>
         </nav>
@@ -114,7 +129,9 @@ function generateFooter() { ?>
         <p>Rua njdfbajlfhak 00, 4000-000 Cidade | email@powerpit.com | +555 900 000 000</p>
         <p>Our transactions are made in euros (&euro;).</p>
     </div>
+
     <button 
+        type="button"
         class="btn small light profile-edit-btn"
         data-dialog-target="complaint-dialog"
     >
@@ -125,8 +142,6 @@ function generateFooter() { ?>
 </body>
 </html>
 <?php }
-
-
 
 function drawMessages(array $messages): void { ?>
     <?php if (!empty($messages)) { ?>
@@ -147,20 +162,20 @@ function drawMessages(array $messages): void { ?>
 function generateTemplates(): void { ?>
 <template id="result-card">
     <button type="button" class="popup-close">
-            &times;
+        &times;
+    </button>
+
+    <header class="popup-header">
+        <p class="profile-member-card-label result-topic"></p>
+        <h1 class="result-title"></h1>
+        <p class="result-message"></p>
+    </header>
+
+    <div class="popup-actions">
+        <button type="button" class="btn small light popup-ok">
+            Done
         </button>
-
-        <header class="popup-header">
-            <p class="profile-member-card-label result-topic"></p>
-            <h1 class="result-title"></h1>
-            <p class="result-message"></p>
-        </header>
-
-        <div class="popup-actions">
-            <button type="button" class="btn small light popup-ok">
-                Done
-            </button>
-        </div>
+    </div>
 </template>
 <?php }
 
@@ -203,8 +218,6 @@ function drawComplaintDialog(): void { ?>
                         placeholder="Explain with detail so we can solve the issue as quickly as possible"
                     ></textarea>
                 </label>
-
-
 
                 <div class="popup-actions">
                     <button 
