@@ -197,6 +197,21 @@
   gap: 0.45rem;
 }
 
+
+/* Attendence */
+
+.attendance-check {
+  appearance: none;
+}
+
+.attendance-check:not(:checked):before {
+  content: "✘";
+}
+
+.attendance-check:checked:before {
+  content: '✔';
+}
+
 /* MESSAGES */
 
 .message_area {

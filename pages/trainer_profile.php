@@ -37,7 +37,7 @@ if ($trainerUser === null) {
 
 $canEdit = $session->isLoggedIn() && $session->getId() === $trainerUser->getUserId();
 
-$user = Users::getUser($db, $session->getId());
+$user = $session->isLoggedIn() ? Users::getUser($db, $session->getId()) : null;
 
 $messages = $session->getMessages();
 

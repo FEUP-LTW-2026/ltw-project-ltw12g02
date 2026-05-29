@@ -476,7 +476,7 @@ function drawAdminProfile(PDO $db, Users $user): void {
     </main>
 <?php }
 
-function drawTrainerProfile(PDO $db, Users $trainerUser, Trainers $trainer, bool $canEdit, Users $user): void {
+function drawTrainerProfile(PDO $db, Users $trainerUser, Trainers $trainer, bool $canEdit, ?Users $user): void {
     $assignedClasses = $trainer->getAssignedClasses($db);
     $avgRatings = $trainer->getAverageRatings($db);
     $avgRating = $avgRatings['AverageRating'];
@@ -517,10 +517,14 @@ function drawTrainerProfile(PDO $db, Users $trainerUser, Trainers $trainer, bool
                             >
                                 Edit Profile
                             </button>
+                        <?php } else if ($user === null) { ?>
+                            <button class="btn small light disabled profile-edit-btn">
+                                Login to Request a Class
+                            </button>
                         <?php } else if ($user->getRole() === 'member' && $user->getPlan() !== 'premium') { ?>
                             <button class="btn small light disabled profile-edit-btn">
-                                Upgrade your plan to book
-</button>
+                                Upgrade your plan to Request a Class
+                            </button>
                         <?php } else { ?>
                             <button 
                                 type="button" 
@@ -667,7 +671,8 @@ function drawTrainerRosterCard(PDO $db, array $assignedClasses): void { ?>
                         <p>No members enrolled in this class yet.</p>
                     <?php } else { ?>
                         <ul class="avatar-list trainer_roster_members">
-                            <?php foreach ($members as $member) { ?>
+                            <?php foreach ($members as $member) { 
+                                $attendance = Enrollments::getEnrollmentByUserAndClass($db, $member->getUserId(), $workoutClass->getId())->get_attendance() ?>
                                 <li>
                                     <img 
                                         src="../assets/users/<?= htmlspecialchars($member->getProfileImage()) ?>" 
@@ -679,6 +684,19 @@ function drawTrainerRosterCard(PDO $db, array $assignedClasses): void { ?>
                                         <span>@<?= htmlspecialchars($member->getUserName()) ?></span>
                                     </div>
 
+                                    <?php if (date("Y-m-d H:i:s", $timestamp) < date("Y-m-d H:i:s")) { ?>
+                                    <label class="btn small light" >
+                                        Attended:
+                                        <input
+                                            class="attendance-check"
+                                            type="checkbox"
+                                            name="attendance"
+                                            data-user-id="<?= htmlspecialchars((string)$member->getUserId()) ?>"
+                                            data-class-id="<?= htmlspecialchars((string)$workoutClass->getId()) ?>"
+                                            <?= $attendance ? 'checked' : '' ?>
+                                        >               
+                                    </label>
+                                    <?php } ?>
                                     <span><?= htmlspecialchars($member->getEmail()) ?></span>
                                 </li>
                             <?php } ?>
