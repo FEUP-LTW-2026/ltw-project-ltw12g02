@@ -2,6 +2,7 @@
 declare(strict_types = 1);
 
 require_once(__DIR__ . '/../utils/session.php');
+require_once(__DIR__ . '/../utils/csrf.php');
 require_once(__DIR__ . '/../database/connection.db.php');
 require_once(__DIR__ . '/../database/users.class.php');
 require_once(__DIR__ . '/../database/trainers.class.php');
@@ -17,6 +18,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: ../pages/admin_trainers.php');
     exit;
 }
+
+evaluateCSRF($_POST['token'] ?? '');
 
 $trainerId = filter_input(INPUT_POST, 'trainer_id', FILTER_VALIDATE_INT);
 

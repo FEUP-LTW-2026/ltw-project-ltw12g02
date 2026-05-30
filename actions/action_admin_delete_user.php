@@ -2,6 +2,7 @@
 declare(strict_types = 1);
 
 require_once(__DIR__ . '/../utils/session.php');
+require_once(__DIR__ . '/../utils/csrf.php');
 require_once(__DIR__ . '/../database/connection.db.php');
 require_once(__DIR__ . '/../database/users.class.php');
 
@@ -16,6 +17,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: ../pages/admin_users.php');
     exit;
 }
+
+evaluateCSRF($_POST['token'] ?? '');
 
 $userId = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
 $confirmationName = trim($_POST['confirmation_name'] ?? '');
