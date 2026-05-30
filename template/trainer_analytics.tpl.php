@@ -55,7 +55,7 @@ function drawAnalyticsStatCard(
     string $value,
     string $description
 ): void { ?>
-    <article class="trainer_analytics_stat">
+    <article class="stat-card trainer_analytics_stat">
         <i class="fa <?= htmlspecialchars($iconClass) ?>" aria-hidden="true"></i>
 
         <span><?= htmlspecialchars($label) ?></span>
@@ -72,7 +72,7 @@ function drawAnalyticsInsightCard(
     string $emptyTitle,
     string $metric
 ): void { ?>
-    <article class="card analytics-insight-card">
+    <article class="summary-card card analytics-insight-card">
         <p class="admin-label"><?= htmlspecialchars($label) ?></p>
 
         <?php if ($class === null) { ?>
@@ -94,21 +94,21 @@ function drawTrainerAnalyticsFilters(string $filter): void { ?>
     <nav class="admin-class-filters trainer_analytics_filters" aria-label="Trainer analytics filters">
         <a
             href="trainer_analytics.php?filter=upcoming"
-            class="admin-user-role <?= $filter === 'upcoming' ? 'active' : '' ?>"
+            class="pill admin-user-role <?= $filter === 'upcoming' ? 'active' : '' ?>"
         >
             Upcoming
         </a>
 
         <a
             href="trainer_analytics.php?filter=past"
-            class="admin-user-role <?= $filter === 'past' ? 'active' : '' ?>"
+            class="pill admin-user-role <?= $filter === 'past' ? 'active' : '' ?>"
         >
             Past
         </a>
 
         <a
             href="trainer_analytics.php?filter=all"
-            class="admin-user-role <?= $filter === 'all' ? 'active' : '' ?>"
+            class="pill admin-user-role <?= $filter === 'all' ? 'active' : '' ?>"
         >
             All classes
         </a>
@@ -136,10 +136,10 @@ function drawTrainerAnalyticsPage(Users $user, array $overview, array $classPerf
     $hasPersonalData = $totalPersonalClasses > 0;
     $hasAnyData = $hasClassData || $hasReviewData || $hasPersonalData;
 ?>
-    <main class="trainer_analytics_page">
+    <main class="analytics-page trainer_analytics_page">
         <section class="trainer_analytics_top">
-            <div class="trainer_analytics_wrap">
-                <section class="trainer_analytics_hero">
+            <div class="page-wrap trainer_analytics_wrap">
+                <section class="dashboard-hero trainer_analytics_hero">
                     <div>
                         <p class="admin-label">PowerPIT Trainer Analytics</p>
 
@@ -164,7 +164,7 @@ function drawTrainerAnalyticsPage(Users $user, array $overview, array $classPerf
                     </aside>
                 </section>
 
-                <section class="trainer_analytics_stats">
+                <section class="stats-grid trainer_analytics_stats">
                     <?php
                         drawAnalyticsStatCard(
                             'fa-calendar-check-o',
@@ -206,13 +206,13 @@ function drawTrainerAnalyticsPage(Users $user, array $overview, array $classPerf
         </section>
 
         <section class="trainer_analytics_bottom">
-            <div class="trainer_analytics_wrap">
+            <div class="page-wrap trainer_analytics_wrap">
                 <?php if ($hasClassData) { ?>
                     <?php drawTrainerAnalyticsFilters($filter); ?>
                 <?php } ?>
                 <?php if (!$hasAnyData) { ?>
                     <section class="card trainer_analytics_empty_dashboard">
-                        <div class="trainer_analytics_empty_icon">
+                        <div class="icon-box trainer_analytics_empty_icon">
                             <i class="fa fa-line-chart" aria-hidden="true"></i>
                         </div>
 
@@ -239,14 +239,14 @@ function drawTrainerAnalyticsPage(Users $user, array $overview, array $classPerf
                     </section>
                 <?php } else { ?>
                     <section class="trainer_analytics_grid">
-                        <article class="card analytics-card analytics-main-card">
+                        <article class="section-card card analytics-card analytics-main-card">
                             <header class="analytics-header">
                                 <div>
                                     <p class="admin-label">Class Performance</p>
                                     <h2>Attendance and ratings by class</h2>
                                 </div>
 
-                                <span class="analytics-count-pill">
+                                <span class="pill analytics-count-pill">
                                     <?= htmlspecialchars((string)count($classPerformance)) ?> classes
                                 </span>
                             </header>
@@ -314,7 +314,7 @@ function drawTrainerAnalyticsPage(Users $user, array $overview, array $classPerf
                                                     </td>
 
                                                     <td>
-                                                        <span class="analytics-status analytics-status-<?= htmlspecialchars($statusClass) ?>">
+                                                        <span class="status-pill analytics-status analytics-status-<?= htmlspecialchars($statusClass) ?>">
                                                             <?= htmlspecialchars($statusLabel) ?>
                                                         </span>
                                                     </td>
@@ -327,7 +327,7 @@ function drawTrainerAnalyticsPage(Users $user, array $overview, array $classPerf
                         </article>
 
                         <aside class="trainer_analytics_side">
-                            <article class="card analytics-card">
+                            <article class="section-card card analytics-card">
                                 <header class="analytics-header">
                                     <div>
                                         <p class="admin-label">Personal Training</p>
@@ -358,7 +358,7 @@ function drawTrainerAnalyticsPage(Users $user, array $overview, array $classPerf
                                 </dl>
                             </article>
 
-                            <article class="card analytics-card">
+                            <article class="section-card card analytics-card">
                                 <header class="analytics-header">
                                     <div>
                                         <p class="admin-label">Recent Feedback</p>
@@ -371,7 +371,7 @@ function drawTrainerAnalyticsPage(Users $user, array $overview, array $classPerf
                                         <p>You do not have any reviews yet.</p>
                                     </div>
                                 <?php } else { ?>
-                                    <ul class="analytics-reviews-list">
+                                    <ul class="avatar-list analytics-reviews-list">
                                         <?php foreach ($recentReviews as $review) {
                                             $memberName = (string)($review['Name'] ?? 'Unknown member');
                                             $username = (string)($review['Username'] ?? 'member');

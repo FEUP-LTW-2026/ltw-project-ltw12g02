@@ -2,7 +2,7 @@
 declare(strict_types = 1);
 
 function drawTrainersPage(array $trainers, PDO $db): void { ?>
-    <main class="trainers_page">
+    <main class="marketing-page trainers_page">
         <?php
             $heroImage = '../assets/users/default.png';
 
@@ -15,7 +15,7 @@ function drawTrainersPage(array $trainers, PDO $db): void { ?>
             }
         ?>
 
-        <section class="flex-row dark classes_feature">
+        <section class="media-section feature-section flex-row dark classes_feature">
             <article class="flex-item main">
                 <p class="classes_label">PowerPIT Trainers</p>
 
@@ -38,7 +38,7 @@ function drawTrainersPage(array $trainers, PDO $db): void { ?>
             </aside>
         </section>
 
-        <section class="classes_carousel_section">
+        <section class="content-section classes_carousel_section">
             <header>
                 <p class="classes_label">Meet the team</p>
                 <h1>Our trainers</h1>
@@ -77,7 +77,7 @@ function drawTrainerCard(Trainers $trainer, PDO $db): void {
     }
     ?>
 
-    <article class="card trainer_card">
+    <article class="catalog-card card trainer_card">
         <a 
             href="../pages/trainer_profile.php?id=<?= htmlspecialchars((string)$trainer->getTrainerId()) ?>" 
             class="trainer_card_link"

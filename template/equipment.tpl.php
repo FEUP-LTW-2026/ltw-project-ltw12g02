@@ -4,9 +4,9 @@ declare(strict_types = 1);
 require_once(__DIR__ . '/../database/equipment.class.php');
 
 function drawEquipmentPage(array $equipment): void { ?>
-    <main class="equipment_page">
+    <main class="marketing-page equipment_page">
 
-        <section class="flex-row dark classes_feature">
+        <section class="media-section feature-section flex-row dark classes_feature">
             <article class="flex-item main">
                 <p class="classes_label">PowerPIT Equipment</p>
 
@@ -26,7 +26,7 @@ function drawEquipmentPage(array $equipment): void { ?>
             </aside>
         </section>
 
-        <section class="equipment_section">
+        <section class="content-section equipment_section">
             <header class="equipment_section_header">
                 <p class="classes_label">Gym equipment</p>
                 <h1>Our equipment</h1>
@@ -45,7 +45,7 @@ function drawEquipmentPage(array $equipment): void { ?>
 
                 <div class="equipment_groups">
                     <?php foreach ($equipmentByType as $type => $items) { ?>
-                        <section class="equipment_group">
+                        <section class="content-group equipment_group">
                             <header class="equipment_group_header">
                                 <p class="classes_label"><?= htmlspecialchars($type) ?></p>
                                 <h2><?= count($items) ?> items</h2>
@@ -104,7 +104,7 @@ function drawEquipmentCard(Equipment $item): void {
     $image = 'equipment' . $item->getId() . '.png';
 ?>
     <a
-        class="equipment_gallery_card"
+        class="image-card equipment_gallery_card"
         href="../pages/equipment_details.php?id=<?= htmlspecialchars((string)$item->getId()) ?>"
     >
         <img
@@ -113,7 +113,7 @@ function drawEquipmentCard(Equipment $item): void {
         >
 
         <div class="equipment_gallery_overlay">
-            <span class="equipment_status <?= htmlspecialchars($statusClass) ?>">
+            <span class="status-pill equipment_status <?= htmlspecialchars($statusClass) ?>">
                 <?= htmlspecialchars($item->getStatus()) ?>
             </span>
 

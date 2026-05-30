@@ -183,6 +183,7 @@ class Users {
                 ON Enrollments.ClassId = Classes.ClassId
             WHERE Enrollments.UserId = ?
             AND Enrollments.Status = "active"
+            AND Enrollments.attendance = TRUE
             AND datetime(Classes.ClassDateTime) < datetime("now", "localtime")
             ORDER BY datetime(Classes.ClassDateTime) DESC
         ');

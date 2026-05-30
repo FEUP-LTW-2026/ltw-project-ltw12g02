@@ -2,7 +2,7 @@
 declare(strict_types = 1);
 
 function drawAdminTrainersPage(array $trainers): void { ?>
-    <main class="admin-users-page">
+    <main class="page-shell admin-users-page">
         <?php drawAdminTrainersHero(); ?>
         <?php drawAdminTrainersControls(); ?>
         <?php drawAdminTrainersResults($trainers); ?>
@@ -12,7 +12,7 @@ function drawAdminTrainersPage(array $trainers): void { ?>
 
 <?php
 function drawAdminTrainersHero(): void { ?>
-    <section class="admin-users-hero">
+    <section class="hero-panel admin-users-hero">
         <p class="admin-label">PowerPit Admin</p>
         <h1>Manage Trainers</h1>
         <p>Search, review and manage trainer profiles.</p>
@@ -22,7 +22,7 @@ function drawAdminTrainersHero(): void { ?>
 
 <?php
 function drawAdminTrainersControls(): void { ?>
-    <section class="admin-users-controls admin-users-controls-row">
+    <section class="toolbar admin-users-controls admin-users-controls-row">
         <input
             type="text"
             id="trainer-search-input"
@@ -40,15 +40,15 @@ function drawAdminTrainersControls(): void { ?>
 
 <?php
 function drawAdminTrainersResults(array $trainers): void { ?>
-    <section class="admin-users-results">
-        <div class="admin-users-header admin-trainers-header">
+    <section class="data-list admin-users-results">
+        <div class="data-header admin-users-header admin-trainers-header">
             <span>Trainer</span>
             <span>Email</span>
             <span>Specialization</span>
             <span>Actions</span>
         </div>
 
-        <div id="trainer-search-results" class="user-search-results">
+        <div id="trainer-search-results" class="data-list-body user-search-results">
             <?php if (empty($trainers)) { ?>
                 <p class="empty-search-message">No trainers found.</p>
             <?php } ?>
@@ -74,10 +74,10 @@ function drawAdminTrainerRow(array $trainer): void {
     );
 ?>
     <article 
-        class="admin-user-row admin-trainer-row"
+        class="data-row admin-user-row admin-trainer-row"
         data-search="<?= htmlspecialchars($searchText) ?>"
     >
-        <div class="admin-user-main">
+        <div class="avatar-title admin-user-main">
             <img 
                 src="../assets/users/<?= htmlspecialchars($profileImage) ?>" 
                 alt="Trainer picture"
@@ -93,11 +93,11 @@ function drawAdminTrainerRow(array $trainer): void {
             <?= htmlspecialchars($trainer['Email']) ?>
         </p>
 
-        <span class="admin-user-role">
+        <span class="pill admin-user-role">
             <?= htmlspecialchars($trainer['Specializations'] ?: 'Trainer') ?>
         </span>
 
-        <div class="admin-user-actions">
+        <div class="row-actions admin-user-actions">
             <a href="admin_edit_trainer.php?id=<?= htmlspecialchars((string) $trainer['TrainerId']) ?>">
                 Edit
             </a>

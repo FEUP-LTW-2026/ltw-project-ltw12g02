@@ -2,7 +2,7 @@
 declare(strict_types = 1);
 
 function drawAdminSearchUserPage(): void { ?>
-    <main class="admin-users-page">
+    <main class="page-shell admin-users-page">
         <?php drawAdminSearchUserHero(); ?>
         <?php drawAdminSearchUserControls(); ?>
         <?php drawAdminSearchUserResults(); ?>
@@ -13,7 +13,7 @@ function drawAdminSearchUserPage(): void { ?>
 
 <?php
 function drawAdminSearchUserHero(): void { ?>
-    <section class="admin-users-hero">
+    <section class="hero-panel admin-users-hero">
         <p class="admin-label">PowerPit Admin</p>
         <h1>Search Users</h1>
         <p>Search platform users by name, username or email.</p>
@@ -23,7 +23,7 @@ function drawAdminSearchUserHero(): void { ?>
 
 <?php
 function drawAdminSearchUserControls(): void { ?>
-    <section class="admin-users-controls">
+    <section class="toolbar admin-users-controls">
         <input
             type="text"
             id="user-search-input"
@@ -37,15 +37,15 @@ function drawAdminSearchUserControls(): void { ?>
 
 <?php
 function drawAdminSearchUserResults(): void { ?>
-    <section class="admin-users-results">
-        <div class="admin-users-header">
+    <section class="data-list admin-users-results">
+        <div class="data-header admin-users-header">
             <span>User</span>
             <span>Email</span>
             <span>Role</span>
             <span>Actions</span>
         </div>
 
-        <div id="user-search-results" class="user-search-results">
+        <div id="user-search-results" class="data-list-body user-search-results">
             <p class="empty-search-message">Loading users...</p>
         </div>
     </section>

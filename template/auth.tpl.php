@@ -3,14 +3,14 @@ declare(strict_types = 1);
 
 function drawLoginForm(array $messages): void { ?>
     <main>
-        <section class="form_page">
+        <section class="auth-page form_page">
             <header class="form_intro">
                 <h1>Log In</h1>
                 <p>Welcome back! Access your PowerPIT account.</p>
             </header>
 
             <div class="form_box">
-                <form class="powerpit_form" action="../actions/action_login.php" method="post">
+                <form class="form-stack powerpit_form" action="../actions/action_login.php" method="post">
                     <label>
                         Email:
                         <input type="email" name="email" required>
@@ -37,14 +37,14 @@ function drawLoginForm(array $messages): void { ?>
 <?php
 function drawRegisterForm(array $messages): void { ?>
     <main>
-        <section class="form_page">
+        <section class="auth-page form_page">
             <header class="form_intro">
                 <h1>Create Account</h1>
                 <p>Join PowerPIT and start training with real energy.</p>
             </header>
 
             <div class="form_box">
-                <form class="powerpit_form" action="../actions/action_register.php" method="post">
+                <form class="form-stack powerpit_form" action="../actions/action_register.php" method="post">
                     <label>
                         Full Name:
                         <input type="text" name="name" required>

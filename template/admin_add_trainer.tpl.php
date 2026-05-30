@@ -2,9 +2,9 @@
 declare(strict_types = 1);
 
 function drawAdminAddTrainerPage(): void { ?>
-    <main class="admin-users-page">
+    <main class="page-shell admin-users-page">
 
-        <section class="admin-users-hero">
+        <section class="hero-panel admin-users-hero">
             <p class="admin-label">PowerPIT Admin</p>
 
             <h1>Add Trainer</h1>
@@ -14,7 +14,7 @@ function drawAdminAddTrainerPage(): void { ?>
             </p>
         </section>
 
-        <section class="admin-users-controls admin-users-controls-row">
+        <section class="toolbar admin-users-controls admin-users-controls-row">
             <input
                 type="text"
                 id="add-trainer-search-input"
@@ -28,15 +28,15 @@ function drawAdminAddTrainerPage(): void { ?>
             </a>
         </section>
 
-        <section class="admin-users-results">
-            <div class="admin-users-header">
+        <section class="data-list admin-users-results">
+            <div class="data-header admin-users-header">
                 <span>User</span>
                 <span>Email</span>
                 <span>Current Role</span>
                 <span>Actions</span>
             </div>
 
-            <div id="add-trainer-search-results" class="user-search-results">
+            <div id="add-trainer-search-results" class="data-list-body user-search-results">
                 <p class="empty-search-message">
                     Loading available members...
                 </p>

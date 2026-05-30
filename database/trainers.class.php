@@ -136,7 +136,7 @@ class Trainers {
             SELECT *
             FROM Classes
             WHERE TrainerId = ?
-            ORDER BY ClassDateTime
+            ORDER BY ClassDateTime DESC
         ');
 
         $stmt->execute([$this->trainer_id]);

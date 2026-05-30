@@ -4,15 +4,15 @@ declare(strict_types = 1);
 require_once(__DIR__ . '/../database/users.class.php');
 
 function drawPlans($db, $user): void { ?>
-    <main class="plans">
-        <section class="classes_carousel_section">
+    <main class="marketing-page plans">
+        <section class="content-section classes_carousel_section">
             <header>
                 <p class="classes_label">Find the plans that suits your needs the best</p>
                 <h1>Membership plans</h1>
             </header>
 
             <div class="grid trainers_grid">
-                <article class="card trainer_card">
+                <article class="catalog-card card trainer_card">
                         <div class="trainer_card_content">
                             <span class="plans-corner-icon"><i class="fa fa-user" aria-hidden="true"></i></span>
                             <h2>Basic</h2>
@@ -61,7 +61,7 @@ function drawPlans($db, $user): void { ?>
                 </article>
 
 
-                <article class="card trainer_card">
+                <article class="catalog-card card trainer_card">
                         <div class="trainer_card_content">
                             <span class="plans-corner-icon"><i class="fa fa-plus" aria-hidden="true"></i></span>
                             <h2>Plus</h2>
@@ -110,7 +110,7 @@ function drawPlans($db, $user): void { ?>
                 </article>
 
 
-                <article class="card trainer_card">
+                <article class="catalog-card card trainer_card">
                         <div class="trainer_card_content">
                             <span class="plans-corner-icon"><i class="fa fa-diamond" aria-hidden="true"></i></span>
                             <h2>Premium</h2>

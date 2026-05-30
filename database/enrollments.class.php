@@ -12,6 +12,7 @@ class Enrollments {
     private string $enrollment_status;
     private int $rating;
     private string $review;
+    private ?bool $attendance;
 
     public function __construct(
         int $enrollment_id,
@@ -20,7 +21,8 @@ class Enrollments {
         string $enrollment_date,
         string $enrollment_status,
         int $rating = -1,
-        string $review = ""
+        string $review = "",
+        bool $attendance = false
     ) {
         $this->enrollment_id = $enrollment_id;
         $this->user_id = $user_id;
@@ -29,6 +31,7 @@ class Enrollments {
         $this->enrollment_status = $enrollment_status;
         $this->rating = $rating;
         $this->review = $review;
+        $this->attendance = (bool) $attendance;
     }
 
     public function get_enrollment_id(): int {
@@ -59,6 +62,10 @@ class Enrollments {
         return $this->review;
     }
 
+    public function get_attendance(): bool {
+        return $this->attendance;
+    }
+
     public function is_active(): bool {
         return $this->enrollment_status === 'active';
     }
@@ -84,7 +91,8 @@ class Enrollments {
             $row['EnrollmentDate'],
             $row['Status'],
             $row['Rating'] !== null ? (int)$row['Rating'] : -1,
-            $row['Review'] ?? ''
+            $row['Review'] ?? '',
+            (bool)$row['Attendance']
         );
     }
 
@@ -109,7 +117,8 @@ class Enrollments {
             $row['EnrollmentDate'],
             $row['Status'],
             $row['Rating'] !== null ? (int)$row['Rating'] : -1,
-            $row['Review'] ?? ''
+            $row['Review'] ?? '',
+            (bool)$row['Attendance']
         );
     }
 
@@ -133,7 +142,8 @@ class Enrollments {
                 $row['EnrollmentDate'],
                 $row['Status'],
                 $row['Rating'] !== null ? (int)$row['Rating'] : -1,
-                $row['Review'] ?? ''
+                $row['Review'] ?? '',
+                (bool)$row['Attendance']
             );
         }
 
@@ -289,6 +299,26 @@ class Enrollments {
         $stmt->execute([
             $rating,
             $review,
+            $userId,
+            $classId
+        ]);
+    }
+
+    public static function updateAttendance(
+        PDO $db,
+        int $userId,
+        int $classId,
+        bool $attendance
+    ): void {
+        $stmt = $db->prepare('
+            UPDATE Enrollments
+            SET Attendance = ?
+            WHERE UserId = ?
+              AND ClassId = ?
+        ');
+
+        $stmt->execute([
+            $attendance,
             $userId,
             $classId
         ]);
