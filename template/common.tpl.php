@@ -129,7 +129,7 @@ function generateFooter() { ?>
 <footer class="main-footer">
     <div class="footer-text">
         <p>Copyright &copy; All rights reserved</p>
-        <p>Rua njdfbajlfhak 00, 4000-000 Cidade | email@powerpit.com | +555 900 000 000</p>
+        <p>Rua Dr. Roberto Frias, 4200-465 PORTO | email@powerpit.com | +555 900 000 000</p>
         <p>Our transactions are made in euros (&euro;).</p>
     </div>
 
