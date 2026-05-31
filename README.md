@@ -1,4 +1,4 @@
-# ltw01g01
+# ltw012g02
 
 ## Features
 
@@ -17,7 +17,7 @@
 **Trainers:**
 - [X] Manage their public profile, including bio, specializations, and certifications.
 - [X] View the roster of members enrolled in their classes.
-- [ ] Track and manage their assigned class schedule.
+- [X] Track and manage their assigned class schedule.
 
 **Admins:**
 - [X] Manage members and trainers (create, update, and deactivate accounts).
@@ -27,14 +27,15 @@
 - [X] Oversee and ensure the smooth operation of the entire system.
 
 **Extra:**
-- [ ] Something extra (e.g., personal training bookings, membership plans, waitlist, ...).
+- [x] Something extra (e.g., personal training bookings, membership plans, waitlist, ...).
 
 ## Running
 
-    The html files are in the html folder. Open the files locally to see the pages (the pages we made are not all currently accessable from each other, it is needed to open the files separately).
+    sqlite3 database/database.db < database/database.sql
+    php -S localhost:9000
 
 ## Credentials
 
-- admin/p4s5w0rd
-- member/1234
-- trainer/1234
+- admin@example.com/admin123
+- member@example.com/member123
+- trainer@example.com/trainer123
