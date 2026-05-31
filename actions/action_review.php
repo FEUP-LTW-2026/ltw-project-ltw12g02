@@ -2,6 +2,7 @@
 declare(strict_types = 1);
 
 require_once(__DIR__ . '/../utils/session.php');
+require_once(__DIR__ . '/../utils/csrf.php');
 $session = new Session();
 
 require_once(__DIR__ . '/../database/connection.db.php');
@@ -18,6 +19,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
     exit;
 }
+
+evaluateCSRF($_POST['token'] ?? '');
 
 $db = getDatabaseConnection();
 

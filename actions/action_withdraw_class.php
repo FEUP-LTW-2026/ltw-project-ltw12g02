@@ -2,6 +2,7 @@
 declare(strict_types = 1);
 
 require_once(__DIR__ . '/../utils/session.php');
+require_once(__DIR__ . '/../utils/csrf.php');
 require_once(__DIR__ . '/../database/connection.db.php');
 require_once(__DIR__ . '/../database/users.class.php');
 require_once(__DIR__ . '/../database/workoutclass.class.php');
@@ -38,6 +39,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: ../pages/profile.php');
     exit;
 }
+
+evaluateCSRF($_POST['token'] ?? '');
 
 $db = getDatabaseConnection();
 

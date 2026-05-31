@@ -1,6 +1,8 @@
 <?php
 declare(strict_types = 1);
 
+require_once(__DIR__ . '/../utils/csrf.php');
+
 function drawLoginForm(array $messages): void { ?>
     <main>
         <section class="auth-page form_page">
@@ -11,6 +13,7 @@ function drawLoginForm(array $messages): void { ?>
 
             <div class="form_box">
                 <form class="form-stack powerpit_form" action="../actions/action_login.php" method="post">
+                    <?php sendCSRF(); ?>
                     <label>
                         Email:
                         <input type="email" name="email" required>
@@ -45,6 +48,7 @@ function drawRegisterForm(array $messages): void { ?>
 
             <div class="form_box">
                 <form class="form-stack powerpit_form" action="../actions/action_register.php" method="post">
+                    <?php sendCSRF(); ?>
                     <label>
                         Full Name:
                         <input type="text" name="name" required>

@@ -1,6 +1,8 @@
 <?php
 declare(strict_types = 1);
 
+require_once(__DIR__ . '/../utils/csrf.php');
+
 require_once(__DIR__ . '/../database/users.class.php');
 require_once(__DIR__ . '/../database/trainers.class.php');
 require_once(__DIR__ . '/../database/enrollments.class.php');
@@ -72,6 +74,7 @@ function drawEditProfileDialog(Users $user): void { ?>
                 method="post"
                 enctype="multipart/form-data"
             >
+                <?php sendCSRF(); ?>
                 <label class="popup-photo" for="profile-image-input">
                     <img 
                         class="profile-image-preview"
@@ -183,6 +186,7 @@ function drawEditTrainerProfileDialog(Trainers $trainer): void { ?>
                 action="../actions/action_edit_trainer_profile.php" 
                 method="post"
             >
+                <?php sendCSRF(); ?>
                 <label>
                     Bio
                     <textarea 
@@ -258,6 +262,7 @@ function drawPersonalClassRequestDialog(Trainers $trainer, Users $trainerUser): 
                 action="../actions/action_create_personal_class.php"
                 method="post"
             >
+                <?php sendCSRF(); ?>
                 <input 
                     type="hidden"
                     name="trainer_id"
@@ -757,6 +762,7 @@ function drawReviewDialog(PDO $db,WorkoutClassType $workoutClassType, WorkoutCla
                 action="../actions/action_review.php" 
                 method="post"
             >
+                <?php sendCSRF(); ?>
                 <input 
                     type="hidden" 
                     name="class_id" 
@@ -885,6 +891,7 @@ function drawEquipmentReservationsCard(Users $user, array $equipmentReservations
                                 action="../actions/action_cancel_equipment_reservation.php"
                                 method="post"
                             >
+                                <?php sendCSRF(); ?>
                                 <input
                                     type="hidden"
                                     name="reservation_id"
@@ -977,6 +984,7 @@ function drawWithdrawDialog(PDO $db,WorkoutClassType $workoutClassType, WorkoutC
                 action="../actions/action_withdraw_class.php" 
                 method="post"
             >
+                <?php sendCSRF(); ?>
                 <input 
                     type="hidden" 
                     name="class_id" 
@@ -1221,6 +1229,7 @@ function drawTrainerPersonalClassRequestItem(PDO $db, PersonalClass $personalCla
                 action="../actions/action_respond_personal_class.php"
                 method="post"
             >
+                <?php sendCSRF(); ?>
                 <input
                     type="hidden"
                     name="personal_class_id"
@@ -1524,6 +1533,7 @@ function drawAdminComplaintItem(PDO $db, Complaints $complaint, bool $canRespond
                 action="../actions/action_complaint_response.php"
                 method="post"
             >
+                <?php sendCSRF(); ?>
                 <input
                     type="hidden"
                     name="complaint_id"

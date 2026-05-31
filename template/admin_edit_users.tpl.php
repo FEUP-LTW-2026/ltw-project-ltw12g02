@@ -1,6 +1,8 @@
 <?php
 declare(strict_types = 1);
 
+require_once(__DIR__ . '/../utils/csrf.php');
+
 require_once(__DIR__ . '/../database/users.class.php');
 
 function adminEditUserRoleLevel(string $role): int {
@@ -143,6 +145,7 @@ function drawAdminEditUserRoleCard(
                     class="form-stack popup-form admin-confirm-form"
                     data-confirm-name="<?= htmlspecialchars($user->getName()) ?>"
                 >
+                    <?php sendCSRF(); ?>
                     <input
                         type="hidden"
                         name="id"
@@ -383,6 +386,7 @@ function drawAdminEditUserPage(Users $user): void { ?>
                         class="form-stack popup-form admin-confirm-form"
                         data-confirm-name="<?= htmlspecialchars($user->getName()) ?>"
                     >
+                        <?php sendCSRF(); ?>
                         <input
                             type="hidden"
                             name="id"

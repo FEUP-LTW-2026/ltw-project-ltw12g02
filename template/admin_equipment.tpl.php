@@ -1,6 +1,8 @@
 <?php
 declare(strict_types = 1);
 
+require_once(__DIR__ . '/../utils/csrf.php');
+
 require_once(__DIR__ . '/../database/equipment.class.php');
 
 function getAdminEquipmentStatusClass(string $status): string {
@@ -75,6 +77,7 @@ function drawAdminEquipmentPage(array $equipment): void { ?>
                 method="post"
                 enctype="multipart/form-data"
             >
+                <?php sendCSRF(); ?>
                 <label>
                     Name
                     <input
@@ -219,6 +222,7 @@ function drawAdminEquipmentCard(Equipment $item): void {
                 action="../actions/action_update_equipment_status.php"
                 method="post"
             >
+                <?php sendCSRF(); ?>
                 <input
                     type="hidden"
                     name="equipment_id"
@@ -259,6 +263,7 @@ function drawAdminEquipmentCard(Equipment $item): void {
                 method="post"
                 onsubmit="return confirm('Are you sure you want to remove this equipment?');"
             >
+                <?php sendCSRF(); ?>
                 <input
                     type="hidden"
                     name="equipment_id"

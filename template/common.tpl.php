@@ -205,6 +205,7 @@ function drawComplaintDialog(): void { ?>
                 action="../actions/action_complaint.php" 
                 method="post"
             >
+                <?php sendCSRF(); ?>
                 <label>
                     Reason:
                     <select name="reason">
