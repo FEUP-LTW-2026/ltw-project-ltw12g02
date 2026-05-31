@@ -17,9 +17,9 @@ function drawAdminEditTrainerPage(Trainers $trainer, Users $user, PDO $db): void
     $allTrainers = Trainers::getAllTrainers($db);
     ?>
 
-    <main class="page-shell admin-users-page">
+    <main class="page-shell admin-page">
 
-        <section class="hero-panel admin-users-hero">
+        <section class="hero-panel admin-manage-hero">
             <p class="admin-label">PowerPIT Admin</p>
 
             <h1>Edit Trainer</h1>
@@ -64,7 +64,7 @@ function drawAdminEditTrainerPage(Trainers $trainer, Users $user, PDO $db): void
                     </p>
                 </div>
 
-                <span class="pill admin-user-role">
+                <span class="pill admin-role">
                     <?= htmlspecialchars($user->getRole()) ?>
                 </span>
             </div>
@@ -310,7 +310,7 @@ function drawAdminEditTrainerClasses(array $classes): void { ?>
                         </span>
                     </div>
 
-                    <span class="pill admin-user-role">
+                    <span class="pill admin-role">
                         Capacity <?= htmlspecialchars((string) $class->getCapacity()) ?>
                     </span>
 
@@ -365,7 +365,7 @@ function drawAdminEditTrainerReviews(array $reviews): void { ?>
                         </span>
                     </div>
 
-                    <span class="pill admin-user-role">
+                    <span class="pill admin-role">
                         <?= htmlspecialchars((string) $review['Rating']) ?>/5
                     </span>
                 </li>

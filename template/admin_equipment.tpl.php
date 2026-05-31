@@ -47,9 +47,9 @@ function groupAdminEquipmentByType(array $equipment): array {
 }
 
 function drawAdminEquipmentPage(array $equipment): void { ?>
-    <main class="page-shell admin-users-page admin-equipment-page">
+    <main class="page-shell admin-page admin-equipment-page">
 
-        <section class="hero-panel admin-users-hero">
+        <section class="hero-panel admin-manage-hero">
             <p class="admin-label">PowerPIT Admin</p>
 
             <h1>Manage Equipment</h1>

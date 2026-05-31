@@ -215,7 +215,7 @@ function drawBookingDialog(PDO $db,WorkoutClassType $workoutClassType, WorkoutCl
             </button>
 
             <header class="popup-header">
-                <p class="profile-member-card-label">PowerPIT Booking</p>
+                <p class="title-label">PowerPIT Booking</p>
                 <h1>Book Class</h1>
                 <p>Check the details before confirming your booking.</p>
             </header>

@@ -2,7 +2,7 @@
 declare(strict_types = 1);
 
 function drawAdminTrainersPage(array $trainers): void { ?>
-    <main class="page-shell admin-users-page">
+    <main class="page-shell admin-page">
         <?php drawAdminTrainersHero(); ?>
         <?php drawAdminTrainersControls(); ?>
         <?php drawAdminTrainersResults($trainers); ?>
@@ -12,7 +12,7 @@ function drawAdminTrainersPage(array $trainers): void { ?>
 
 <?php
 function drawAdminTrainersHero(): void { ?>
-    <section class="hero-panel admin-users-hero">
+    <section class="hero-panel admin-manage-hero">
         <p class="admin-label">PowerPit Admin</p>
         <h1>Manage Trainers</h1>
         <p>Search, review and manage trainer profiles.</p>
@@ -41,7 +41,7 @@ function drawAdminTrainersControls(): void { ?>
 <?php
 function drawAdminTrainersResults(array $trainers): void { ?>
     <section class="data-list admin-users-results">
-        <div class="data-header admin-users-header admin-trainers-header">
+        <div class="data-header admin-header admin-trainers-header">
             <span>Trainer</span>
             <span>Email</span>
             <span>Specialization</span>
@@ -93,7 +93,7 @@ function drawAdminTrainerRow(array $trainer): void {
             <?= htmlspecialchars($trainer['Email']) ?>
         </p>
 
-        <span class="pill admin-user-role">
+        <span class="pill admin-role">
             <?= htmlspecialchars($trainer['Specializations'] ?: 'Trainer') ?>
         </span>
 

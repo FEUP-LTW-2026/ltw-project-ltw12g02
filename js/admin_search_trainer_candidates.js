@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     ${escapeHtml(user.Email)}
                 </p>
 
-                <span class="admin-user-role">
+                <span class="admin-role">
                     ${escapeHtml(user.Role)}
                 </span>
 
@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         </button>
 
                         <header class="popup-header">
-                            <p class="profile-member-card-label">Confirm Action</p>
+                            <p class="title-label">Confirm Action</p>
 
                             <h1>Make Trainer</h1>
 

@@ -173,7 +173,7 @@ function drawEditTrainerProfileDialog(Trainers $trainer): void { ?>
             </button>
 
             <header class="popup-header">
-                <p class="profile-member-card-label">PowerPIT Trainer</p>
+                <p class="title-label">PowerPIT Trainer</p>
                 <h1>Edit Trainer Profile</h1>
                 <p>Update your public trainer information</p>
             </header>
@@ -245,7 +245,7 @@ function drawPersonalClassRequestDialog(Trainers $trainer, Users $trainerUser): 
             </button>
 
             <header class="popup-header">
-                <p class="profile-member-card-label">PowerPIT Personal Class</p>
+                <p class="title-label">PowerPIT Personal Class</p>
                 <h1>Request Personal Class</h1>
                 <p>
                     Send a request to <?= htmlspecialchars($trainerUser->getName()) ?>.
@@ -339,7 +339,7 @@ function drawMemberProfile(PDO $db, Users $user): void {
         <section class="media-section flex-row light">
             <div class="flex-item">
                 <div class="card card--dark">
-                    <div class="profile-member-card-content">
+                    <div class="profile-card-content">
                         <img 
                             class="profile-image-preview"
                             src="../assets/users/<?= htmlspecialchars($user->getProfileImage()) ?>" 
@@ -349,9 +349,9 @@ function drawMemberProfile(PDO $db, Users $user): void {
                         >
 
                         <div>
-                            <p class="profile-member-card-label">PowerPIT Member</p>
+                            <p class="title-label">PowerPIT Member</p>
                             <h1><?= htmlspecialchars($user->getName()) ?></h1>
-                            <p class="profile-member-card-meta">
+                            <p>
                                 <?php if ($user->getRole() == 'member') echo htmlspecialchars(ucfirst($user->getPlan()) . ' '); ?>
                                 <?= htmlspecialchars(ucfirst($user->getRole())) ?> Account
                             </p>
@@ -359,7 +359,7 @@ function drawMemberProfile(PDO $db, Users $user): void {
 
                         <button 
                             type="button" 
-                            class="btn small light profile-edit-btn"
+                            class="btn small light center"
                             data-dialog-target="edit-profile-dialog"
                         >
                             Edit Profile
@@ -418,7 +418,7 @@ function drawAdminProfile(PDO $db, Users $user): void {
         <section class="media-section flex-row light">
             <div class="flex-item">
                 <div class="card card--dark">
-                    <div class="profile-member-card-content">
+                    <div class="profile-card-content">
                         <img 
                             class="profile-image-preview"
                             src="../assets/users/<?= htmlspecialchars($user->getProfileImage()) ?>" 
@@ -428,16 +428,16 @@ function drawAdminProfile(PDO $db, Users $user): void {
                         >
 
                         <div>
-                            <p class="profile-member-card-label">PowerPIT Admin</p>
+                            <p class="title-label">PowerPIT Admin</p>
                             <h1><?= htmlspecialchars($user->getName()) ?></h1>
-                            <p class="profile-member-card-meta">
+                            <p>
                                 @<?= htmlspecialchars($user->getUserName()) ?> · <?= htmlspecialchars($user->getEmail()) ?>
                             </p>
                         </div>
 
                         <button 
                             type="button" 
-                            class="btn small light profile-edit-btn"
+                            class="btn small light center"
                             data-dialog-target="edit-profile-dialog"
                         >
                             Edit Profile
@@ -488,7 +488,7 @@ function drawTrainerProfile(PDO $db, Users $trainerUser, Trainers $trainer, bool
         <section class="media-section flex-row light">
             <div class="flex-item">
                 <div class="card card--dark">
-                    <div class="profile-member-card-content">
+                    <div class="profile-card-content">
                         <img 
                             class="profile-image-preview"
                             src="../assets/users/<?= htmlspecialchars($trainerUser->getProfileImage()) ?>" 
@@ -498,9 +498,9 @@ function drawTrainerProfile(PDO $db, Users $trainerUser, Trainers $trainer, bool
                         >
 
                         <div>
-                            <p class="profile-member-card-label">PowerPIT Trainer</p>
+                            <p class="title-label">PowerPIT Trainer</p>
                             <h1><?= htmlspecialchars($trainerUser->getName()) ?></h1>
-                            <p class="profile-member-card-meta">
+                            <p>
                                 <?php if ($canEdit) { ?>
                                     @<?= htmlspecialchars($trainerUser->getUserName()) ?> · <?= htmlspecialchars($trainerUser->getEmail()) ?>
                                 <?php } else { ?>
@@ -512,23 +512,23 @@ function drawTrainerProfile(PDO $db, Users $trainerUser, Trainers $trainer, bool
                         <?php if ($canEdit) { ?>
                             <button 
                                 type="button" 
-                                class="btn small light profile-edit-btn"
+                                class="btn small light center"
                                 data-dialog-target="edit-profile-dialog"
                             >
                                 Edit Profile
                             </button>
                         <?php } else if ($user === null) { ?>
-                            <button class="btn small light disabled profile-edit-btn">
+                            <button class="btn small light disabled center">
                                 Login to Request a Class
                             </button>
                         <?php } else if ($user->getRole() === 'member' && $user->getPlan() !== 'premium') { ?>
-                            <button class="btn small light disabled profile-edit-btn">
+                            <button class="btn small light disabled center">
                                 Upgrade your plan to Request a Class
                             </button>
                         <?php } else { ?>
                             <button 
                                 type="button" 
-                                class="btn small light profile-edit-btn"
+                                class="btn small light center"
                                 data-dialog-target="personal-class-request-dialog"
                             >
                                 Request Personal Class
@@ -729,7 +729,7 @@ function drawReviewDialog(PDO $db,WorkoutClassType $workoutClassType, WorkoutCla
             </button>
 
             <header class="popup-header">
-                <p class="profile-member-card-label"><?= htmlspecialchars($workoutClassType->getName())?> Class</p>
+                <p class="title-label"><?= htmlspecialchars($workoutClassType->getName())?> Class</p>
                 <h1>Review Class</h1>
                 <p>Rate this class and give us your feedback.</p>
             </header>
@@ -893,7 +893,7 @@ function drawEquipmentReservationsCard(Users $user, array $equipmentReservations
 
                                 <button
                                     type="submit"
-                                    class="btn small light profile-edit-btn"
+                                    class="btn small light"
                                 >
                                     Cancel
                                 </button>
@@ -929,7 +929,7 @@ function drawWithdrawDialog(PDO $db,WorkoutClassType $workoutClassType, WorkoutC
             </button>
 
             <header class="popup-header">
-                <p class="profile-member-card-label">PowerPIT Withdrawal</p>
+                <p class="title-label">PowerPIT Withdrawal</p>
                 <h1>Withdraw from class</h1>
                 <p>Check the details before confirming your withdrawal.
                     You can always enroll again if there are spots remaining.</p>
@@ -1005,7 +1005,7 @@ function drawPersonalClassesCard(PDO $db, Users $user, array $personalClasses): 
     <article class="card personal_classes_card">
         <header class="personal_classes_header">
             <div>
-                <p class="profile-member-card-label">PowerPIT Personal Training</p>
+                <p class="title-label">PowerPIT Personal Training</p>
                 <h2 class="card-title">Personal Classes</h2>
             </div>
         </header>
@@ -1095,7 +1095,7 @@ function drawTrainerPersonalClassRequestsCard(PDO $db, array $personalClasses): 
     <article class="card personal_requests_card">
         <header class="personal_requests_header">
             <div>
-                <p class="profile-member-card-label">PowerPIT Personal Training</p>
+                <p class="title-label">PowerPIT Personal Training</p>
                 <h2 class="card-title">Personal Class Requests</h2>
             </div>
 
@@ -1280,7 +1280,7 @@ function drawNextClassesCard(PDO $db, Users $user, array $nextClasses): void { ?
                             <?= htmlspecialchars(date('d M · H:i', strtotime($workoutClass->getClassDateTime()))) ?>
                             <button 
                                 type="button" 
-                                class="btn small light profile-edit-btn"
+                                class="btn small light"
                                 data-dialog-target="<?=htmlspecialchars($dialogId)?>"
                             >
                                 Withdraw
@@ -1321,7 +1321,7 @@ function drawClassHistoryCard(PDO $db, Users $user, array $classHistory): void {
                             <?php } else { ?>
                                 <button 
                                     type="button" 
-                                    class="btn small light profile-edit-btn"
+                                    class="btn small light"
                                     data-dialog-target="<?=htmlspecialchars($dialogId)?>"
                                 >
                                     Review

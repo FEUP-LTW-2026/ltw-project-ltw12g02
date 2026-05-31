@@ -135,7 +135,7 @@ function generateFooter() { ?>
 
     <button 
         type="button"
-        class="btn small light profile-edit-btn"
+        class="btn small light"
         data-dialog-target="complaint-dialog"
     >
         Send a Complaint
@@ -169,7 +169,7 @@ function generateTemplates(): void { ?>
     </button>
 
     <header class="popup-header">
-        <p class="profile-member-card-label result-topic"></p>
+        <p class="title-label result-topic"></p>
         <h1 class="result-title"></h1>
         <p class="result-message"></p>
     </header>
@@ -195,7 +195,7 @@ function drawComplaintDialog(): void { ?>
             </button>
 
             <header class="popup-header">
-                <p class="profile-member-card-label">PowerPIT Support</p>
+                <p class="title-label">PowerPIT Support</p>
                 <h1>Send a Complaint</h1>
                 <p>Report an issue and we'll respond as soon as we can!</p>
             </header>

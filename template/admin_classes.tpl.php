@@ -8,7 +8,7 @@ function drawAdminClassesPage(
     string $filter,
     PDO $db
 ): void { ?>
-    <main class="page-shell admin-users-page admin-classes-page">
+    <main class="page-shell admin-page admin-classes-page">
         <?php drawAdminClassesHero(); ?>
         <?php drawAdminClassesControls($trainers, $filter, $db); ?>
         <?php drawAdminClassFilters($filter); ?>
@@ -44,7 +44,7 @@ function drawAdminClassesPage(
 
 <?php
 function drawAdminClassesHero(): void { ?>
-    <section class="hero-panel admin-users-hero">
+    <section class="hero-panel admin-manage-hero">
         <p class="admin-label">PowerPit Admin</p>
         <h1>Manage Classes</h1>
         <p>Create classes, assign trainers, edit schedules and manage capacity.</p>
@@ -102,21 +102,21 @@ function drawAdminClassFilters(string $filter): void { ?>
     <nav class="admin-class-filters" aria-label="Class filters">
         <a
             href="admin_classes.php?filter=all"
-            class="pill admin-user-role <?= $filter === 'all' ? 'active' : '' ?>"
+            class="pill admin-role <?= $filter === 'all' ? 'active' : '' ?>"
         >
             All classes
         </a>
 
         <a
             href="admin_classes.php?filter=upcoming"
-            class="pill admin-user-role <?= $filter === 'upcoming' ? 'active' : '' ?>"
+            class="pill admin-role <?= $filter === 'upcoming' ? 'active' : '' ?>"
         >
             Upcoming
         </a>
 
         <a
             href="admin_classes.php?filter=past"
-            class="pill admin-user-role <?= $filter === 'past' ? 'active' : '' ?>"
+            class="pill admin-role <?= $filter === 'past' ? 'active' : '' ?>"
         >
             Past
         </a>
@@ -127,7 +127,7 @@ function drawAdminClassFilters(string $filter): void { ?>
 <?php
 function drawAdminClassesResults(array $classes, PDO $db): void { ?>
     <section class="data-list admin-users-results">
-        <div class="data-header admin-users-header admin-class-row-layout">
+        <div class="data-header admin-header admin-class-row-layout">
             <span>Class</span>
             <span>Schedule</span>
             <span>Trainer</span>
@@ -183,7 +183,7 @@ function drawAdminClassRow(WorkoutClass $class, PDO $db): void {
             <?= htmlspecialchars($trainerName) ?>
         </p>
 
-        <span class="pill admin-user-role">
+        <span class="pill admin-role">
             <?= htmlspecialchars((string) $enrollments) ?>/<?= htmlspecialchars((string) $capacity) ?>
             booked
         </span>
@@ -225,7 +225,7 @@ function drawAdminClassFormDialog(
     $minimumDateTime = date('Y-m-d\TH:i');
 ?>
     <dialog id="<?= htmlspecialchars($dialogId) ?>" class="modal popup-dialog">
-        <section class="modal-card card popup-card">
+        <section class="modal-card card popup-card" id="admin-class-dialog">
             <button
                 type="button"
                 class="popup-close"
@@ -236,13 +236,14 @@ function drawAdminClassFormDialog(
             </button>
 
             <header class="popup-header">
-                <p class="profile-member-card-label">PowerPIT Admin</p>
+                <p class="title-label">PowerPIT Admin</p>
                 <h1><?= htmlspecialchars($title) ?></h1>
                 <p>Choose the class type, trainer, schedule and capacity.</p>
             </header>
 
             <form
                 class="form-stack popup-form"
+                
                 action="../actions/action_admin_class.php"
                 method="post"
             >
@@ -355,7 +356,7 @@ function drawAdminClassDeleteDialog(WorkoutClass $class, PDO $db): void {
             </button>
 
             <header class="popup-header">
-                <p class="profile-member-card-label">PowerPIT Admin</p>
+                <p class="title-label">PowerPIT Admin</p>
                 <h1>Delete Class</h1>
                 <p>This action will remove this class from the schedule.</p>
             </header>
@@ -374,7 +375,7 @@ function drawAdminClassDeleteDialog(WorkoutClass $class, PDO $db): void {
                 >
 
                 <article class="card">
-                    <p class="profile-member-card-label">Class selected</p>
+                    <p class="title-label">Class selected</p>
                     <h1><?= htmlspecialchars($classTypeName) ?></h1>
 
                     <div class="card-wrap">

@@ -198,9 +198,9 @@ function drawAdminEditUserRoleCard(
 <?php }
 
 function drawAdminEditUserPage(Users $user): void { ?>
-    <main class="page-shell admin-users-page">
+    <main class="page-shell admin-page">
 
-        <section class="hero-panel admin-users-hero">
+        <section class="hero-panel admin-manage-hero">
             <p class="admin-label">Admin Panel</p>
 
             <h1>User Management</h1>
@@ -246,7 +246,7 @@ function drawAdminEditUserPage(Users $user): void { ?>
                     </p>
                 </div>
 
-                <span class="pill admin-user-role">
+                <span class="pill admin-role">
                     <?= htmlspecialchars($user->getRole()) ?>
                 </span>
             </div>

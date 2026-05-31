@@ -50,7 +50,7 @@
         for (const trainer of trainers) {
             const trainerRow = document.createElement('article');
 
-            trainerRow.classList.add('admin-user-row', 'admin-trainer-row');
+            trainerRow.classList.add('admin-user-row');
 
             const trainerMain = document.createElement('div');
             trainerMain.classList.add('admin-user-main');
@@ -78,7 +78,7 @@
             email.textContent = trainer.Email;
 
             const specializations = document.createElement('span');
-            specializations.classList.add('admin-user-role');
+            specializations.classList.add('admin-role');
             specializations.textContent = trainer.Specializations || 'Trainer';
 
             const actions = document.createElement('div');

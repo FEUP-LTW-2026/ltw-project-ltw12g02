@@ -58,7 +58,7 @@ function showUsers(users) {
 
             <p class="admin-user-email">${user.Email}</p>
 
-            <span class="admin-user-role">${user.Role}</span>
+            <span class="admin-role">${user.Role}</span>
 
             <div class="admin-user-actions">
                 <a href="admin_edit_user.php?id=${user.UserId}">Edit</a>

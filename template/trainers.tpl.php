@@ -88,7 +88,7 @@ function drawTrainerCard(Trainers $trainer, PDO $db): void {
             >
 
             <div class="trainer_card_content">
-                <p class="profile-member-card-label">PowerPIT Coach</p>
+                <p class="title-label">PowerPIT Coach</p>
 
                 <h2><?= htmlspecialchars($user->getName()) ?></h2>
 

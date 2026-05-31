@@ -2,7 +2,7 @@
 declare(strict_types = 1);
 
 function drawAdminSearchUserPage(): void { ?>
-    <main class="page-shell admin-users-page">
+    <main class="page-shell admin-page">
         <?php drawAdminSearchUserHero(); ?>
         <?php drawAdminSearchUserControls(); ?>
         <?php drawAdminSearchUserResults(); ?>
@@ -13,7 +13,7 @@ function drawAdminSearchUserPage(): void { ?>
 
 <?php
 function drawAdminSearchUserHero(): void { ?>
-    <section class="hero-panel admin-users-hero">
+    <section class="hero-panel admin-manage-hero">
         <p class="admin-label">PowerPit Admin</p>
         <h1>Search Users</h1>
         <p>Search platform users by name, username or email.</p>
@@ -38,7 +38,7 @@ function drawAdminSearchUserControls(): void { ?>
 <?php
 function drawAdminSearchUserResults(): void { ?>
     <section class="data-list admin-users-results">
-        <div class="data-header admin-users-header">
+        <div class="data-header admin-header">
             <span>User</span>
             <span>Email</span>
             <span>Role</span>

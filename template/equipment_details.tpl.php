@@ -219,7 +219,7 @@ function drawEquipmentReservationDialog(Equipment $equipment, int $availableQuan
             </button>
 
             <header class="popup-header">
-                <p class="profile-member-card-label">PowerPIT Equipment</p>
+                <p class="title-label">PowerPIT Equipment</p>
                 <h1>Reserve Equipment</h1>
                 <p>Choose the date, start time and duration of your reservation.</p>
             </header>

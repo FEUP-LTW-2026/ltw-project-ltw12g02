@@ -94,21 +94,21 @@ function drawTrainerAnalyticsFilters(string $filter): void { ?>
     <nav class="admin-class-filters trainer_analytics_filters" aria-label="Trainer analytics filters">
         <a
             href="trainer_analytics.php?filter=upcoming"
-            class="pill admin-user-role <?= $filter === 'upcoming' ? 'active' : '' ?>"
+            class="pill admin-role <?= $filter === 'upcoming' ? 'active' : '' ?>"
         >
             Upcoming
         </a>
 
         <a
             href="trainer_analytics.php?filter=past"
-            class="pill admin-user-role <?= $filter === 'past' ? 'active' : '' ?>"
+            class="pill admin-role <?= $filter === 'past' ? 'active' : '' ?>"
         >
             Past
         </a>
 
         <a
             href="trainer_analytics.php?filter=all"
-            class="pill admin-user-role <?= $filter === 'all' ? 'active' : '' ?>"
+            class="pill admin-role <?= $filter === 'all' ? 'active' : '' ?>"
         >
             All classes
         </a>

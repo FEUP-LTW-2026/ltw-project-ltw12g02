@@ -2,9 +2,9 @@
 declare(strict_types = 1);
 
 function drawAdminAddTrainerPage(): void { ?>
-    <main class="page-shell admin-users-page">
+    <main class="page-shell admin-page">
 
-        <section class="hero-panel admin-users-hero">
+        <section class="hero-panel admin-manage-hero">
             <p class="admin-label">PowerPIT Admin</p>
 
             <h1>Add Trainer</h1>
@@ -28,8 +28,8 @@ function drawAdminAddTrainerPage(): void { ?>
             </a>
         </section>
 
-        <section class="data-list admin-users-results">
-            <div class="data-header admin-users-header">
+        <section class="data-list admin-results">
+            <div class="data-header admin-header">
                 <span>User</span>
                 <span>Email</span>
                 <span>Current Role</span>

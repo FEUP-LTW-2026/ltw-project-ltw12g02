@@ -63,24 +63,24 @@ button, input, select, textarea {
 }
 
 /* GENERIC LAYOUT */
-.highlight-text, .classes_label, .admin-label, .profile-member-card-label, :is(.admin-icon-box, .trainer_analytics_empty_icon) {
+.highlight-text, .classes_label, .admin-label, :is(.admin-icon-box, .trainer_analytics_empty_icon) {
   color: var(--lime);
 }
-.classes_label, .admin-label, .profile-member-card-label, :is(.admin-stat-card, .trainer_analytics_stat) span, :is(.analytics-table th, .admin-users-header, .admin-tag, .equipment_status, .personal_request_status, .personal_request_badge, .analytics-status) {
+.classes_label, .admin-label, :is(.admin-stat-card, .trainer_analytics_stat) span, :is(.analytics-table th, .admin-header, .admin-tag, .equipment_status, .personal_request_status, .personal_request_badge, .analytics-status) {
   text-transform: uppercase;
   font-weight: 900;
 }
-.classes_label, .admin-label, .profile-member-card-label {
+.classes_label, .admin-label {
   margin-bottom: 0.7rem;
   letter-spacing: 0.18em;
 }
 .classes_label {
   font-size: 1rem;
 }
-.admin-label, .profile-member-card-label {
+.admin-label {
   font-size: 0.75rem;
 }
-:is(.admin-hero, .trainer_analytics_hero, .admin-users-hero, .admin-card, .admin-stat-card, .trainer_analytics_stat, .admin-user-row, .empty-search-message, .error-message, .equipment_gallery_card, .equipment_details_hero, .admin-empty-card, .analytics-empty) {
+:is(.admin-hero, .trainer_analytics_hero, .admin-card, .admin-stat-card, .trainer_analytics_stat, .admin-user-row, .empty-search-message, .error-message, .equipment_gallery_card, .equipment_details_hero, .admin-empty-card, .analytics-empty) {
   border-radius: var(--radius);
   box-shadow: var(--shadow);
 }
@@ -91,7 +91,7 @@ button, input, select, textarea {
   width: var(--page-width);
   margin-inline: auto;
 }
-:is(.admin-top, .trainer_analytics_top, .admin-users-hero, .image-bg, .admin-equipment-placeholder, .equipment_details_note) {
+:is(.admin-top, .trainer_analytics_top, .admin-manage-hero, .image-bg, .admin-equipment-placeholder, .equipment_details_note) {
   background-size: cover;
   background-position: center;
 }
@@ -218,12 +218,12 @@ button, input, select, textarea {
   color: var(--gray-text);
   text-align: right;
 }
-:is(.admin-tag, .admin-user-role, .analytics-count-pill, .equipment_gallery_overlay strong, .equipment_details_badges strong, .personal_request_badge, .personal_request_status, .analytics-status, .admin_analytics_item .admin_analytics_pill) {
+:is(.admin-tag, .admin-role, .analytics-count-pill, .equipment_gallery_overlay strong, .equipment_details_badges strong, .personal_request_badge, .personal_request_status, .analytics-status, .admin_analytics_item .admin_analytics_pill) {
   width: fit-content;
   border-radius: 999px;
   font-weight: 900;
 }
-:is(.admin-tag, .analytics-count-pill, .admin-user-role) {
+:is(.admin-tag, .analytics-count-pill, .admin-role) {
   padding: 0.45rem 0.8rem;
   background: var(--gray-bg);
   color: var(--black);
@@ -963,6 +963,7 @@ button, input, select, textarea {
   letter-spacing: 0.08em;
 }
 .equipment_status {
+  border-radius: 20px;
   font-size: 0.68rem;
 }
 :is(.equipment_status.available, .analytics-status-open, .personal_request_status.accepted, .personal_accept_btn, .complaint_item .personal_request_status.accepted) {
@@ -1032,25 +1033,26 @@ button, input, select, textarea {
 }
 
 /* ADMIN TABLE-LIKE PAGES */
-.admin-users-page {
+.admin-page {
   width: var(--page-width);
   margin: 0 auto;
   padding: 3rem 0 4rem;
 }
-.admin-users-hero {
+.admin-manage-hero {
   margin-bottom: 2rem;
   padding: 2.4rem;
   color: var(--white);
+  border-radius: 24px;
   background-image: linear-gradient(135deg, rgba(5, 5, 5, 0.92), rgba(5, 5, 5, 0.72)), var(--hero-bg);
   border: 1px solid rgba(183, 255, 0, 0.22);
 }
-.admin-users-hero h1 {
+.admin-manage-hero h1 {
   margin-bottom: 1rem;
   color: var(--white);
   font-size: clamp(2.2rem, 4vw, 3.4rem);
   line-height: 1;
 }
-.admin-users-hero p {
+.admin-manage-hero p {
   max-width: 38rem;
   color: rgba(255, 255, 255, 0.76);
 }
@@ -1084,17 +1086,13 @@ button, input, select, textarea {
   outline: none;
   border-color: var(--lime);
 }
-.admin-users-results {
-  display: grid;
-  gap: 0.75rem;
-}
-.admin-users-header, .admin-user-row {
+.admin-header, .admin-user-row {
   display: grid;
   grid-template-columns: 1.5fr 1.5fr 8rem 7rem;
   gap: 1rem;
   align-items: center;
 }
-.admin-users-header {
+.admin-header {
   padding: 0 1rem;
   color: var(--gray-text);
   font-size: 0.78rem;
@@ -1123,10 +1121,10 @@ button, input, select, textarea {
   font-size: 0.9rem;
   overflow-wrap: anywhere;
 }
-.admin-user-main, .admin-user-main > div, .admin-user-role {
+.admin-user-main, .admin-user-main > div, .admin-role {
   min-width: 0;
 }
-.admin-user-role {
+.admin-role {
   display: inline-block;
   max-width: 100%;
   white-space: normal;
@@ -1167,7 +1165,7 @@ button, input, select, textarea {
   background: #fee2e2;
   border-color: rgba(153, 27, 27, 0.2);
 }
-.admin-trainers-header, .admin-trainer-row {
+.admin-trainers-header {
   grid-template-columns: minmax(14rem, 1.3fr) minmax(18rem, 1.4fr) minmax(12rem, 1fr) 5rem;
 }
 .admin-class-filter-form, .admin-classes-page .admin-class-filter-form {
@@ -1190,11 +1188,11 @@ button, input, select, textarea {
   flex-wrap: wrap;
   gap: 0.7rem;
 }
-.admin-class-filters .admin-user-role {
+.admin-class-filters .admin-role {
   cursor: pointer;
   transition: 0.2s ease;
 }
-.admin-class-filters .admin-user-role:is(.active, :hover) {
+.admin-class-filters .admin-role:is(.active, :hover) {
   background: var(--black);
   color: var(--lime);
 }
@@ -1943,10 +1941,10 @@ button, input, select, textarea {
 .admin-section-header > p {
     text-align: left;
 }
-.admin-users-header, .admin-trainers-header {
+.admin-header, .admin-trainers-header {
     display: none;
 }
-.admin-user-row, .admin-trainer-row, .admin-class-row-layout {
+.admin-user-row, .admin-class-row-layout {
     grid-template-columns: 1fr;
     gap: 0.8rem;
 }
@@ -2023,10 +2021,10 @@ button, input, select, textarea {
     height: 2.5rem;
     font-size: 1.7rem;
 }
-.popup-card, .popup-dialog .popup-card, .trainer_analytics_hero, .admin-hero, .admin-users-hero, .analytics-card, .trainer_analytics_empty_dashboard {
+.popup-card, .popup-dialog .popup-card, .trainer_analytics_hero, .admin-hero, .analytics-card, .trainer_analytics_empty_dashboard {
     padding: 1.5rem;
 }
-.popup-header h1, :is(.admin-hero, .trainer_analytics_hero, .admin-users-hero) h1, .trainer_analytics_empty_dashboard h2 {
+.popup-header h1, :is(.admin-hero, .trainer_analytics_hero) h1, .trainer_analytics_empty_dashboard h2 {
     font-size: 2rem;
 }
 .popup-actions {
@@ -2062,7 +2060,7 @@ button, input, select, textarea {
 :is(.admin-hero, .trainer_analytics_hero) {
     min-height: auto;
 }
-.admin-users-page {
+.admin-page {
     padding: 2rem 0 3rem;
 }
 .admin-user-main {
@@ -2080,7 +2078,7 @@ button, input, select, textarea {
 .equipment_group_header, .admin-class-filters, .personal_classes_header, .personal_requests_header, .personal_class_compact_item header, .personal_request_actions, .trainer_analytics_empty_actions, .quick-actions-row {
     flex-direction: column;
 }
-.admin-class-filters, .admin-class-filters .admin-user-role, .admin-form-actions {
+.admin-class-filters, .admin-class-filters .admin-role, .admin-form-actions {
     width: 100%;
 }
 .equipment_gallery_card {
