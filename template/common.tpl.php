@@ -2,6 +2,7 @@
 
 require_once(__DIR__ . '/../database/connection.db.php');
 require_once(__DIR__ . '/../database/users.class.php');
+require_once(__DIR__ . '/../utils/csrf.php');
 
 function generateHead(string $title) {
      ?>
