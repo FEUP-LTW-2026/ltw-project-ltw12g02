@@ -402,6 +402,27 @@ class Users {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+public function changePlan(string $plan, PDO $db): void {
+    $allowedPlans = ['basic', 'plus', 'premium'];
+
+    if (!in_array($plan, $allowedPlans, true)) {
+        throw new InvalidArgumentException('Invalid plan.');
+    }
+
+    $stmt = $db->prepare('
+        UPDATE Users 
+        SET Plan = ? 
+        WHERE UserId = ?
+    ');
+
+    $stmt->execute([
+        $plan,
+        $this->user_id
+    ]);
+
+    $this->plan = $plan;
+}
+
 public function changeRole(string $role, PDO $db): void {
     $allowedRoles = ['member', 'trainer', 'admin'];
 
@@ -431,31 +452,6 @@ public function changeRole(string $role, PDO $db): void {
     if ($oldRole === 'trainer' && $role !== 'trainer') {
         Trainers::deleteTrainer($this->user_id, $db);
     }
-
-    if ($role !== 'member' && this->$plan !== 'premium') {
-        changePlan('premium', $db);
-    }
-}
-
-public function changePlan(string $plan, PDO $db): void {
-    $allowedPlans = ['basic', 'plus', 'premium'];
-
-    if (!in_array($plan, $allowedPlans, true)) {
-        throw new InvalidArgumentException('Invalid plan.');
-    }
-
-    $stmt = $db->prepare('
-        UPDATE Users 
-        SET Plan = ? 
-        WHERE UserId = ?
-    ');
-
-    $stmt->execute([
-        $plan,
-        $this->user_id
-    ]);
-
-    $this->plan = $plan;
 }
 
 public function deleteUser(PDO $db): void {

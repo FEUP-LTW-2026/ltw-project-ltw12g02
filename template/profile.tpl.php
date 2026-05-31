@@ -1013,7 +1013,6 @@ function drawPersonalClassesCard(PDO $db, Users $user, array $personalClasses): 
     <article class="card personal_classes_card">
         <header class="personal_classes_header">
             <div>
-                <p class="title-label">PowerPIT Personal Training</p>
                 <h2 class="card-title">Personal Classes</h2>
             </div>
         </header>
