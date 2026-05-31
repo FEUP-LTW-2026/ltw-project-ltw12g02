@@ -1070,7 +1070,7 @@ button, input, select, textarea {
   min-height: 3.35rem;
   white-space: nowrap;
 }
-:is(.admin-users-controls input, .admin-class-filter-form input, .admin-class-filter-form select, .admin-equipment-form input, .admin-equipment-form select, .admin-equipment-controls select) {
+:is(.admin-users-controls input, .class-filter-form input, .class-filter-form select, .admin-equipment-form input, .admin-equipment-form select, .admin-equipment-controls select) {
   width: 100%;
   border: 1px solid var(--border);
   border-radius: 999px;
@@ -1082,7 +1082,7 @@ button, input, select, textarea {
   padding: 1rem 1.2rem;
   font-size: 1rem;
 }
-:is(.admin-users-controls input, .admin-class-filter-form input, .admin-class-filter-form select, .admin-equipment-form input, .admin-equipment-form select, .admin-equipment-controls select):focus {
+:is(.admin-users-controls input, .class-filter-form input, .class-filter-form select, .admin-equipment-form input, .admin-equipment-form select, .admin-equipment-controls select):focus {
   outline: none;
   border-color: var(--lime);
 }
@@ -1168,18 +1168,18 @@ button, input, select, textarea {
 .admin-trainers-header {
   grid-template-columns: minmax(14rem, 1.3fr) minmax(18rem, 1.4fr) minmax(12rem, 1fr) 5rem;
 }
-.admin-class-filter-form, .admin-classes-page .admin-class-filter-form {
+.class-filter-form, .admin-classes-page .class-filter-form {
   display: grid;
   grid-template-columns: 1.2fr 1fr 0.8fr;
   gap: 0.8rem;
   min-width: 0;
 }
-.admin-class-filter-form :is(input, select) {
+.class-filter-form :is(input, select) {
   min-height: 3.35rem;
   padding: 0 1.2rem;
   font-size: 1rem;
 }
-.admin-class-filter-form select {
+.class-filter-form select {
   cursor: pointer;
 }
 .admin-class-filters {
@@ -1961,7 +1961,7 @@ button, input, select, textarea {
     padding: 1.8rem;
     background: linear-gradient(180deg, rgba(0, 0, 0, 0.22), rgba(0, 0, 0, 0.9));
 }
-.equipment_details_content, .trainer_analytics_grid, .trainer_analytics_insights, .admin-classes-page .admin-users-controls-row, .admin-classes-page .admin-class-filter-form {
+.equipment_details_content, .trainer_analytics_grid, .trainer_analytics_insights, .admin-classes-page .admin-users-controls-row, .admin-classes-page .class-filter-form {
     grid-template-columns: 1fr;
 }
 .admin-equipment-form {

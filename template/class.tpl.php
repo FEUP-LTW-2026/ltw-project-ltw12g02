@@ -111,7 +111,7 @@ function drawAvailableClassesIntro(WorkoutClassType $workoutClassType): void { ?
 
 <?php
 function drawAvailableClasses(PDO $db,WorkoutClassType $workoutClassType): void { ?>
-    <form class="toolbar-form filter-form">
+    <form class="toolbar-form filter-form admin-class-filter-form">
 
         <input 
             type="hidden" 

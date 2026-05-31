@@ -60,7 +60,7 @@ function drawAdminClassesControls(array $trainers, string $filter, PDO $db): voi
     $dateMax = $filter === 'past' ? date('Y-m-d') : '';
 ?>
     <section class="toolbar admin-users-controls admin-users-controls-row">
-        <form class="toolbar-form filter-form admin-class-filter-form">
+        <form class="toolbar-form filter-form class-filter-form">
             <input type="hidden" name="admin" value="1">
             <input type="hidden" name="filter" value="<?= htmlspecialchars($filter) ?>">
 
