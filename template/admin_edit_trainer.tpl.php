@@ -1,6 +1,8 @@
 <?php
 declare(strict_types = 1);
 
+require_once(__DIR__ . '/../utils/csrf.php');
+
 require_once(__DIR__ . '/../database/users.class.php');
 require_once(__DIR__ . '/../database/trainers.class.php');
 require_once(__DIR__ . '/../database/workoutclass.class.php');
@@ -135,6 +137,7 @@ function drawAdminEditTrainerPage(Trainers $trainer, Users $user, PDO $db): void
                 method="post"
                 class="form-stack powerpit_form"
             >
+                <?php sendCSRF(); ?>
                 <input
                     type="hidden"
                     name="trainer_id"

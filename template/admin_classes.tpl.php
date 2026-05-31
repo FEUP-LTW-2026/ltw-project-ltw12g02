@@ -1,6 +1,8 @@
 <?php
 declare(strict_types = 1);
 
+require_once(__DIR__ . '/../utils/csrf.php');
+
 function drawAdminClassesPage(
     array $classes,
     array $classTypes,
@@ -246,6 +248,7 @@ function drawAdminClassFormDialog(
                 action="../actions/action_admin_class.php"
                 method="post"
             >
+                <?php sendCSRF(); ?>
                 <input type="hidden" name="action" value="<?= htmlspecialchars($action) ?>">
 
                 <?php if ($class !== null) { ?>
@@ -365,6 +368,7 @@ function drawAdminClassDeleteDialog(WorkoutClass $class, PDO $db): void {
                 action="../actions/action_admin_class.php"
                 method="post"
             >
+                <?php sendCSRF(); ?>
                 <input type="hidden" name="action" value="delete">
 
                 <input

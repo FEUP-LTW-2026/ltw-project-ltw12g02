@@ -1,6 +1,8 @@
 <?php
 declare(strict_types = 1);
 
+require_once(__DIR__ . '/../utils/csrf.php');
+
 require_once(__DIR__ . '/../database/workoutclasstype.class.php');
 require_once(__DIR__ . '/../database/workoutclass.class.php');
 
@@ -262,6 +264,7 @@ function drawBookingDialog(PDO $db,WorkoutClassType $workoutClassType, WorkoutCl
                 action="../actions/action_book_class.php" 
                 method="post"
             >
+                <?php sendCSRF(); ?>
                 <input 
                     type="hidden" 
                     name="class_id" 

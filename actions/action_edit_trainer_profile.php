@@ -2,6 +2,7 @@
 declare(strict_types = 1);
 
 require_once(__DIR__ . '/../utils/session.php');
+require_once(__DIR__ . '/../utils/csrf.php');
 require_once(__DIR__ . '/../database/connection.db.php');
 require_once(__DIR__ . '/../database/users.class.php');
 require_once(__DIR__ . '/../database/trainers.class.php');
@@ -28,6 +29,8 @@ if ($user->getRole() !== 'trainer') {
     header('Location: ../pages/profile.php');
     exit();
 }
+
+evaluateCSRF($_POST['token'] ?? '');
 
 $bio = trim($_POST['bio'] ?? '');
 $specializations = trim($_POST['specializations'] ?? '');

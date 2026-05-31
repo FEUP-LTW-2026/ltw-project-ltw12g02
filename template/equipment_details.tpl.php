@@ -1,6 +1,8 @@
 <?php
 declare(strict_types = 1);
 
+require_once(__DIR__ . '/../utils/csrf.php');
+
 require_once(__DIR__ . '/../utils/session.php');
 require_once(__DIR__ . '/../database/users.class.php');
 require_once(__DIR__ . '/../database/equipment.class.php');
@@ -251,6 +253,7 @@ function drawEquipmentReservationDialog(Equipment $equipment, int $availableQuan
                 action="../actions/action_equipment_reservation.php"
                 method="post"
             >
+                <?php sendCSRF(); ?>
                 <input
                     type="hidden"
                     name="equipment_id"

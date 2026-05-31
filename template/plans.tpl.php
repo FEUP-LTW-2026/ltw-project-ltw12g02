@@ -1,6 +1,8 @@
 <?php
 declare(strict_types = 1);
 
+require_once(__DIR__ . '/../utils/csrf.php');
+
 require_once(__DIR__ . '/../database/users.class.php');
 
 function drawPlans($db, $user): void { ?>
@@ -39,7 +41,7 @@ function drawPlans($db, $user): void { ?>
                                 action="../actions/action_plans.php"
                                 method="post"
                             >
-
+                                <?php sendCSRF(); ?>
                                 <input
                                     type="hidden"
                                     name="membership"
@@ -88,7 +90,7 @@ function drawPlans($db, $user): void { ?>
                                 action="../actions/action_plans.php"
                                 method="post"
                             >
-
+                                <?php sendCSRF(); ?>
                                 <input
                                     type="hidden"
                                     name="membership"
@@ -137,7 +139,7 @@ function drawPlans($db, $user): void { ?>
                                 action="../actions/action_plans.php"
                                 method="post"
                             >
-
+                                <?php sendCSRF(); ?>
                                 <input
                                     type="hidden"
                                     name="membership"
