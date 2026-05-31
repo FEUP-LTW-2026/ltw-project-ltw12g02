@@ -32,13 +32,13 @@ function drawHomepage(Session $session): void { ?>
             </article>
 
             <aside class="flex-item side">
-                <img src="https://picsum.photos/400/400" alt="GymGoers" height="400" width="400">
+                <img src="https://static.vecteezy.com/system/resources/thumbnails/046/836/977/small/african-male-fitness-trainer-in-gym-fitness-and-wellness-african-american-coach-healthy-lifestyle-photo.jpg" alt="Gym staff" height="400" width="400">
             </aside> 
         </section>
 
         <section class="media-section flex-row dark" id="classes">
             <aside class="flex-item side">
-                <img src="https://picsum.photos/400/400" alt="GymGoers" height="400" width="400">
+                <img src="https://static.vecteezy.com/system/resources/thumbnails/071/531/004/small/fitness-class-workout-group-exercise-gym-training-aerobics-cardio-strength-and-conditioning-health-and-wellness-free-photo.jpeg" alt="Gym class" height="400" width="400">
             </aside>
 
             <article class="flex-item main">
@@ -60,13 +60,13 @@ function drawHomepage(Session $session): void { ?>
             </article>
 
             <aside class="flex-item side">
-                <img src="https://picsum.photos/400/400" alt="GymGoers" height="400" width="400">
+                <img src="https://img.magnific.com/free-photo/care-male-healthy-weights-athletic_1139-695.jpg" alt="Gym trainer" height="400" width="400">
             </aside> 
         </section>
 
         <section class="media-section flex-row dark" id="equipment">
             <aside class="flex-item side">
-                <img src="https://picsum.photos/400/400" alt="GymGoers" height="400" width="400">
+                <img src="https://t4.ftcdn.net/jpg/05/53/86/01/360_F_553860129_ijFLSAeTvZ8Qpk8z4h9B9bzBKxWjrvUZ.jpg" alt="Gym equipment" height="400" width="400">
             </aside>
 
             <article class="flex-item main">
